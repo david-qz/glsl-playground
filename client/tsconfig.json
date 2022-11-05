@@ -1,0 +1,19 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "typescript-plugin-css-modules",
+        "options": {
+          "classnameTransform": "camelCase",
+          "customMatcher": "\\.module\\.css$",
+          "customRenderer": null,
+          "dotenvOptions": {},
+          "postcssOptions": {},
+          "rendererOptions": {}
+        }
+      }
+    ],
+    "outDir": "../public/"
+  }
+}

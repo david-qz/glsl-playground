@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --text-color: #F0F0F0;
+  --background-color-dark: #272727;
+  --background-color-medium: #2D2D2D;
+  --background-color-light: #3d3d3d;
+  --accent-color-blue: #66CCCC;
+  --border-color-dark: #202020;
+  --border-color-light: #525252;
+}
+
+body {
+  margin: 0;
+  font-size: 12px;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--text-color);
+  background-color: var(--background-color-dark);
+}
+
+.ace-tomorrow-night-eighties {
+  color: var(--text-color) !important;
+}

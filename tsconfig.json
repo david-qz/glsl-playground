@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "module": "es2022",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noUncheckedIndexedAccess": true,
+    "outDir": "./dist/",
+    "plugins": [],
+    "resolveJsonModule": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    "target": "es2022",
+    "types": [
+      "@testing-library/jest-dom",
+      "@types/testing-library__jest-dom",
+      "jest",
+      "react",
+      "react-dom/experimental",
+      "react-dom/next",
+      "ts-jest"
+    ],
+    "useUnknownInCatchVariables": true
+  }
+}

@@ -1,0 +1,30 @@
+name: Node.js CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: node:latest
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: alchemy
+          POSTGRES_PASSWORD: alchemy
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '18.x'
+      - run: npm ci
+      - run: npm run lint
+      - name: test
+        run: |
+          npm run setup-db
+          npm run test
+        env:
+          CI: true
+          DATABASE_URL: postgres://alchemy:alchemy@postgres:5432/alchemy

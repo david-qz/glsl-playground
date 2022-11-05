@@ -1,0 +1,32 @@
+.editor {
+  color: var(--text-color);
+  background-color: var(--background-color-dark);
+  display: grid;
+  grid-template-rows: min-content auto;
+}
+
+.tabBar {
+  display: flex;
+  border-bottom: 1px solid var(--border-color-dark);
+}
+.tabBar > .tab {
+  border-right: 1px solid var(--border-color-dark);
+}
+.tabBar > .tab:last-child {
+  border-right: none;
+}
+
+.tab {
+  height: 30px;
+  padding: 0 10px;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+.tab.active {
+  border-bottom: 1px solid var(--accent-color-blue);
+  background-color: var(--background-color-light);
+}
