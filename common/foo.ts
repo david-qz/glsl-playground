@@ -3,7 +3,7 @@
  */
 export type UntrackedFoo = {
   foo: string,
-}
+};
 
 /**
  * Our chief export at Foo Co.
@@ -11,7 +11,7 @@ export type UntrackedFoo = {
 export type Foo = {
   id: string,
   foo: string,
-}
+};
 
 // Force this to be treated as an ES6 module.
-export {}
+export {};

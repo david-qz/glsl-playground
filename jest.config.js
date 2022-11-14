@@ -7,11 +7,11 @@ export default {
     '@testing-library/jest-dom/extend-expect',
     './setup-tests-after.ts',
   ],
-  "moduleFileExtensions": [
-    "js",
-    "jsx",
-    "tsx",
-    "ts"
+  'moduleFileExtensions': [
+    'js',
+    'jsx',
+    'tsx',
+    'ts'
   ],
   maxWorkers: 1,
   moduleNameMapper: {
@@ -34,7 +34,7 @@ export default {
     '/public', // Do not test files we've transpiled.
   ],
   transform: {
-    '^.+\\.tsx?': [ 'ts-jest', { useESM: true } ],
+    '^.+\\.tsx?': ['ts-jest', { useESM: true }],
     '^.+\\.jsx?': 'babel-jest',
   },
-}
+};

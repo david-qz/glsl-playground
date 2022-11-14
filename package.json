@@ -44,6 +44,8 @@
     "@types/jest": "29.2.2",
     "@types/pg": "8.6.5",
     "@types/supertest": "2.0.12",
+    "@typescript-eslint/eslint-plugin": "^5.43.0",
+    "@typescript-eslint/parser": "^5.43.0",
     "autoprefixer": "^10.4.12",
     "babel-jest": "29.3.1",
     "babel-loader": "9.1.0",

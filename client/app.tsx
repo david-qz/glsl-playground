@@ -5,8 +5,8 @@ import './global.css';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import EditorView from './components/views/editor-view/editor-view';
 
-const container = document.getElementById('app') || document.createElement('div')
-container.id = 'app'
+const container = document.getElementById('app') || document.createElement('div');
+container.id = 'app';
 const root = createRoot(container);
 root.render(
   <React.StrictMode>

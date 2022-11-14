@@ -1,13 +1,64 @@
 {
-  "extends": [
-    "prettier"
-  ],
   "parser": "@babel/eslint-parser",
   "parserOptions": {
     "sourceType": "module",
     "allowImportExportEverywhere": true
   },
-  "plugins": [],
+  "extends": ["eslint:recommended"],
   "root": true,
-  "rules": {}
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true,
+    "jest": true
+  },
+  "rules": {
+    "no-unused-vars": "off",
+    "indent": [
+      "error",
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
+    "space-in-parens": "error",
+    "space-infix-ops": "error",
+    "object-curly-spacing": ["error", "always"],
+    "comma-spacing": "error",
+    "eol-last": ["error", "always"],
+    "arrow-spacing": [
+      "error",
+      {
+        "before": true,
+        "after": true
+      }
+    ],
+    "keyword-spacing": [
+      "error",
+      {
+        "before": true,
+        "after": true
+      }
+    ],
+    "array-bracket-spacing": "error",
+    "prefer-const": "error",
+    "no-var": "error",
+    "rest-spread-spacing": "error",
+    "prefer-arrow-callback": "error",
+    "object-shorthand": ["error", "always"]
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": { "project": ["./tsconfig.json"] },
+      "plugins": ["@typescript-eslint"],
+      "rules": {
+        "semi": "off",
+        "@typescript-eslint/semi": "error"
+      }
+    }
+  ]
 }
