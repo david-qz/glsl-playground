@@ -4,17 +4,26 @@ import { mat4 } from 'gl-matrix';
 
 export default class SceneRenderer {
   private gl: WebGL2RenderingContext;
-  private mesh: Mesh | undefined;
-  private program: WebGLProgram;
-  private programInfo: ProgramInfo;
+  private mesh?: Mesh;
+  private program?: WebGLProgram;
+  private programInfo?: ProgramInfo;
   private running = false;
 
-  constructor(gl: WebGL2RenderingContext, shaderSources: [string, string]) {
+  constructor(gl: WebGL2RenderingContext) {
     this.gl = gl;
+  }
 
-    const [shaderProgram, programInfo] = initShaderProgram(gl, shaderSources[0], shaderSources[1]);
-    this.program = shaderProgram;
-    this.programInfo = programInfo;
+  loadProgram(vertexShaderSource: string, fragmentShaderSource: string): boolean {
+    try {
+      const [shaderProgram, programInfo] = initShaderProgram(this.gl, vertexShaderSource, fragmentShaderSource);
+      if (this.program) this.gl.deleteProgram(this.program);
+      this.program = shaderProgram;
+      this.programInfo = programInfo;
+    } catch (error) {
+      // TODO: parse these errors into something useful that we can return
+      return false;
+    }
+    return true;
   }
 
   setMesh(mesh: Mesh) {
@@ -45,59 +54,59 @@ export default class SceneRenderer {
 
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    const fieldOfView = 45 * Math.PI / 180;
-    const aspect = gl.canvas.width / gl.canvas.height;
-    const zNear = 0.1;
-    const zFar = 100.0;
+    if (this.mesh && this.program && this.programInfo) {
+      const fieldOfView = 45 * Math.PI / 180;
+      const aspect = gl.canvas.width / gl.canvas.height;
+      const zNear = 0.1;
+      const zFar = 100.0;
 
-    const projectionMatrix = mat4.create();
-    mat4.perspective(projectionMatrix, fieldOfView, aspect, zNear, zFar);
+      const projectionMatrix = mat4.create();
+      mat4.perspective(projectionMatrix, fieldOfView, aspect, zNear, zFar);
 
-    const modelViewMatrix = mat4.create();
-    mat4.translate(modelViewMatrix, modelViewMatrix, [0.0, 0.0, -6.0]);
-    mat4.rotateY(modelViewMatrix, modelViewMatrix, performance.now() / 600);
-    mat4.rotateX(modelViewMatrix, modelViewMatrix, performance.now() / 1200);
+      const modelViewMatrix = mat4.create();
+      mat4.translate(modelViewMatrix, modelViewMatrix, [0.0, 0.0, -6.0]);
+      mat4.rotateY(modelViewMatrix, modelViewMatrix, performance.now() / 600);
+      mat4.rotateX(modelViewMatrix, modelViewMatrix, performance.now() / 1200);
 
-    const normalMatrix = mat4.create();
-    mat4.invert(normalMatrix, modelViewMatrix);
-    mat4.transpose(normalMatrix, normalMatrix);
+      const normalMatrix = mat4.create();
+      mat4.invert(normalMatrix, modelViewMatrix);
+      mat4.transpose(normalMatrix, normalMatrix);
 
-    const buffer = gl.createBuffer();
-    if (buffer === null) throw new Error('Failed to create gl buffer.');
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+      const buffer = gl.createBuffer();
+      if (buffer === null) throw new Error('Failed to create gl buffer.');
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
 
-    // FIXME: Make it so the program is verified ahead of time so we don't need to null check this stuff!
-    const positionAttributeInfo = this.programInfo.attributes.get('aVertexPosition');
-    if (positionAttributeInfo) {
-      gl.enableVertexAttribArray(positionAttributeInfo.location);
-      gl.vertexAttribPointer(positionAttributeInfo.location, 3, gl.FLOAT, false, 24, 0);
-    }
+      // FIXME: Make it so the program is verified ahead of time so we don't need to null check this stuff!
+      const positionAttributeInfo = this.programInfo.attributes.get('aVertexPosition');
+      if (positionAttributeInfo) {
+        gl.enableVertexAttribArray(positionAttributeInfo.location);
+        gl.vertexAttribPointer(positionAttributeInfo.location, 3, gl.FLOAT, false, 24, 0);
+      }
 
-    const normalAttributeInfo = this.programInfo.attributes.get('aVertexNormal');
-    if (normalAttributeInfo) {
-      gl.enableVertexAttribArray(normalAttributeInfo.location);
-      gl.vertexAttribPointer(normalAttributeInfo.location, 3, gl.FLOAT, true, 24, 12);
-    }
+      const normalAttributeInfo = this.programInfo.attributes.get('aVertexNormal');
+      if (normalAttributeInfo) {
+        gl.enableVertexAttribArray(normalAttributeInfo.location);
+        gl.vertexAttribPointer(normalAttributeInfo.location, 3, gl.FLOAT, true, 24, 12);
+      }
 
-    // Tell WebGL to use our program when drawing
-    gl.useProgram(this.program);
+      // Tell WebGL to use our program when drawing
+      gl.useProgram(this.program);
 
-    // Set the shader uniforms
-    const projectionMatrixUniformInfo = this.programInfo.uniforms.get('uProjectionMatrix');
-    if (projectionMatrixUniformInfo) {
-      gl.uniformMatrix4fv(projectionMatrixUniformInfo.location, false, projectionMatrix);
-    }
-    const modelViewMatrixUniformInfo = this.programInfo.uniforms.get('uModelViewMatrix');
-    if (modelViewMatrixUniformInfo) {
-      gl.uniformMatrix4fv(modelViewMatrixUniformInfo.location, false, modelViewMatrix);
-    }
-    const normalMatrixUniformInfo = this.programInfo.uniforms.get('uNormalMatrix');
-    if (normalMatrixUniformInfo) {
-      gl.uniformMatrix4fv(normalMatrixUniformInfo.location, false, normalMatrix);
-    }
+      // Set the shader uniforms
+      const projectionMatrixUniformInfo = this.programInfo.uniforms.get('uProjectionMatrix');
+      if (projectionMatrixUniformInfo) {
+        gl.uniformMatrix4fv(projectionMatrixUniformInfo.location, false, projectionMatrix);
+      }
+      const modelViewMatrixUniformInfo = this.programInfo.uniforms.get('uModelViewMatrix');
+      if (modelViewMatrixUniformInfo) {
+        gl.uniformMatrix4fv(modelViewMatrixUniformInfo.location, false, modelViewMatrix);
+      }
+      const normalMatrixUniformInfo = this.programInfo.uniforms.get('uNormalMatrix');
+      if (normalMatrixUniformInfo) {
+        gl.uniformMatrix4fv(normalMatrixUniformInfo.location, false, normalMatrix);
+      }
 
-    // Render the mesh
-    if (this.mesh) {
+      // Render the mesh
       gl.bufferData(gl.ARRAY_BUFFER, this.mesh.vertexData, gl.STATIC_DRAW, 0);
       gl.drawArrays(gl.TRIANGLES, 0, this.mesh.vertexCount);
     }

@@ -5,6 +5,7 @@ import 'ace-builds/src-min-noconflict/ext-language_tools';
 import { type CSSProperties, useState, ReactElement } from 'react';
 import styles from './editor.module.css';
 import { classes } from '../../utils/style-utils';
+import { useEditorStateContext } from '../../hooks/editor-state';
 
 enum ShaderType {
   Vertex = 'vertex-shader',
@@ -16,8 +17,7 @@ type Props = {
 };
 
 export default function Editor({ style }: Props): ReactElement {
-  const [vertexSource, setVertexSource] = useState<string>(exampleVertexShader);
-  const [fragmentSource, setFragmentSource] = useState<string>(exampleFragmentShader);
+  const [state, dispatch] = useEditorStateContext();
   const [activeTab, setActiveTab] = useState<ShaderType>(ShaderType.Vertex);
 
   return (
@@ -38,8 +38,8 @@ export default function Editor({ style }: Props): ReactElement {
       </div>
       <AceEditor
         style={{ display: activeTab === ShaderType.Vertex ? 'initial' : 'none' }}
-        value={vertexSource}
-        onChange={setVertexSource}
+        value={state.vertexSource}
+        onChange={(source) => dispatch({ action: 'set-sources', vertexSource: source })}
         focus={activeTab === ShaderType.Vertex}
         width='100%'
         height='100%'
@@ -52,8 +52,8 @@ export default function Editor({ style }: Props): ReactElement {
       />
       <AceEditor
         style={{ display: activeTab === ShaderType.Fragment ? 'initial' : 'none' }}
-        value={fragmentSource}
-        onChange={setFragmentSource}
+        value={state.fragmentSource}
+        onChange={(source) => dispatch({ action: 'set-sources', fragmentSource: source })}
         focus={activeTab === ShaderType.Fragment}
         width='100%'
         height='100%'
@@ -67,36 +67,3 @@ export default function Editor({ style }: Props): ReactElement {
     </div>
   );
 }
-
-const exampleFragmentShader =
-`precision highp float;
-
-varying vec3 vNormal;
-
-void main() {
-  const float ambientIntensity = 0.1;
-  const vec3 materialColor = vec3(1.0, 1.0, 1.0);
-
-  vec3 normal = normalize(vNormal);
-  vec3 lightDirection = normalize(vec3(1.0, 1.0, 1.0));
-  float intensity = max(dot(normal, lightDirection), ambientIntensity);
-
-  gl_FragColor = vec4(materialColor * intensity, 1.0);
-}
-`;
-
-const exampleVertexShader =
-`attribute vec4 aVertexPosition;
-attribute vec4 aVertexNormal;
-
-uniform mat4 uModelViewMatrix;
-uniform mat4 uProjectionMatrix;
-uniform mat4 uNormalMatrix;
-
-varying vec3 vNormal;
-
-void main() {
-  vNormal = (uNormalMatrix * aVertexNormal).xyz;
-  gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
-}
-`;
