@@ -19,6 +19,8 @@ export default function Editor({ style }: Props): ReactElement {
 
   const vertexShaderHasErrors = state.errors.vertexShaderErrors.length !== 0;
   const fragmentShaderHasErrors = state.errors.fragmentShaderErrors.length !== 0;
+  const linkerHasErrors = state.errors.linkerErrors.length !== 0;
+  const combinedLinkerErrorMessage = state.errors.linkerErrors.map(error => error.message).join('\n');
 
   return (
     <div className={styles.editor} style={style} >
@@ -26,13 +28,13 @@ export default function Editor({ style }: Props): ReactElement {
         <Tab
           title='example.vert'
           active={activeTab === ShaderType.Vertex}
-          error={vertexShaderHasErrors}
+          error={vertexShaderHasErrors || linkerHasErrors}
           onClick={() => setActiveTab(ShaderType.Vertex)}
         />
         <Tab
           title='example.frag'
           active={activeTab === ShaderType.Fragment}
-          error={fragmentShaderHasErrors}
+          error={fragmentShaderHasErrors || linkerHasErrors}
           onClick={() => setActiveTab(ShaderType.Fragment)}
         />
       </TabBar>
@@ -50,6 +52,10 @@ export default function Editor({ style }: Props): ReactElement {
         annotations={activeTab === ShaderType.Fragment ? annotations : []}
         markers={activeTab === ShaderType.Fragment ? markers : []}
       />
+      {
+        linkerHasErrors
+        && <div className={styles.errorOverlay}>LINKER: {combinedLinkerErrorMessage}</div>
+      }
     </div>
   );
 }

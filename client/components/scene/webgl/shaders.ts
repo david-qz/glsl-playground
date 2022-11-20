@@ -38,7 +38,6 @@ export type CompilationError = {
 };
 
 export type LinkerError = {
-  shader: ShaderType,
   message: string,
 };
 
@@ -173,19 +172,7 @@ function parseLinkerError(error: string): Array<LinkerError> {
 
   const parsedErrors: Array<LinkerError> = [];
   for (const error of lines) {
-    const match = error.match(/(FRAGMENT|VERTEX) (.*)/);
-
-    if (!match) {
-      console.log(`Failed to parse linker error line: ${error}`);
-      continue;
-    }
-
-    // We know how many capture groups there were. Typescript does not.
-    const [, shaderType, message] = match as [string, 'FRAGMENT' | 'VERTEX', string];
-    parsedErrors.push({
-      shader: shaderType === 'FRAGMENT' ? ShaderType.Fragment : ShaderType.Vertex,
-      message
-    });
+    parsedErrors.push({ message: error });
   }
 
   return parsedErrors;

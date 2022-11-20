@@ -1,4 +1,5 @@
 .editor {
+  position: relative;
   color: var(--text-color);
   background-color: var(--background-color-dark);
   display: grid;
@@ -21,6 +22,20 @@
 }
 .tabBar > .tab:last-child {
   border-right: none;
+}
+
+.error-overlay {
+  --inset: 10px;
+  position: absolute;
+  bottom: var(--inset);
+  left: calc(48px + var(--inset));
+  z-index: 5;
+  padding: 10px;
+  color: var(--error-color);
+  background-color: var(--background-color-dark);
+  border: 1px solid var(--error-color);
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: bold;
 }
 
 .tab {

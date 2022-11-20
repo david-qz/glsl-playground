@@ -4,7 +4,9 @@ interface CssExports {
   'active': string;
   'editor': string;
   'error': string;
+  'error-overlay': string;
   'errorMarker': string;
+  'errorOverlay': string;
   'tab': string;
   'tabBar': string;
 }
