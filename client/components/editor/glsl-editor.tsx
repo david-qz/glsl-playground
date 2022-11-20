@@ -26,7 +26,8 @@ export default function GLSLEditor({ source, onChange, active, annotations, mark
       tabSize={2}
       editorProps={{ $blockScrolling: true }}
       enableLiveAutocompletion={true}
-      setOptions={{ fontFamily: 'IBM Plex Mono' }}
+      setOptions={{ fontFamily: 'var(--monospace-font-family)' }}
+      fontSize={14}
       annotations={annotations}
       markers={markers}
     />

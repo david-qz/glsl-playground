@@ -1,6 +1,6 @@
 .header {
-  padding: 10px;
-  font-size: 1.1rem;
+  padding: 15px 10px;
+  font-size: 1.5rem;
   font-weight: 500;
   background-color: var(--background-color-light);
   border-bottom: 1px solid var(--border-color-dark);
