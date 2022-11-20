@@ -1,3 +1,13 @@
+type ProgramCompilationResult =
+  | { program: WebGLProgram, programInfo: ProgramInfo, errors?: undefined }
+  | { program?: undefined, programInfo?: undefined, errors: ProgramCompilationErrors };
+
+type ProgramCompilationErrors = {
+  vertexShaderErrors: Array<CompilationError>,
+  fragmentShaderErrors: Array<CompilationError>,
+  linkerErrors: Array<LinkerError>,
+};
+
 interface AttributeInfo extends WebGLActiveInfo {
   location: number
 }
@@ -6,63 +16,102 @@ interface UniformInfo extends WebGLActiveInfo {
 }
 export type ProgramInfo = { attributes: Map<string, AttributeInfo>, uniforms: Map<string, UniformInfo> };
 
+type ShaderCompilationResult =
+  | { shader: WebGLShader, compilerErrors?: undefined }
+  | { shader?: undefined, compilerErrors: Array<CompilationError> };
+
+enum ErrorType {
+  Error = 'ERROR',
+  Warning = 'WARNING',
+}
+
+type CompilationError = {
+  errorType: ErrorType,
+  columnNumber: number,
+  lineNumber: number,
+  message: string,
+};
+
+type LinkerError = {
+  file: 'VERTEX' | 'FRAGMENT',
+  message: string,
+};
+
 export function initShaderProgram(
   gl: WebGL2RenderingContext,
   vertexShaderSource: string,
   fragmentShaderSource: string
-): [WebGLProgram, ProgramInfo] {
-  const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
-  const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+): ProgramCompilationResult {
+  const errors: ProgramCompilationErrors = {
+    vertexShaderErrors: [],
+    fragmentShaderErrors: [],
+    linkerErrors: [],
+  };
 
-  const shaderProgram = gl.createProgram();
-  if (shaderProgram === null) throw new Error('Failed to create shader program.');
+  const vertexShaderResult = loadShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+  if (!vertexShaderResult.shader) errors.vertexShaderErrors = vertexShaderResult.compilerErrors;
 
-  gl.attachShader(shaderProgram, vertexShader);
-  gl.attachShader(shaderProgram, fragmentShader);
-  gl.linkProgram(shaderProgram);
+  const fragmentShaderResult = loadShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+  if (!fragmentShaderResult.shader) errors.fragmentShaderErrors = fragmentShaderResult.compilerErrors;
 
-  if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
-    const errorMessage = gl.getShaderInfoLog(shaderProgram);
-    gl.deleteProgram(shaderProgram);
-    throw new Error(`Unable to initialize the shader program: ${errorMessage}`);
+  if (!vertexShaderResult.shader || !fragmentShaderResult.shader) {
+    return { errors };
+  }
+
+  const vertexShader = vertexShaderResult.shader;
+  const fragmentShader = fragmentShaderResult.shader;
+
+  const program = gl.createProgram();
+  if (program === null) throw new Error('Failed to create shader program.');
+
+  gl.attachShader(program, vertexShader);
+  gl.attachShader(program, fragmentShader);
+  gl.linkProgram(program);
+
+  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    const rawErrors = gl.getProgramInfoLog(program) as string;
+    gl.deleteProgram(program);
+    const parsedErrors = parseLinkerError(rawErrors);
+    errors.linkerErrors = parsedErrors;
+    return { errors };
   }
 
   // Now that we've successfully linked the program, free the shader objects
-  gl.detachShader(shaderProgram, vertexShader);
-  gl.detachShader(shaderProgram, fragmentShader);
+  gl.detachShader(program, vertexShader);
+  gl.detachShader(program, fragmentShader);
   gl.deleteShader(vertexShader);
   gl.deleteShader(fragmentShader);
 
   const attributes = new Map<string, AttributeInfo>();
-  const numberOfAttributes: number = gl.getProgramParameter(shaderProgram, gl.ACTIVE_ATTRIBUTES);
+  const numberOfAttributes: number = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES);
   for (let i = 0; i < numberOfAttributes; i++) {
-    const activeInfo = gl.getActiveAttrib(shaderProgram, i);
+    const activeInfo = gl.getActiveAttrib(program, i);
     if (activeInfo === null) throw new Error(`Failed to get attribute information at location ${i}`);
 
     // Since we've just successfully queried information about this attribute, it had better have a location...
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const location = gl.getAttribLocation(shaderProgram, activeInfo.name)!;
+    const location = gl.getAttribLocation(program, activeInfo.name)!;
     const withLocation = { ...activeInfo, location } as AttributeInfo;
     attributes.set(activeInfo.name, withLocation);
   }
 
   const uniforms = new Map<string, UniformInfo>();
-  const numberOfUniforms: number = gl.getProgramParameter(shaderProgram, gl.ACTIVE_UNIFORMS);
+  const numberOfUniforms: number = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
   for (let i = 0; i < numberOfUniforms; i++) {
-    const activeInfo = gl.getActiveUniform(shaderProgram, i);
+    const activeInfo = gl.getActiveUniform(program, i);
     if (activeInfo === null) throw new Error(`Failed to get uniform information at location ${i}`);
 
     // See note on previous assertion.
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const location = gl.getUniformLocation(shaderProgram, activeInfo.name)!;
+    const location = gl.getUniformLocation(program, activeInfo.name)!;
     const withLocation = { ...activeInfo, location } as UniformInfo;
     uniforms.set(activeInfo.name, withLocation);
   }
 
-  return [shaderProgram, { attributes, uniforms }];
+  return { program, programInfo: { attributes, uniforms } };
 }
 
-export function loadShader(gl: WebGL2RenderingContext, type: number, source: string): WebGLShader {
+export function loadShader(gl: WebGL2RenderingContext, type: number, source: string): ShaderCompilationResult {
   const shader = gl.createShader(type);
   if (shader === null) throw new Error('Failed to create shader.');
 
@@ -70,10 +119,63 @@ export function loadShader(gl: WebGL2RenderingContext, type: number, source: str
   gl.compileShader(shader);
 
   if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-    const errorMessage = gl.getShaderInfoLog(shader);
+    const rawErrors = gl.getShaderInfoLog(shader) as string;
     gl.deleteShader(shader);
-    throw new Error(`An error occurred compiling the shaders: ${errorMessage}`);
+    return { compilerErrors: parseCompilerErrors(rawErrors) };
   }
 
-  return shader;
+  return { shader };
+}
+
+/*
+ * FIXME: the contents of these error strings might be implementation defined. Investigate whether that's true and try
+ * generalize the parsing if so.
+ */
+function parseCompilerErrors(error: string): Array<CompilationError> {
+  const lines = error.split(/\n/).slice(0, -1); // The last line ends with a \n\u0000 that we don't want to parse;
+
+  const parsedErrors: Array<CompilationError> = [];
+  for (const error of lines) {
+    const match = error.match(/(ERROR|WARNING): (\d+):(\d+): (.*)/);
+
+    if (!match) {
+      console.log(`Failed to parse compiler error line: ${error}`);
+      continue;
+    }
+
+    // We know how many capture groups there were. Typescript does not.
+    const [, errorType, column, line, message] = match as [string, string, string, string, string];
+
+    parsedErrors.push({
+      errorType: errorType === 'ERROR' ? ErrorType.Error : ErrorType.Warning,
+      columnNumber: parseInt(column),
+      lineNumber: parseInt(line),
+      message
+    });
+  }
+
+  return parsedErrors;
+}
+
+function parseLinkerError(error: string): Array<LinkerError> {
+  const lines = error.split(/\n/).slice(0, -1); // The last line ends with a \n\u0000 that we don't want to parse;
+
+  const parsedErrors: Array<LinkerError> = [];
+  for (const error of lines) {
+    const match = error.match(/(FRAGMENT|VERTEX) (.*)/);
+
+    if (!match) {
+      console.log(`Failed to parse linker error line: ${error}`);
+      continue;
+    }
+
+    // We know how many capture groups there were. Typescript does not.
+    const [, file, message] = match as [string, 'FRAGMENT' | 'VERTEX', string];
+    parsedErrors.push({
+      file,
+      message
+    });
+  }
+
+  return parsedErrors;
 }

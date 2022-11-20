@@ -1,5 +1,5 @@
 import Mesh from './mesh';
-import { initShaderProgram, ProgramInfo } from './shaders';
+import { initShaderProgram, type ProgramInfo } from './shaders';
 import { mat4 } from 'gl-matrix';
 
 export default class SceneRenderer {
@@ -13,17 +13,13 @@ export default class SceneRenderer {
     this.gl = gl;
   }
 
-  loadProgram(vertexShaderSource: string, fragmentShaderSource: string): boolean {
-    try {
-      const [shaderProgram, programInfo] = initShaderProgram(this.gl, vertexShaderSource, fragmentShaderSource);
-      if (this.program) this.gl.deleteProgram(this.program);
-      this.program = shaderProgram;
-      this.programInfo = programInfo;
-    } catch (error) {
-      // TODO: parse these errors into something useful that we can return
-      return false;
-    }
-    return true;
+  loadProgram(vertexShaderSource: string, fragmentShaderSource: string): void {
+    const result = initShaderProgram(this.gl, vertexShaderSource, fragmentShaderSource);
+    if (!result.program) return;
+
+    if (this.program) this.gl.deleteProgram(this.program);
+    this.program = result.program;
+    this.programInfo = result.programInfo;
   }
 
   setMesh(mesh: Mesh) {
