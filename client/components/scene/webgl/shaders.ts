@@ -1,3 +1,8 @@
+export enum ShaderType {
+  Vertex = 'vertex-shader',
+  Fragment = 'fragment-shader'
+}
+
 type ProgramCompilationResult =
   | { program: WebGLProgram, programInfo: ProgramInfo, errors?: undefined }
   | { program?: undefined, programInfo?: undefined, errors: ProgramCompilationErrors };
@@ -33,7 +38,7 @@ type CompilationError = {
 };
 
 type LinkerError = {
-  file: 'VERTEX' | 'FRAGMENT',
+  shader: ShaderType,
   message: string,
 };
 
@@ -170,9 +175,9 @@ function parseLinkerError(error: string): Array<LinkerError> {
     }
 
     // We know how many capture groups there were. Typescript does not.
-    const [, file, message] = match as [string, 'FRAGMENT' | 'VERTEX', string];
+    const [, shaderType, message] = match as [string, 'FRAGMENT' | 'VERTEX', string];
     parsedErrors.push({
-      file,
+      shader: shaderType === 'FRAGMENT' ? ShaderType.Fragment : ShaderType.Vertex,
       message
     });
   }

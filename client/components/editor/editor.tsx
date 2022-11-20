@@ -6,11 +6,7 @@ import { type CSSProperties, useState, ReactElement } from 'react';
 import styles from './editor.module.css';
 import { classes } from '../../utils/style-utils';
 import { useEditorStateContext } from '../../hooks/editor-state';
-
-enum ShaderType {
-  Vertex = 'vertex-shader',
-  Fragment = 'fragment-shader'
-}
+import { ShaderType } from '../scene/webgl/shaders';
 
 type Props = {
   style?: CSSProperties
