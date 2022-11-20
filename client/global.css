@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 :root {
   font-size: 12px;
@@ -18,7 +18,7 @@
 
   /* fonts */
   --sans-serif-font-family: 'Inter', sans-serif;
-  --monospace-font-family: 'IBM Plex Mono', monospace;}
+  --monospace-font-family: 'Roboto Mono', monospace;}
 
 body {
   margin: 0;
