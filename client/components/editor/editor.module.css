@@ -6,21 +6,21 @@
   grid-template-rows: min-content auto;
 }
 
-.errorMarker {
+.error-marker {
   position: absolute;
   z-index: 3;
   border-radius: 0;
   border-bottom: 1px dotted red;
 }
 
-.tabBar {
+.tab-bar {
   display: flex;
   border-bottom: 1px solid var(--border-color-dark);
 }
-.tabBar > .tab {
+.tab-bar > .tab {
   border-right: 1px solid var(--border-color-dark);
 }
-.tabBar > .tab:last-child {
+.tab-bar > .tab:last-child {
   border-right: none;
 }
 

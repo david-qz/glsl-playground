@@ -4,10 +4,12 @@ interface CssExports {
   'active': string;
   'editor': string;
   'error': string;
+  'error-marker': string;
   'error-overlay': string;
   'errorMarker': string;
   'errorOverlay': string;
   'tab': string;
+  'tab-bar': string;
   'tabBar': string;
 }
 export const cssExports: CssExports;
