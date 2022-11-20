@@ -187,6 +187,7 @@ export default {
                 // us to be able to see what classes are applied to what
                 // elements in a human readable way.
                 localIdentName: '[name]__[local]__[hash:base64:5]',
+                auto: true,
               },
               importLoaders: 1,
             },
