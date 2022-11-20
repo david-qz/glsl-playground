@@ -1,5 +1,5 @@
 .layout {
-  min-height: 100vh;
+  height: 100vh;
   display: grid;
   grid-template-areas:
     "header header"

@@ -2,6 +2,7 @@ import { CSSProperties, ReactElement, useEffect, useRef } from 'react';
 import { useEditorStateContext } from '../../hooks/editor-state';
 import Mesh from './webgl/mesh';
 import SceneRenderer from './webgl/scene-renderer';
+import styles from './scene.module.css';
 
 type Props = {
   style: CSSProperties
@@ -39,7 +40,11 @@ export default function Scene({ style }: Props): ReactElement {
     updateProgram(state.vertexSource, state.fragmentSource);
   }, [state.vertexSource, state.fragmentSource]);
 
-  return <canvas ref={canvasRef} style={{ width: '100%', height: '100%', ...style }} />;
+  return (
+    <div className={styles.canvasContainer} style={style}>
+      <canvas ref={canvasRef} className={styles.canvas} />
+    </div>
+  );
 }
 
 const vertexData = new Float32Array([
