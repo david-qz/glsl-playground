@@ -1,12 +1,10 @@
-import AceEditor, { type IAnnotation, type IMarker } from 'react-ace';
-import 'ace-builds/src-min-noconflict/mode-glsl';
-import 'ace-builds/src-min-noconflict/theme-tomorrow_night_eighties';
-import 'ace-builds/src-min-noconflict/ext-language_tools';
+import { type IAnnotation, type IMarker } from 'react-ace';
 import { type CSSProperties, useState, ReactElement } from 'react';
 import styles from './editor.module.css';
 import { classes } from '../../utils/style-utils';
 import { EditorState, useEditorStateContext } from '../../hooks/editor-state';
 import { ShaderType } from '../scene/webgl/shaders';
+import GLSLEditor from '../glsl-editor/glsl-editor';
 
 type Props = {
   style?: CSSProperties
@@ -34,37 +32,19 @@ export default function Editor({ style }: Props): ReactElement {
           Fragment
         </div>
       </div>
-      <AceEditor
-        style={{ display: activeTab === ShaderType.Vertex ? 'initial' : 'none' }}
-        value={state.vertexSource}
-        onChange={(source) => dispatch({ action: 'set-sources', vertexSource: source })}
-        focus={activeTab === ShaderType.Vertex}
-        width='100%'
-        height='100%'
-        mode="glsl"
-        theme="tomorrow_night_eighties"
-        tabSize={2}
-        editorProps={{ $blockScrolling: true }}
-        enableLiveAutocompletion={true}
-        setOptions={{ fontFamily: 'IBM Plex Mono' }}
-        annotations={activeTab === ShaderType.Vertex ? annotations : undefined}
-        markers={activeTab === ShaderType.Vertex ? markers : undefined}
+      <GLSLEditor
+        source={state.vertexSource}
+        onChange={source => dispatch({ action: 'set-sources', vertexSource: source })}
+        active={activeTab === ShaderType.Vertex}
+        annotations={activeTab === ShaderType.Vertex ? annotations : []}
+        markers={activeTab === ShaderType.Vertex ? markers : []}
       />
-      <AceEditor
-        style={{ display: activeTab === ShaderType.Fragment ? 'initial' : 'none' }}
-        value={state.fragmentSource}
-        onChange={(source) => dispatch({ action: 'set-sources', fragmentSource: source })}
-        focus={activeTab === ShaderType.Fragment}
-        width='100%'
-        height='100%'
-        mode="glsl"
-        theme="tomorrow_night_eighties"
-        tabSize={2}
-        editorProps={{ $blockScrolling: true }}
-        enableLiveAutocompletion={true}
-        setOptions={{ fontFamily: 'IBM Plex Mono' }}
-        annotations={activeTab === ShaderType.Fragment ? annotations : undefined}
-        markers={activeTab === ShaderType.Fragment ? markers : undefined}
+      <GLSLEditor
+        source={state.fragmentSource}
+        onChange={source => dispatch({ action: 'set-sources', fragmentSource: source })}
+        active={activeTab === ShaderType.Fragment}
+        annotations={activeTab === ShaderType.Fragment ? annotations : []}
+        markers={activeTab === ShaderType.Fragment ? markers : []}
       />
     </div>
   );
