@@ -7,7 +7,7 @@
   "scripts": {
     "test": "jest",
     "test:watch": "npm run test -- --watch",
-    "lint": "eslint --ext js --ext jsx client server *.js",
+    "lint": "eslint .",
     "setup-db": "ts-node --esm setup-db.ts",
     "start": "npm-run-all --parallel start:server start:web",
     "start:production": "node dist/server/index.js",
