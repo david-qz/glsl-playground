@@ -12,6 +12,14 @@ export default function Scene({ style }: Props): ReactElement {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sceneRef = useRef<SceneRenderer>();
 
+  function updateProgram(vertexSource: string, fragmentSource: string): void {
+    const errors = sceneRef.current?.loadProgram(vertexSource, fragmentSource);
+    dispatch({
+      action: 'set-errors',
+      errors: errors || { vertexShaderErrors:[], fragmentShaderErrors: [], linkerErrors: [] }
+    });
+  }
+
   useEffect(() => {
     if (!canvasRef.current) throw new Error('Canvas ref is unexpectedly null!');
 
@@ -21,15 +29,14 @@ export default function Scene({ style }: Props): ReactElement {
     const scene = new SceneRenderer(gl);
     const mesh = new Mesh(vertexData, 36);
     scene.setMesh(mesh);
-    scene.loadProgram(state.vertexSource, state.fragmentSource);
+    updateProgram(state.vertexSource, state.fragmentSource);
     scene.setRunning(true);
 
     sceneRef.current = scene;
   }, []);
 
   useEffect(() => {
-    if (!sceneRef.current) throw new Error('Scene ref is unexpectedly undefined!');
-    sceneRef.current.loadProgram(state.vertexSource, state.fragmentSource);
+    updateProgram(state.vertexSource, state.fragmentSource);
   }, [state.vertexSource, state.fragmentSource]);
 
   return <canvas ref={canvasRef} style={{ width: '100%', height: '100%', ...style }} />;

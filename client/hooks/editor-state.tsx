@@ -1,10 +1,11 @@
 import { createContext, Dispatch, useContext, useReducer } from 'react';
 import { exampleFragmentShader, exampleVertexShader } from '../utils/example-shaders';
+import { type ProgramCompilationErrors } from '../components/scene/webgl/shaders';
 
-type EditorState = {
+export type EditorState = {
   vertexSource: string,
   fragmentSource: string,
-  errors: Array<string>
+  errors: ProgramCompilationErrors
 };
 
 type EditorActionSetSources = {
@@ -15,7 +16,7 @@ type EditorActionSetSources = {
 
 type EditorActionSetErrors = {
   action: 'set-errors',
-  errors: Array<string>
+  errors: ProgramCompilationErrors
 };
 
 type EditorAction = EditorActionSetSources | EditorActionSetErrors;
@@ -23,7 +24,11 @@ type EditorAction = EditorActionSetSources | EditorActionSetErrors;
 const initialState: EditorState = {
   vertexSource: exampleVertexShader,
   fragmentSource: exampleFragmentShader,
-  errors: []
+  errors: {
+    vertexShaderErrors: [],
+    fragmentShaderErrors: [],
+    linkerErrors: [],
+  }
 };
 
 function reducer(state: EditorState, action: EditorAction): EditorState {

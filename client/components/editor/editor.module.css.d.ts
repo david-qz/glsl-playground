@@ -3,6 +3,7 @@
 interface CssExports {
   'active': string;
   'editor': string;
+  'errorMarker': string;
   'tab': string;
   'tabBar': string;
 }

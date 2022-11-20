@@ -1,5 +1,5 @@
 import Mesh from './mesh';
-import { compileProgram, type ProgramInfo } from './shaders';
+import { compileProgram, ProgramCompilationErrors, type ProgramInfo } from './shaders';
 import { mat4 } from 'gl-matrix';
 
 export default class SceneRenderer {
@@ -13,9 +13,9 @@ export default class SceneRenderer {
     this.gl = gl;
   }
 
-  loadProgram(vertexShaderSource: string, fragmentShaderSource: string): void {
+  loadProgram(vertexShaderSource: string, fragmentShaderSource: string): ProgramCompilationErrors | undefined {
     const result = compileProgram(this.gl, vertexShaderSource, fragmentShaderSource);
-    if (!result.program) return;
+    if (!result.program) return result.errors;
 
     if (this.program) this.gl.deleteProgram(this.program);
     this.program = result.program;

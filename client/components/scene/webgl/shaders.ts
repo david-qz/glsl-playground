@@ -7,7 +7,7 @@ type ProgramCompilationResult =
   | { program: WebGLProgram, programInfo: ProgramInfo, errors?: undefined }
   | { program?: undefined, programInfo?: undefined, errors: ProgramCompilationErrors };
 
-type ProgramCompilationErrors = {
+export type ProgramCompilationErrors = {
   vertexShaderErrors: Array<CompilationError>,
   fragmentShaderErrors: Array<CompilationError>,
   linkerErrors: Array<LinkerError>,
@@ -30,14 +30,14 @@ enum ErrorType {
   Warning = 'WARNING',
 }
 
-type CompilationError = {
+export type CompilationError = {
   errorType: ErrorType,
   columnNumber: number,
   lineNumber: number,
   message: string,
 };
 
-type LinkerError = {
+export type LinkerError = {
   shader: ShaderType,
   message: string,
 };

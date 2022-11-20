@@ -5,6 +5,13 @@
   grid-template-rows: min-content auto;
 }
 
+.errorMarker {
+  position: absolute;
+  z-index: 3;
+  border-radius: 0;
+  border-bottom: 1px dotted red;
+}
+
 .tabBar {
   display: flex;
   border-bottom: 1px solid var(--border-color-dark);
