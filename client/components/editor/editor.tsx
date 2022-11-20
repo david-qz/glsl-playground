@@ -1,10 +1,11 @@
 import { type IAnnotation, type IMarker } from 'react-ace';
 import { type CSSProperties, useState, ReactElement } from 'react';
 import styles from './editor.module.css';
-import { classes } from '../../utils/style-utils';
 import { EditorState, useEditorStateContext } from '../../hooks/editor-state';
 import { ShaderType } from '../scene/webgl/shaders';
-import GLSLEditor from '../glsl-editor/glsl-editor';
+import GLSLEditor from './glsl-editor';
+import TabBar from './tab-bar';
+import Tab from './tab';
 
 type Props = {
   style?: CSSProperties
@@ -21,26 +22,20 @@ export default function Editor({ style }: Props): ReactElement {
 
   return (
     <div className={styles.editor} style={style} >
-      <div className={styles.tabBar}>
-        <div
-          className={classes(styles.tab,
-            activeTab === ShaderType.Vertex && styles.active,
-            vertexShaderHasErrors && styles.error
-          )}
+      <TabBar>
+        <Tab
+          title='example.vert'
+          active={activeTab === ShaderType.Vertex}
+          error={vertexShaderHasErrors}
           onClick={() => setActiveTab(ShaderType.Vertex)}
-        >
-          example.vert
-        </div>
-        <div
-          className={classes(styles.tab,
-            activeTab === ShaderType.Fragment && styles.active,
-            fragmentShaderHasErrors && styles.error
-          )}
+        />
+        <Tab
+          title='example.frag'
+          active={activeTab === ShaderType.Fragment}
+          error={fragmentShaderHasErrors}
           onClick={() => setActiveTab(ShaderType.Fragment)}
-        >
-          example.frag
-        </div>
-      </div>
+        />
+      </TabBar>
       <GLSLEditor
         source={state.vertexSource}
         onChange={source => dispatch({ action: 'set-sources', vertexSource: source })}
