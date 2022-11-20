@@ -42,7 +42,7 @@ type LinkerError = {
   message: string,
 };
 
-export function initShaderProgram(
+export function compileProgram(
   gl: WebGL2RenderingContext,
   vertexShaderSource: string,
   fragmentShaderSource: string
@@ -53,10 +53,10 @@ export function initShaderProgram(
     linkerErrors: [],
   };
 
-  const vertexShaderResult = loadShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+  const vertexShaderResult = compileShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
   if (!vertexShaderResult.shader) errors.vertexShaderErrors = vertexShaderResult.compilerErrors;
 
-  const fragmentShaderResult = loadShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+  const fragmentShaderResult = compileShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
   if (!fragmentShaderResult.shader) errors.fragmentShaderErrors = fragmentShaderResult.compilerErrors;
 
   if (!vertexShaderResult.shader || !fragmentShaderResult.shader) {
@@ -87,6 +87,12 @@ export function initShaderProgram(
   gl.deleteShader(vertexShader);
   gl.deleteShader(fragmentShader);
 
+  const programInfo = loadProgramInfo(gl, program);
+
+  return { program, programInfo };
+}
+
+function loadProgramInfo(gl: WebGL2RenderingContext, program: WebGLProgram): ProgramInfo {
   const attributes = new Map<string, AttributeInfo>();
   const numberOfAttributes: number = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES);
   for (let i = 0; i < numberOfAttributes; i++) {
@@ -113,10 +119,10 @@ export function initShaderProgram(
     uniforms.set(activeInfo.name, withLocation);
   }
 
-  return { program, programInfo: { attributes, uniforms } };
+  return { attributes, uniforms };
 }
 
-export function loadShader(gl: WebGL2RenderingContext, type: number, source: string): ShaderCompilationResult {
+function compileShader(gl: WebGL2RenderingContext, type: number, source: string): ShaderCompilationResult {
   const shader = gl.createShader(type);
   if (shader === null) throw new Error('Failed to create shader.');
 
