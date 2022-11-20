@@ -16,20 +16,29 @@ export default function Editor({ style }: Props): ReactElement {
 
   const [markers, annotations] = collectAnnotationsAndMarkers(state, activeTab);
 
+  const vertexShaderHasErrors = state.errors.vertexShaderErrors.length !== 0;
+  const fragmentShaderHasErrors = state.errors.fragmentShaderErrors.length !== 0;
+
   return (
     <div className={styles.editor} style={style} >
       <div className={styles.tabBar}>
         <div
-          className={classes(styles.tab, activeTab === ShaderType.Vertex && styles.active)}
+          className={classes(styles.tab,
+            activeTab === ShaderType.Vertex && styles.active,
+            vertexShaderHasErrors && styles.error
+          )}
           onClick={() => setActiveTab(ShaderType.Vertex)}
         >
-          Vertex
+          example.vert
         </div>
         <div
-          className={classes(styles.tab, activeTab === ShaderType.Fragment && styles.active)}
+          className={classes(styles.tab,
+            activeTab === ShaderType.Fragment && styles.active,
+            fragmentShaderHasErrors && styles.error
+          )}
           onClick={() => setActiveTab(ShaderType.Fragment)}
         >
-          Fragment
+          example.frag
         </div>
       </div>
       <GLSLEditor

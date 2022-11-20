@@ -8,6 +8,7 @@
   --accent-color-blue: #66CCCC;
   --border-color-dark: #202020;
   --border-color-light: #525252;
+  --error-color: #e87575;
 }
 
 body {

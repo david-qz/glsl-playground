@@ -30,10 +30,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 4px;
   cursor: pointer;
   user-select: none;
 }
 .tab.active {
   border-bottom: 1px solid var(--accent-color-blue);
   background-color: var(--background-color-light);
+}
+.tab.error {
+  color: var(--error-color);
+}
+.tab.error::after {
+  content: '!';
+  font-weight: bold;
 }
