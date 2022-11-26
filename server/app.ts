@@ -3,12 +3,12 @@
  * itself. This includes global middleware, general handlers (like 404 and error
  * handling) as well as static asset hosting.
  *
- * For routes for your API, see routes.ts.
+ * For api routes, see api.ts.
  ******************************************************************************/
 import dotenv from 'dotenv';
 import express, { type Request, type Response } from 'express';
 import path from 'node:path';
-import routes from './routes.js';
+import api from './api.js';
 import errorHandler from './middleware/error.js';
 import cookieParser from 'cookie-parser';
 
@@ -19,7 +19,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(process.env.API_PREFIX || '', routes());
+app.use(process.env.API_PREFIX || '', api);
 
 // Ordinarily we'd use __dirname as a base directory, but issues that arise from
 // https://github.com/kulshekhar/ts-jest/issues/1174 cause problems with not
