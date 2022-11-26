@@ -1,28 +1,19 @@
-import {
-  type Request,
-  type Response,
-  type NextFunction,
-  type ErrorRequestHandler,
-} from 'express';
-const handler: ErrorRequestHandler = (
-  err: any,
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  const status = err.status || 500;
+import { type Request, type Response, type NextFunction } from 'express';
+import HttpError from '../utils/http-error';
 
-  res.status(status);
-
-  if (process.env.NODE_ENV !== 'test') {
-    // eslint-disable-next-line no-console
-    console.log(err);
+export default function errorHandler(error: unknown, request: Request, response: Response, next: NextFunction) {
+  if (error instanceof HttpError) {
+    response.status(error.status);
+    response.send({
+      status: error.status,
+      message: error.message
+    });
+  } else {
+    console.error(error);
+    response.status(500);
+    response.send({
+      status: 500,
+      message: 'an internal server error occurred'
+    });
   }
-
-  res.send({
-    status,
-    message: err.message,
-  });
-};
-
-export default handler;
+}
