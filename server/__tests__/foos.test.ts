@@ -14,13 +14,13 @@ describe('foos controller', () => {
     setupDb();
   });
 
-  it('successfully gets /foos', () => {
+  it.skip('successfully gets /foos', () => {
     return request(app)
       .get('/foos')
       .then(res => expect(res.status).toBe(200));
   });
 
-  it('serves a list of foos on GET /foos', () => {
+  it.skip('serves a list of foos on GET /foos', () => {
     return request(app)
       .get('/foos')
       .then((res) => {

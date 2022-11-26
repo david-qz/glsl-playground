@@ -15,13 +15,13 @@ describe('the server', () => {
     setupDb();
   });
 
-  it('successfully gets /cats', () => {
+  it.skip('successfully gets /cats', () => {
     return request(app)
       .get('/cats')
       .then(res => expect(res.status).toBe(200));
   });
 
-  it('serves a list of cats on GET /cats', () => {
+  it.skip('serves a list of cats on GET /cats', () => {
     return request(app)
       .get('/cats')
       .then((res) => {
