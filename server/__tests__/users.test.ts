@@ -17,13 +17,13 @@ const testUsers: Record<TestUsers, UserCredentials> = {
   new: { email: 'new.user@test.com', password: 'qwerty' }
 };
 
-describe('users controller', () => {
+describe('API /users routes', () => {
   beforeEach(async () => {
     await setupDatabase();
     await seedDatabase();
   });
 
-  it('#POST /api/v1/users should create a new user and log them in', async () => {
+  it('POST /users should create a new user and log them in', async () => {
     const newUser = testUsers.new;
 
     // POST to route to create new user
@@ -43,7 +43,7 @@ describe('users controller', () => {
     expect(session).not.toBeUndefined();
   });
 
-  it('#POST /api/v1/users should error if email already exists', async () => {
+  it('POST /users should error if email already exists', async () => {
     // Some credentials with the same email as an existing user
     const userCredentials: UserCredentials = { ...testUsers.existing, password: 'blah' };
 
@@ -52,7 +52,7 @@ describe('users controller', () => {
     expect(response.status).toEqual(409);
   });
 
-  it('#POST /api/v1/users/sessions should log a user in', async () => {
+  it('POST /users/sessions should log a user in', async () => {
     const userCredentials = testUsers.existing;
 
     // Request should be successful
