@@ -1,4 +1,5 @@
 import { type Request, type Response, type NextFunction, Router } from 'express';
+import environment from '../environment.js';
 import * as UsersService from '../services/users-service.js';
 import HttpError from '../utils/http-error.js';
 
@@ -17,7 +18,7 @@ router.post('/', async (request: Request, response: Response, next: NextFunction
     const user = await UsersService.create(email, password);
     const token = await UsersService.signIn(email, password);
 
-    response.cookie('session', token, { httpOnly: true, maxAge: ONE_DAY_IN_MS });
+    response.cookie(environment.SESSION_COOKIE, token, { httpOnly: true, maxAge: ONE_DAY_IN_MS });
     response.json(user);
   } catch (error) {
     next(error);
@@ -34,7 +35,7 @@ router.post('/sessions', async (request: Request, response: Response, next: Next
 
     const token = await UsersService.signIn(email, password);
 
-    response.cookie('session', token, { httpOnly: true, maxAge: ONE_DAY_IN_MS });
+    response.cookie(environment.SESSION_COOKIE, token, { httpOnly: true, maxAge: ONE_DAY_IN_MS });
     response.send();
   } catch (error) {
     next(error);

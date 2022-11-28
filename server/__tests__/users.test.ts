@@ -8,6 +8,7 @@ import request from 'supertest';
 import app from '../app';
 import { setupDatabase, seedDatabase } from '../database.js';
 import { CookieAccessInfo } from 'cookiejar';
+import environment from '../environment';
 
 type UserCredentials = { email: string, password: string };
 type TestUsers = 'existing' | 'new';
@@ -39,7 +40,7 @@ describe('API /users routes', () => {
     });
 
     // Should create a session cookie
-    const session = agent.jar.getCookie('session', CookieAccessInfo.All);
+    const session = agent.jar.getCookie(environment.SESSION_COOKIE, CookieAccessInfo.All);
     expect(session).not.toBeUndefined();
   });
 
@@ -61,7 +62,7 @@ describe('API /users routes', () => {
     expect(response.status).toEqual(200);
 
     // Should create a session cookie
-    const session = agent.jar.getCookie('session', CookieAccessInfo.All);
+    const session = agent.jar.getCookie(environment.SESSION_COOKIE, CookieAccessInfo.All);
     expect(session).not.toBeUndefined();
   });
 });
