@@ -18,16 +18,13 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // There can be a lot of environment variables, and many of them private. We
 // want a way to inject configuration via environment variables into the UI at
 // build time. List variables here to ensure they are included.
-const includeEnvironmentVariables = [
-];
+const frontEndVariables = [];
 // Part of a series of settings to allow use of process.env in the web. See also
 // the resolve -> alias setting in this file, the ProvidePlugin usage in this
 // file, and the added process package.
+dotenv.config();
 const env = Object.fromEntries(
-  Object.entries({
-    ...dotenv.config(),
-    ...process.env,
-  }).filter(([k, _v]) => includeEnvironmentVariables.includes(k)),
+  Object.entries(process.env).filter(([k, _v]) => frontEndVariables.includes(k))
 );
 
 export default {
