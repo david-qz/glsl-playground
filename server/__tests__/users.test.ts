@@ -51,4 +51,17 @@ describe('users controller', () => {
     const response = await request(app).post('/users').send(userCredentials);
     expect(response.status).toEqual(409);
   });
+
+  it('#POST /api/v1/users/sessions should log a user in', async () => {
+    const userCredentials = testUsers.existing;
+
+    // Request should be successful
+    const agent = request.agent(app);
+    const response = await agent.post('/users/sessions').send(userCredentials);
+    expect(response.status).toEqual(200);
+
+    // Should create a session cookie
+    const session = agent.jar.getCookie('session', CookieAccessInfo.All);
+    expect(session).not.toBeUndefined();
+  });
 });

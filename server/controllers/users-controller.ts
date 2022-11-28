@@ -24,4 +24,21 @@ router.post('/', async (request: Request, response: Response, next: NextFunction
   }
 });
 
+router.post('/sessions', async (request: Request, response: Response, next: NextFunction) => {
+  try {
+    const email: unknown = request.body?.email;
+    const password: unknown = request.body?.password;
+
+    if (typeof email !== 'string') throw new HttpError('email must be a string', 400);
+    if (typeof password !== 'string') throw new HttpError('password must be a string', 400);
+
+    const token = await UsersService.signIn(email, password);
+
+    response.cookie('session', token, { httpOnly: true, maxAge: ONE_DAY_IN_MS });
+    response.send();
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;
