@@ -1,4 +1,4 @@
-import pool from '../database';
+import pool from '../database.js';
 
 type UserRow = {
   id: string,

@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import User from '../models/user-model';
-import HttpError from '../utils/http-error';
+import User from '../models/user-model.js';
+import HttpError from '../utils/http-error.js';
 
 // Try to protect against running the app without an intentionally set JWT secret.
 if (!process.env.JWT_SECRET) {

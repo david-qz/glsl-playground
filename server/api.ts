@@ -3,7 +3,7 @@
  * development, this is assumed to be /api/v1. See the Webpack configuration.
  ******************************************************************************/
 import { Router } from 'express';
-import usersController from './controllers/users-controller';
+import usersController from './controllers/users-controller.js';
 
 const router = Router();
 

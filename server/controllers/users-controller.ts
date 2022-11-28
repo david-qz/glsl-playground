@@ -1,6 +1,6 @@
 import { type Request, type Response, type NextFunction, Router } from 'express';
-import * as UsersService from '../services/users-service';
-import HttpError from '../utils/http-error';
+import * as UsersService from '../services/users-service.js';
+import HttpError from '../utils/http-error.js';
 
 const ONE_DAY_IN_MS: number = 3600 * 24 * 1000;
 
