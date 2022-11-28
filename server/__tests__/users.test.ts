@@ -9,6 +9,14 @@ import app from '../app';
 import { setupDatabase, seedDatabase } from '../database.js';
 import { CookieAccessInfo } from 'cookiejar';
 
+type UserCredentials = { email: string, password: string };
+type TestUsers = 'existing' | 'new';
+
+const testUsers: Record<TestUsers, UserCredentials> = {
+  existing: { email: 'existing.user@test.com', password: '123456' },
+  new: { email: 'new.user@test.com', password: 'qwerty' }
+};
+
 describe('users controller', () => {
   beforeEach(async () => {
     await setupDatabase();
@@ -16,7 +24,7 @@ describe('users controller', () => {
   });
 
   it('#POST /api/v1/users should create a new user and log them in', async () => {
-    const newUser = { email: 'test@example.com', password: '123456' };
+    const newUser = testUsers.new;
 
     // POST to route to create new user
     const agent = request.agent(app);
