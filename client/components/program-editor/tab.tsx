@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import { classes } from '../../utils/style-utils';
-import styles from './editor.module.css';
+import styles from './program-editor.module.css';
 
 type Props = {
   title: string,
