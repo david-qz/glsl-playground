@@ -59,5 +59,5 @@ export default {
   JWT_SECRET: required(load('JWT_SECRET')).value,
   SALT_ROUNDS: fallback(parseInteger(load('SALT_ROUNDS')), 10).value,
   DATABASE_URL: required(load('DATABASE_URL')).value,
-  PGSSLMODE: fallback(parseBoolean(load('PGSSLMODE')), true).value
+  PGSSLMODE: fallback(parseBoolean(load('PGSSLMODE')), false).value
 };
