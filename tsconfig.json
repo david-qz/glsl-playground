@@ -26,6 +26,7 @@
       "react-dom/next",
       "ts-jest"
     ],
-    "useUnknownInCatchVariables": true
+    "useUnknownInCatchVariables": true,
+    "skipLibCheck": true
   }
 }
