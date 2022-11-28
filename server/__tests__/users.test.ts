@@ -65,4 +65,24 @@ describe('API /users routes', () => {
     const session = agent.jar.getCookie(environment.SESSION_COOKIE, CookieAccessInfo.All);
     expect(session).not.toBeUndefined();
   });
+
+  it('DELETE /users/sessions should log a user out', async () => {
+    const userCredentials = testUsers.existing;
+
+    // First log in
+    const agent = request.agent(app);
+    await agent.post('/users/sessions').send(userCredentials);
+
+    // Make sure we have a session
+    let session = agent.jar.getCookie(environment.SESSION_COOKIE, CookieAccessInfo.All);
+    expect(session).not.toBeUndefined();
+
+    // Now log out
+    const response = await agent.delete('/users/sessions');
+    expect(response.status).toEqual(200);
+
+    // Session cookie should be cleared
+    session = agent.jar.getCookie(environment.SESSION_COOKIE, CookieAccessInfo.All);
+    expect(session).toBeUndefined();
+  });
 });

@@ -42,4 +42,13 @@ router.post('/sessions', async (request: Request, response: Response, next: Next
   }
 });
 
+router.delete('/sessions', async (request: Request, response: Response, next: NextFunction) => {
+  try {
+    response.clearCookie(environment.SESSION_COOKIE);
+    response.send();
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;
