@@ -5,7 +5,11 @@ type EnvironmentEntry<T> = { key: string, value: T };
 type RawEnvironmentEntry = EnvironmentEntry<string | undefined>;
 
 function load(key: string): RawEnvironmentEntry {
-  return { key, value: process.env[key] };
+  let resolvedKey = key;
+  if (process.env.NODE_ENV === 'test' && process.env['TEST_' + key]) {
+    resolvedKey = 'TEST_' + key;
+  }
+  return { key, value: process.env[resolvedKey] };
 }
 
 function parseInteger({ key, value }: RawEnvironmentEntry): EnvironmentEntry<number | undefined> {
