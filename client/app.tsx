@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './reset.css';
 import './global.css';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import EditorView from './components/views/editor-view/editor-view';
+import Editor from './components/editor/editor';
 
 const container = document.getElementById('app') || document.createElement('div');
 container.id = 'app';
@@ -12,7 +12,7 @@ root.render(
   <React.StrictMode>
     <Router>
       <Routes>
-        <Route path="/" element={ <EditorView /> } />
+        <Route path="/" element={ <Editor /> } />
       </Routes>
     </Router>
   </React.StrictMode>

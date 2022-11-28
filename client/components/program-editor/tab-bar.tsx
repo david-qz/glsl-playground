@@ -1,5 +1,5 @@
-import { PropsWithChildren, ReactElement, ReactNode } from 'react';
-import styles from './editor.module.css';
+import { ReactElement, ReactNode } from 'react';
+import styles from './program-editor.module.css';
 
 type Props = {
   children: ReactNode
