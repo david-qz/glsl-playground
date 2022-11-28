@@ -6,12 +6,13 @@
 import { describe, expect, it } from '@jest/globals';
 import request from 'supertest';
 import app from '../app';
-import setupDb from '../setup-data.js';
+import { setupDatabase, seedDatabase } from '../database.js';
 import { CookieAccessInfo } from 'cookiejar';
 
 describe('users controller', () => {
-  beforeEach(() => {
-    return setupDb();
+  beforeEach(async () => {
+    await setupDatabase();
+    await seedDatabase();
   });
 
   it('#POST /api/v1/users should create a new user and log them in', async () => {
