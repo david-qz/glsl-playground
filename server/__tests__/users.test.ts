@@ -42,4 +42,13 @@ describe('users controller', () => {
     const session = agent.jar.getCookie('session', CookieAccessInfo.All);
     expect(session).not.toBeUndefined();
   });
+
+  it('#POST /api/v1/users should error if email already exists', async () => {
+    // Some credentials with the same email as an existing user
+    const userCredentials: UserCredentials = { ...testUsers.existing, password: 'blah' };
+
+    // Expect sign-up request to fail
+    const response = await request(app).post('/users').send(userCredentials);
+    expect(response.status).toEqual(409);
+  });
 });
