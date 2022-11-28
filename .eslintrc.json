@@ -6,7 +6,7 @@
   },
   "extends": ["eslint:recommended"],
   "root": true,
-  "ignorePatterns": ["dist"],
+  "ignorePatterns": ["dist", "public"],
   "env": {
     "browser": true,
     "es6": true,
