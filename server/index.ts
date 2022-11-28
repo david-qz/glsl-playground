@@ -7,12 +7,9 @@
  *
  * Any deployments will need to execute the transpiled version of this file.
  ******************************************************************************/
-
-import dotenv from 'dotenv';
+import environment from './environment.js';
 import app from './app.js';
 
-dotenv.config();
-
-const server = app.listen(parseInt(process.env.PORT || '7890'), () => {
+const server = app.listen(environment.PORT, () => {
   console.log('Started server on ', server.address());
 });
