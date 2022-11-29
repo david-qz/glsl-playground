@@ -1,4 +1,5 @@
 import pool from '../database.js';
+import { type UserToken } from '../../common/users.js';
 
 type UserRow = {
   id: string,
@@ -38,5 +39,9 @@ export default class User {
 
   get passwordHash(): string {
     return this.#passwordHash;
+  }
+
+  toToken(): UserToken {
+    return { id: this.id, email: this.email };
   }
 }

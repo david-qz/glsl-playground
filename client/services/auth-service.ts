@@ -1,4 +1,11 @@
 import apiPrefix from './api-prefix';
+import { type UserToken } from '../../common/users';
+
+export async function getUser(): Promise<UserToken | null> {
+  const response = await fetch(apiPrefix + '/users');
+  if (!response.ok) return null;
+  return await response.json();
+}
 
 export async function logIn(email: string, password: string): Promise<boolean> {
   const response = await fetch(apiPrefix + '/users/sessions', {
