@@ -1,0 +1,21 @@
+.control {
+  color: var(--text-color);
+  background-color: var(--background-color-light);
+  border: 1px solid var(--border-color-light);
+  border-radius: 3px;
+}
+
+.input {
+  padding: 10px;
+}
+
+.button {
+  font-size: 2rem;
+  padding: 10px;
+}
+.button:hover {
+  background-color: var(--background-color-highlighted);
+}
+.button:active {
+  background-color: var(--background-color-medium);
+}

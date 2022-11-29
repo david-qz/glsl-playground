@@ -27,6 +27,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: var(--text-color);
   background-color: var(--background-color-dark);
+  color-scheme: dark;
 }
 
 .ace-tomorrow-night-eighties {
@@ -43,4 +44,8 @@ body {
   color: var(--text-color) !important;
   background: var(--background-color-light) !important;
   border: 1px solid var(--error-color) !important;
+}
+
+:focus-visible {
+  outline: 1px auto var(--accent-color-orange);
 }
