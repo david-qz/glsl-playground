@@ -17,7 +17,7 @@ router.post('/', async (request: Request, response: Response, next: NextFunction
     if (typeof password !== 'string') throw new HttpError('password must be a string', 400);
 
     const user = await UsersService.create(email, password);
-    const token = await UsersService.signIn(email, password);
+    const [, token] = await UsersService.signIn(email, password);
 
     response.cookie(environment.SESSION_COOKIE, token, { httpOnly: true, maxAge: ONE_DAY_IN_MS });
     response.json(user);
@@ -43,10 +43,10 @@ router.post('/sessions', async (request: Request, response: Response, next: Next
     if (typeof email !== 'string') throw new HttpError('email must be a string', 400);
     if (typeof password !== 'string') throw new HttpError('password must be a string', 400);
 
-    const token = await UsersService.signIn(email, password);
+    const [user, token] = await UsersService.signIn(email, password);
 
     response.cookie(environment.SESSION_COOKIE, token, { httpOnly: true, maxAge: ONE_DAY_IN_MS });
-    response.send();
+    response.send(user);
   } catch (error) {
     next(error);
   }
