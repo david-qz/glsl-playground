@@ -1,0 +1,49 @@
+.layout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+}
+
+.form {
+  background-color: var(--background-color-medium);
+  padding: 25px;
+  max-width: 600px;
+  width: 90%;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.big-text {
+  font-size: 2rem;
+}
+.medium-text {
+  font-size: 1.5rem;
+}
+.small-text {
+  font-size: 1.2rem;
+}
+
+.form h1 {
+  display: inline-block;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--accent-color-orange);
+  margin-bottom: 10px;
+}
+
+.form label {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.grow {
+  flex-grow: 1;
+}
+
+.form > span:last-of-type {
+  text-decoration: underline;
+}
