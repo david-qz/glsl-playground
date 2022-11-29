@@ -27,6 +27,10 @@
   font-size: 1.2rem;
 }
 
+.error {
+  color: var(--accent-color-orange);
+}
+
 .form h1 {
   display: inline-block;
   padding-bottom: 6px;

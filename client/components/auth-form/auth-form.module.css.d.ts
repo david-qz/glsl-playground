@@ -3,6 +3,7 @@
 interface CssExports {
   'big-text': string;
   'bigText': string;
+  'error': string;
   'form': string;
   'grow': string;
   'layout': string;
