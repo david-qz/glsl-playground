@@ -2,7 +2,7 @@ import { createContext, ReactElement, ReactNode, useContext, useEffect, useState
 import { UserToken } from '../../common/api-types';
 import { getUser } from '../services/auth-service';
 
-type AuthContextValue = [UserToken | null, (user: UserToken) => void];
+type AuthContextValue = [UserToken | null, (user: UserToken | null) => void];
 
 const AuthContext = createContext<AuthContextValue>([null, () => {}]);
 
