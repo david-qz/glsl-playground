@@ -1,5 +1,5 @@
 import apiPrefix from './api-prefix';
-import { type UserToken } from '../../common/users';
+import { type UserToken, type ApiError } from '../../common/api-types';
 
 export async function getUser(): Promise<UserToken | null> {
   const response = await fetch(apiPrefix + '/users');
