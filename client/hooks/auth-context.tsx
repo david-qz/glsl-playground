@@ -2,18 +2,20 @@ import { createContext, ReactElement, ReactNode, useContext, useEffect, useState
 import { UserToken } from '../../common/users';
 import { getUser } from '../services/auth-service';
 
-const dummyUser = { id: 'oops', email: 'something.went.wrong@mybad.com' };
-
-const AuthContext = createContext<UserToken>(dummyUser);
+const AuthContext = createContext<UserToken | null>(null);
 
 export function AuthContextProvider({ children }: { children: ReactNode }): ReactElement {
   const [user, setUser] = useState<UserToken | null>(null);
+  const [responseReceived, setResponseReceived] = useState<boolean>(false);
 
   useEffect(() => {
-    getUser().then(user => setUser(user));
+    getUser().then(user => {
+      setUser(user);
+      setResponseReceived(true);
+    });
   }, []);
 
-  if (!user) {
+  if (!responseReceived) {
     return <></>;
   }
 
