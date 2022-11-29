@@ -3,8 +3,11 @@ import { type UserToken, type ApiError } from '../../common/api-types';
 
 export async function getUser(): Promise<UserToken | null> {
   const response = await fetch(apiPrefix + '/users');
+
   if (!response.ok) return null;
-  return await response.json();
+
+  const json: unknown = await response.json();
+  return json as UserToken;
 }
 
 export async function logIn(email: string, password: string): Promise<UserToken | string> {
@@ -15,11 +18,14 @@ export async function logIn(email: string, password: string): Promise<UserToken 
     },
     body: JSON.stringify({ email, password })
   });
-  if (!response.ok) return 'error';
-  return await response.json();
+  const json: unknown = await response.json();
+
+  if (!response.ok) return (json as ApiError).message;
+
+  return json as UserToken;
 }
 
-export async function logOut() {
+export async function logOut(): Promise<boolean> {
   const response = await fetch(apiPrefix + '/users/sessions', {
     method: 'DELETE'
   });
@@ -34,6 +40,9 @@ export async function signUp(email: string, password: string): Promise<UserToken
     },
     body: JSON.stringify({ email, password })
   });
-  if (!response.ok) return 'error';
-  return await response.json();
+  const json: unknown = await response.json();
+
+  if (!response.ok) return (json as ApiError).message;
+
+  return json as UserToken;
 }
