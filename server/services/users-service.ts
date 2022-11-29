@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import User from '../models/user-model.js';
 import HttpError from '../utils/http-error.js';
 
-export async function create(email: string, password: string) {
+export async function create(email: string, password: string): Promise<User> {
   const passwordHash = await bcrypt.hash(password, environment.SALT_ROUNDS);
 
   try {
@@ -17,7 +17,7 @@ export async function create(email: string, password: string) {
   }
 }
 
-export async function signIn(email: string, password: string) {
+export async function signIn(email: string, password: string): Promise<[User, string]> {
   const user = await User.getByEmail(email);
   if (!user) throw new HttpError('invalid email/password', 401);
 
@@ -25,5 +25,7 @@ export async function signIn(email: string, password: string) {
     throw new HttpError('invalid email/password', 401);
   }
 
-  return jwt.sign({ ...user }, environment.JWT_SECRET, { expiresIn: '1 day' });
+  const token = jwt.sign({ ...user }, environment.JWT_SECRET, { expiresIn: '1 day' });
+
+  return [user, token];
 }
