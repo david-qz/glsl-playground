@@ -1,5 +1,5 @@
 import { createContext, ReactElement, ReactNode, useContext, useEffect, useState } from 'react';
-import { UserToken } from '../../common/users';
+import { UserToken } from '../../common/api-types';
 import { getUser } from '../services/auth-service';
 
 const AuthContext = createContext<UserToken | null>(null);

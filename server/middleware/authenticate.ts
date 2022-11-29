@@ -2,7 +2,7 @@ import environment from '../environment.js';
 import { type Request, type Response, type NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import HttpError from '../utils/http-error.js';
-import { type UserToken } from '../../common/users.js';
+import { type UserToken } from '../../common/api-types';
 
 // It would be nice if we could make the user property required here, but because middleware don't know anything about
 // who is before them in the chain, I don't see a way add a truly type-safe custom property into the request object.

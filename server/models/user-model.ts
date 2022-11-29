@@ -1,5 +1,5 @@
 import pool from '../database.js';
-import { type UserToken } from '../../common/users.js';
+import { type UserToken } from '../../common/api-types';
 
 type UserRow = {
   id: string,
