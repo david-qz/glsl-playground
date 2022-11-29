@@ -53,6 +53,28 @@ describe('API /users routes', () => {
     expect(response.status).toEqual(409);
   });
 
+  it('GET /users should return the current user', async () => {
+    const userCredentials = testUsers.existing;
+
+    // First Log in
+    const agent = request.agent(app);
+    await agent.post('/users/sessions').send(userCredentials);
+
+    // Now get the current user
+    const response = await agent.get('/users');
+    expect(response.status).toEqual(200);
+    expect(response.body).toEqual({
+      id: expect.any(String),
+      email: userCredentials.email
+    });
+  });
+
+  it('GET /users should return 401 status if not logged in', async () => {
+    // Get the current user without logging in
+    const response = await request(app).get('/users');
+    expect(response.status).toEqual(401);
+  });
+
   it('POST /users/sessions should log a user in', async () => {
     const userCredentials = testUsers.existing;
 
