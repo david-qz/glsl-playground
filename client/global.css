@@ -47,9 +47,12 @@ body {
 }
 
 :focus-visible {
-  outline: 1px auto var(--accent-color-orange);
+  outline: 2px solid var(--accent-color-orange);
 }
 
+a {
+  color: inherit;
+}
 a:visited {
   color: inherit;
 }
