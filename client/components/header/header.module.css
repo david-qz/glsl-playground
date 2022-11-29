@@ -4,4 +4,17 @@
   font-weight: 500;
   background-color: var(--background-color-light);
   border-bottom: 1px solid var(--border-color-dark);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header > div {
+  display: flex;
+  gap: 10px;
+}
+
+.header-button{
+  padding: 5px;
+  font-size: 1.2rem;
 }

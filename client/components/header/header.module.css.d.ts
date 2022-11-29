@@ -2,6 +2,8 @@
 // Please do not change this file!
 interface CssExports {
   'header': string;
+  'header-button': string;
+  'headerButton': string;
 }
 export const cssExports: CssExports;
 export default cssExports;
