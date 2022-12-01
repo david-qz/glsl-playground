@@ -11,15 +11,26 @@ type ProgramRow = {
   modified_at: string
 };
 
-export default class Program {
-  id: string;
-  userId: string;
-  title: string;
-  vertexShaderSource: string;
-  fragmentShaderSource: string;
-  didCompile: boolean;
-  createdAt: string;
-  modifiedAt: string;
+export interface ProgramData {
+  readonly id: string;
+  readonly userId: string;
+  readonly title: string;
+  readonly vertexShaderSource: string;
+  readonly fragmentShaderSource: string;
+  readonly didCompile: boolean;
+  readonly createdAt: string;
+  readonly modifiedAt: string;
+}
+
+export default class Program implements ProgramData {
+  readonly id: string;
+  readonly userId: string;
+  readonly title: string;
+  readonly vertexShaderSource: string;
+  readonly fragmentShaderSource: string;
+  readonly didCompile: boolean;
+  readonly createdAt: string;
+  readonly modifiedAt: string;
 
   constructor(row: ProgramRow) {
     this.id = row.id;
@@ -34,6 +45,32 @@ export default class Program {
 
   static async getById(id: string): Promise<Program | undefined> {
     const { rows } = await pool.query<ProgramRow>('select * from programs where id = $1', [id]);
+    if (!rows[0]) return undefined;
+    return new Program(rows[0]);
+  }
+
+  async update(id: string, partial: Partial<ProgramData>): Promise<Program | undefined> {
+    const updated = { ...this as ProgramData, ...partial };
+
+    const { rows } = await pool.query<ProgramRow>(
+      `
+      update programs set
+        title = $2,
+        vertex_shader_source = $3,
+        fragment_shader_source = $4,
+        did_compile = $5
+      where id = $1
+      returning *;
+      `,
+      [
+        id,
+        updated.title,
+        updated.vertexShaderSource,
+        updated.fragmentShaderSource,
+        updated.didCompile
+      ]
+    );
+
     if (!rows[0]) return undefined;
     return new Program(rows[0]);
   }
