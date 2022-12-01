@@ -49,6 +49,20 @@ export default class Program implements ProgramData {
     return new Program(rows[0]);
   }
 
+  static async insert(userId: string, data: Partial<ProgramData>): Promise<Program> {
+    const { rows } = await pool.query<ProgramRow>(
+      `
+      insert into programs (user_id, title, vertex_shader_source, fragment_shader_source, did_compile)
+      values ($1, $2, $3, $4, $5)
+      returning *;
+      `,
+      [userId, data.title, data.vertexShaderSource, data.fragmentShaderSource, data.didCompile]
+    );
+
+    // If there isn't a row, the above query would have thrown.
+    return new Program(rows[0]!);
+  }
+
   async update(id: string, partial: Partial<ProgramData>): Promise<Program | undefined> {
     const updated = { ...this as ProgramData, ...partial };
 

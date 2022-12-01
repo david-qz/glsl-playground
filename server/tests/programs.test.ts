@@ -31,6 +31,46 @@ describe('API /programs routes', () => {
     expect(response.status).toEqual(404);
   });
 
+  it('POST /programs should create and return a new program', async () => {
+    const credentials: UserCredentials = testUsers.existing;
+
+    // Log in
+    const agent = request.agent(app);
+    await agent.post('/users/sessions').send(credentials);
+
+    const newProgramData = {
+      title: 'a new program',
+      vertexShaderSource: 'bahfjasdhlkjg',
+      fragmentShaderSource: 'ajhsdfliuhefa',
+      didCompile: false
+    };
+
+    const response = await agent.post('/programs').send(newProgramData);
+    expect(response.status).toEqual(200);
+    expect(response.body).toEqual({
+      id: expect.any(String),
+      userId: expect.any(String),
+      title: newProgramData.title,
+      vertexShaderSource: newProgramData.vertexShaderSource,
+      fragmentShaderSource: newProgramData.fragmentShaderSource,
+      didCompile: false,
+      createdAt: expect.any(String),
+      modifiedAt: expect.any(String)
+    });
+  });
+
+  it('POST /programs requires authentication', async () => {
+    const newProgramData = {
+      title: 'a new program',
+      vertexShaderSource: 'bahfjasdhlkjg',
+      fragmentShaderSource: 'ajhsdfliuhefa',
+      didCompile: false
+    };
+
+    const response = await request(app).post('/programs').send(newProgramData);
+    expect(response.status).toEqual(401);
+  });
+
   it('PATCH /programs/:id should update a program', async () => {
     const credentials: UserCredentials = testUsers.existing;
 

@@ -18,6 +18,19 @@ router.get('/:id', async (request: Request, response: Response, next: NextFuncti
   }
 });
 
+router.post('/', [authenticate], async (request: AuthenticatedRequest, response: Response, next: NextFunction) => {
+  try {
+    const user = request.user!;
+
+    const data: Partial<ProgramData> = request.body;
+    const program = await Program.insert(user.id, data);
+
+    response.json(program);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.patch('/:id', [authenticate], async (request: AuthenticatedRequest, response: Response, next: NextFunction) => {
   try {
     const id = request.params.id!;
