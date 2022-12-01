@@ -9,14 +9,7 @@ import app from '../app';
 import { setupDatabase, seedDatabase } from '../database.js';
 import { CookieAccessInfo } from 'cookiejar';
 import environment from '../environment';
-
-type UserCredentials = { email: string, password: string };
-type TestUsers = 'existing' | 'new';
-
-const testUsers: Record<TestUsers, UserCredentials> = {
-  existing: { email: 'existing.user@test.com', password: '123456' },
-  new: { email: 'new.user@test.com', password: 'qwerty' }
-};
+import { testUsers, type UserCredentials } from './utils';
 
 describe('API /users routes', () => {
   beforeEach(async () => {
