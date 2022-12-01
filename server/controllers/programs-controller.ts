@@ -50,4 +50,22 @@ router.patch('/:id', [authenticate], async (request: AuthenticatedRequest, respo
   }
 });
 
+router.delete('/:id', [authenticate], async (request: AuthenticatedRequest, response: Response, next: NextFunction) => {
+  try {
+    const id = request.params.id!;
+    const user = request.user!;
+
+    const program = await Program.getById(id);
+    if (!program) throw new HttpError('not found', 404);
+
+    if (program?.userId !== user.id) throw new HttpError('forbidden', 403);
+
+    await program.delete();
+
+    response.json(program);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;

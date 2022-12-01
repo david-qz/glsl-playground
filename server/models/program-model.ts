@@ -88,4 +88,8 @@ export default class Program implements ProgramData {
     if (!rows[0]) return undefined;
     return new Program(rows[0]);
   }
+
+  async delete(): Promise<void> {
+    await pool.query<ProgramRow>('delete from programs where id = $1', [this.id]);
+  }
 }

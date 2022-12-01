@@ -110,4 +110,31 @@ describe('API /programs routes', () => {
     const response = await agent.patch('/programs/1').send({ title: 'user 1 smells' });
     expect(response.status).toEqual(403);
   });
+
+  it('DELETE /programs/:id should delete a program', async () => {
+    const credentials: UserCredentials = testUsers.existing;
+
+    // Log in
+    const agent = request.agent(app);
+    await agent.post('/users/sessions').send(credentials);
+
+    // Delete the program
+    const deleteResponse = await agent.delete('/programs/1');
+    expect(deleteResponse.status).toEqual(200);
+
+    const getResponse = await agent.get('/programs/1');
+    expect(getResponse.status).toEqual(404);
+  });
+
+  it('DELETE /programs/:id shouldn\'t allow users to delete programs they don\'t own', async () => {
+    const credentials: UserCredentials = testUsers.troublesome;
+
+    // Log in as the troublesome user
+    const agent = request.agent(app);
+    await agent.post('/users/sessions').send(credentials);
+
+    // Try to delete the program
+    const deleteResponse = await agent.delete('/programs/1');
+    expect(deleteResponse.status).toEqual(403);
+  });
 });
