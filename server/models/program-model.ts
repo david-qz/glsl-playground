@@ -1,3 +1,4 @@
+import { ProgramData } from '../../common/api-types.js';
 import pool from '../database.js';
 
 type ProgramRow = {
@@ -10,17 +11,6 @@ type ProgramRow = {
   created_at: string,
   modified_at: string
 };
-
-export interface ProgramData {
-  readonly id: string;
-  readonly userId: string;
-  readonly title: string;
-  readonly vertexShaderSource: string;
-  readonly fragmentShaderSource: string;
-  readonly didCompile: boolean;
-  readonly createdAt: string;
-  readonly modifiedAt: string;
-}
 
 export default class Program implements ProgramData {
   readonly id: string;
