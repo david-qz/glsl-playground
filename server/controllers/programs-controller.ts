@@ -1,5 +1,6 @@
 import { type Request, type Response, type NextFunction, Router } from 'express';
 import Program, { type ProgramData } from '../models/program-model.js';
+import authenticate, { AuthenticatedRequest } from '../middleware/authenticate.js';
 import HttpError from '../utils/http-error.js';
 
 const router = Router();
@@ -17,12 +18,15 @@ router.get('/:id', async (request: Request, response: Response, next: NextFuncti
   }
 });
 
-router.patch('/:id', async (request: Request, response: Response, next: NextFunction) => {
+router.patch('/:id', [authenticate], async (request: AuthenticatedRequest, response: Response, next: NextFunction) => {
   try {
     const id = request.params.id!;
-    const originalProgram = await Program.getById(id);
+    const user = request.user!;
 
+    const originalProgram = await Program.getById(id);
     if (!originalProgram) throw new HttpError('not found', 404);
+
+    if (originalProgram.userId !== user.id) throw new HttpError('forbidden', 403);
 
     const data: Partial<ProgramData> = request.body;
     const newProgram = await originalProgram.update(id, data);

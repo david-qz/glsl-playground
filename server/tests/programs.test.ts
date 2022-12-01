@@ -3,6 +3,7 @@ import { describe, expect, it } from '@jest/globals';
 import request from 'supertest';
 import app from '../app';
 import { setupDatabase, seedDatabase } from '../database.js';
+import { testUsers, UserCredentials } from './utils';
 
 describe('API /programs routes', () => {
   beforeEach(async () => {
@@ -31,12 +32,20 @@ describe('API /programs routes', () => {
   });
 
   it('PATCH /programs/:id should update a program', async () => {
+    const credentials: UserCredentials = testUsers.existing;
+
+    // Log in
+    const agent = request.agent(app);
+    await agent.post('/users/sessions').send(credentials);
+
+    // Get some updated data
     const updateData = {
       vertexShaderSource: 'new vertex code',
       fragmentShaderSource: 'new fragment code'
     };
 
-    const response = await request(app).patch('/programs/1').send(updateData);
+    // Do the update
+    const response = await agent.patch('/programs/1').send(updateData);
     expect(response.status).toEqual(200);
     expect(response.body).toEqual({
       id: expect.any(String),
@@ -48,5 +57,17 @@ describe('API /programs routes', () => {
       createdAt: expect.any(String),
       modifiedAt: expect.any(String),
     });
+  });
+
+  it('PATCH /programs/:id shouldn\'t allow updating programs not owned by the current user', async () => {
+    const credentials: UserCredentials = testUsers.troublesome;
+
+    // Log in as the troublesome user
+    const agent = request.agent(app);
+    await agent.post('/users/sessions').send(credentials);
+
+    // Try to modify another user's program
+    const response = await agent.patch('/programs/1').send({ title: 'user 1 smells' });
+    expect(response.status).toEqual(403);
   });
 });
