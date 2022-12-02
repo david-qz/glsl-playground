@@ -59,7 +59,7 @@ router.delete('/:id', [authenticate], async (request: AuthenticatedRequest, resp
     const program = await Program.getById(id);
     if (!program) throw new HttpError('not found', 404);
 
-    if (program?.userId !== user.id) throw new HttpError('forbidden', 403);
+    if (program.userId !== user.id) throw new HttpError('forbidden', 403);
 
     await program.delete();
 
