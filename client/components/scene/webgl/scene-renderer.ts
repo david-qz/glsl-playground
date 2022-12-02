@@ -9,10 +9,12 @@ export default class SceneRenderer {
   private programInfo?: ProgramInfo;
   private running = false;
   private eulerAngles: vec2;
+  private cameraOffset: number;
 
   constructor(gl: WebGL2RenderingContext) {
     this.gl = gl;
     this.eulerAngles = vec2.create();
+    this.cameraOffset = 6;
   }
 
   loadProgram(vertexShaderSource: string, fragmentShaderSource: string): ProgramCompilationErrors | undefined {
@@ -62,7 +64,7 @@ export default class SceneRenderer {
       mat4.perspective(projectionMatrix, fieldOfView, aspect, zNear, zFar);
 
       const modelViewMatrix = mat4.create();
-      mat4.translate(modelViewMatrix, modelViewMatrix, [0.0, 0.0, -6.0]);
+      mat4.translate(modelViewMatrix, modelViewMatrix, [0.0, 0.0, -this.cameraOffset]);
 
       const rotationMatrix = mat4.create();
       mat4.rotateX(rotationMatrix, rotationMatrix, this.eulerAngles[0]);
@@ -124,5 +126,13 @@ export default class SceneRenderer {
     // Gimbal lock the incoming rotation
     eulerAngles[0] = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, eulerAngles[0]));
     vec2.copy(this.eulerAngles, eulerAngles);
+  }
+
+  get cameraDistance(): number {
+    return this.cameraOffset;
+  }
+
+  set cameraDistance(distance: number) {
+    this.cameraOffset = Math.max(0, Math.min(distance, 100));
   }
 }
