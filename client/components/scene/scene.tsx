@@ -1,4 +1,4 @@
-import { CSSProperties, PointerEvent, ReactElement, useEffect, useRef, useState } from 'react';
+import { CSSProperties, PointerEvent, WheelEvent, ReactElement, useEffect, useRef, useState } from 'react';
 import { useEditorStateContext } from '../../hooks/editor-state';
 import Mesh from './webgl/mesh';
 import SceneRenderer from './webgl/scene-renderer';
@@ -58,6 +58,14 @@ export default function Scene({ style }: Props): ReactElement {
     scene.setEulerAngles(rotation);
   }
 
+  function handleMouseWheel(e: WheelEvent<HTMLCanvasElement>) {
+    if (!sceneRef.current) return;
+    const scene = sceneRef.current;
+
+    const distance = scene.cameraDistance;
+    scene.cameraDistance = distance + (distance / e.deltaY) * 20;
+  }
+
   return (
     <div className={styles.canvasContainer} style={style}>
       <canvas
@@ -67,6 +75,7 @@ export default function Scene({ style }: Props): ReactElement {
         onPointerUp={() => setPointerDown(false)}
         onPointerMove={(e) => handleDrag(e)}
         onPointerLeave={() => setPointerDown(false)}
+        onWheel={(e) => handleMouseWheel(e)}
       />
     </div>
   );
