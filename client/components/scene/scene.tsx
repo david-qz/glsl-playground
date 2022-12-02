@@ -1,8 +1,9 @@
-import { CSSProperties, ReactElement, useEffect, useRef } from 'react';
+import { CSSProperties, PointerEvent, ReactElement, useEffect, useRef, useState } from 'react';
 import { useEditorStateContext } from '../../hooks/editor-state';
 import Mesh from './webgl/mesh';
 import SceneRenderer from './webgl/scene-renderer';
 import styles from './scene.module.css';
+import { vec2 } from 'gl-matrix';
 
 type Props = {
   style: CSSProperties
@@ -10,6 +11,7 @@ type Props = {
 
 export default function Scene({ style }: Props): ReactElement {
   const [state, dispatch] = useEditorStateContext();
+  const [pointerDown, setPointerDown] = useState<boolean>(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sceneRef = useRef<SceneRenderer>();
 
@@ -40,9 +42,32 @@ export default function Scene({ style }: Props): ReactElement {
     updateProgram(state.vertexSource, state.fragmentSource);
   }, [state.vertexSource, state.fragmentSource]);
 
+  function handleDrag(e: PointerEvent<HTMLCanvasElement>) {
+    if (!pointerDown) return;
+    if (!sceneRef.current || !canvasRef.current) return;
+    const scene = sceneRef.current;
+    const canvas = canvasRef.current;
+
+    const referenceDimension = Math.min(canvas.clientHeight, canvas.clientWidth);
+    const dx = (e.movementY / referenceDimension) * Math.PI;
+    const dy = (e.movementX / referenceDimension) * Math.PI;
+    const deltaRotation = vec2.fromValues(dx, dy);
+
+    const rotation = scene.getEulerAngles();
+    vec2.add(rotation, rotation, deltaRotation);
+    scene.setEulerAngles(rotation);
+  }
+
   return (
     <div className={styles.canvasContainer} style={style}>
-      <canvas ref={canvasRef} className={styles.canvas} />
+      <canvas
+        ref={canvasRef}
+        className={styles.canvas}
+        onPointerDown={() => setPointerDown(true)}
+        onPointerUp={() => setPointerDown(false)}
+        onPointerMove={(e) => handleDrag(e)}
+        onPointerLeave={() => setPointerDown(false)}
+      />
     </div>
   );
 }
