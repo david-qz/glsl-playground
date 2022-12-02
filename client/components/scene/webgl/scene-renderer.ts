@@ -1,6 +1,6 @@
 import Mesh from './mesh';
 import { compileProgram, ProgramCompilationErrors, type ProgramInfo } from './shaders';
-import { mat4 } from 'gl-matrix';
+import { mat4, vec2 } from 'gl-matrix';
 
 export default class SceneRenderer {
   private gl: WebGL2RenderingContext;
@@ -8,9 +8,11 @@ export default class SceneRenderer {
   private program?: WebGLProgram;
   private programInfo?: ProgramInfo;
   private running = false;
+  private eulerAngles: vec2;
 
   constructor(gl: WebGL2RenderingContext) {
     this.gl = gl;
+    this.eulerAngles = vec2.create();
   }
 
   loadProgram(vertexShaderSource: string, fragmentShaderSource: string): ProgramCompilationErrors | undefined {
@@ -61,8 +63,11 @@ export default class SceneRenderer {
 
       const modelViewMatrix = mat4.create();
       mat4.translate(modelViewMatrix, modelViewMatrix, [0.0, 0.0, -6.0]);
-      mat4.rotateY(modelViewMatrix, modelViewMatrix, performance.now() / 600);
-      mat4.rotateX(modelViewMatrix, modelViewMatrix, performance.now() / 1200);
+
+      const rotationMatrix = mat4.create();
+      mat4.rotateX(rotationMatrix, rotationMatrix, this.eulerAngles[0]);
+      mat4.rotateY(rotationMatrix, rotationMatrix, this.eulerAngles[1]);
+      mat4.multiply(modelViewMatrix, modelViewMatrix, rotationMatrix);
 
       const normalMatrix = mat4.create();
       mat4.invert(normalMatrix, modelViewMatrix);
@@ -109,5 +114,15 @@ export default class SceneRenderer {
 
     // Continue render loop if we're still running
     if (this.running) requestAnimationFrame(this.render.bind(this));
+  }
+
+  getEulerAngles(): vec2 {
+    return vec2.copy(vec2.create(), this.eulerAngles);
+  }
+
+  setEulerAngles(eulerAngles: vec2) {
+    // Gimbal lock the incoming rotation
+    eulerAngles[0] = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, eulerAngles[0]));
+    vec2.copy(this.eulerAngles, eulerAngles);
   }
 }
