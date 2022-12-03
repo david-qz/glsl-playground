@@ -26,6 +26,7 @@ export default function Scene({ style }: Props): ReactElement {
 
   useEffect(() => {
     if (!canvasRef.current) throw new Error('Canvas ref is unexpectedly null!');
+    if (sceneRef.current) return;
 
     const gl = canvasRef.current.getContext('webgl2');
     if (gl === null) throw new Error('Failed to create a webgl2 context.');
