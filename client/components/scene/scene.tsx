@@ -70,8 +70,8 @@ export default function Scene({ style }: Props): ReactElement {
     if (!sceneRef.current) return;
     const scene = sceneRef.current;
 
-    const distance = scene.cameraDistance;
-    scene.cameraDistance = distance + (distance / e.deltaY) * 20;
+    const distance = scene.getCameraDistance();
+    scene.setCameraDistance(distance + (distance / e.deltaY) * 20);
   }
 
   return (

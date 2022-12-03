@@ -4,38 +4,17 @@ import { mat4, vec2 } from 'gl-matrix';
 
 export default class SceneRenderer {
   private gl: WebGL2RenderingContext;
+
   private mesh?: Mesh;
   private program?: WebGLProgram;
   private programInfo?: ProgramInfo;
-  private running = false;
-  private eulerAngles: vec2;
-  private cameraOffset: number;
+
+  private running: boolean = false;
+  private eulerAngles: vec2 = vec2.create();
+  private cameraDistance: number = 6;
 
   constructor(gl: WebGL2RenderingContext) {
     this.gl = gl;
-    this.eulerAngles = vec2.create();
-    this.cameraOffset = 6;
-  }
-
-  loadProgram(vertexShaderSource: string, fragmentShaderSource: string): ProgramCompilationErrors | undefined {
-    const result = compileProgram(this.gl, vertexShaderSource, fragmentShaderSource);
-    if (!result.program) return result.errors;
-
-    if (this.program) this.gl.deleteProgram(this.program);
-    this.program = result.program;
-    this.programInfo = result.programInfo;
-  }
-
-  setMesh(mesh: Mesh) {
-    this.mesh = mesh;
-  }
-
-  setRunning(running: boolean) {
-    if (running && !this.running) {
-      // Start the render loop
-      requestAnimationFrame(this.render.bind(this));
-    }
-    this.running = running;
   }
 
   render() {
@@ -64,7 +43,7 @@ export default class SceneRenderer {
       mat4.perspective(projectionMatrix, fieldOfView, aspect, zNear, zFar);
 
       const modelViewMatrix = mat4.create();
-      mat4.translate(modelViewMatrix, modelViewMatrix, [0.0, 0.0, -this.cameraOffset]);
+      mat4.translate(modelViewMatrix, modelViewMatrix, [0.0, 0.0, -this.cameraDistance]);
 
       const rotationMatrix = mat4.create();
       mat4.rotateX(rotationMatrix, rotationMatrix, this.eulerAngles[0]);
@@ -135,21 +114,42 @@ export default class SceneRenderer {
     }
   }
 
+  loadProgram(vertexShaderSource: string, fragmentShaderSource: string): ProgramCompilationErrors | undefined {
+    const result = compileProgram(this.gl, vertexShaderSource, fragmentShaderSource);
+    if (!result.program) return result.errors;
+
+    if (this.program) this.gl.deleteProgram(this.program);
+    this.program = result.program;
+    this.programInfo = result.programInfo;
+  }
+
+  setMesh(mesh: Mesh): void {
+    this.mesh = mesh;
+  }
+
+  setRunning(running: boolean): void {
+    if (running && !this.running) {
+      // Start the render loop
+      requestAnimationFrame(this.render.bind(this));
+    }
+    this.running = running;
+  }
+
   getEulerAngles(): vec2 {
     return vec2.copy(vec2.create(), this.eulerAngles);
   }
 
-  setEulerAngles(eulerAngles: vec2) {
+  setEulerAngles(eulerAngles: vec2): void {
     // Gimbal lock the incoming rotation
     eulerAngles[0] = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, eulerAngles[0]));
     vec2.copy(this.eulerAngles, eulerAngles);
   }
 
-  get cameraDistance(): number {
-    return this.cameraOffset;
+  getCameraDistance(): number {
+    return this.cameraDistance;
   }
 
-  set cameraDistance(distance: number) {
-    this.cameraOffset = Math.max(0, Math.min(distance, 100));
+  setCameraDistance(distance: number): void {
+    this.cameraDistance = Math.max(0, Math.min(distance, 100));
   }
 }
