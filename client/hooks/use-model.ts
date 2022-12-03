@@ -2,37 +2,29 @@ import { useEffect, useState } from 'react';
 import Mesh from '../components/scene/webgl/mesh';
 
 type MeshState = {
-  mesh: Mesh | undefined,
+  mesh?: Mesh,
   loading: boolean,
   error: boolean
 };
 
 export default function useMeshFromModel(url: string): MeshState {
-  const [mesh, setMesh] = useState<Mesh>();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<boolean>(false);
+  const [meshState, setMeshState] = useState<MeshState>({ loading: true, error: false });
 
   useEffect(() => {
     (async () => {
       const response = await fetch(url);
 
       if (!response.ok) {
-        setError(true);
-        setLoading(false);
+        setMeshState({ loading: false, error: true });
         return;
       }
 
       const rawData = await response.text();
       const mesh = Mesh.fromObj(rawData);
 
-      setMesh(mesh);
-      setLoading(false);
+      setMeshState({ mesh, loading: false, error: false });
     })();
   }, []);
 
-  return {
-    mesh,
-    loading,
-    error
-  };
+  return meshState;
 }
