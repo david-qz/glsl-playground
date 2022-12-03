@@ -28,7 +28,7 @@ export default class SceneRenderer {
     this.indexBuffer = indexBuffer;
   }
 
-  render() {
+  private render() {
     const gl = this.gl;
 
     const canvas = gl.canvas;
