@@ -4,6 +4,7 @@ interface CssExports {
   'canvas': string;
   'canvas-container': string;
   'canvasContainer': string;
+  'error': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

@@ -1,15 +1,16 @@
 import { CSSProperties, PointerEvent, WheelEvent, ReactElement, useEffect, useRef, useState } from 'react';
 import { useEditorStateContext } from '../../hooks/editor-state';
-import Mesh from './webgl/mesh';
 import SceneRenderer from './webgl/scene-renderer';
 import styles from './scene.module.css';
 import { vec2 } from 'gl-matrix';
+import useMeshFromModel from '../../hooks/use-model';
 
 type Props = {
   style: CSSProperties
 };
 
 export default function Scene({ style }: Props): ReactElement {
+  const meshState = useMeshFromModel('/models/smooth-teapot.obj');
   const [state, dispatch] = useEditorStateContext();
   const [pointerDown, setPointerDown] = useState<boolean>(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -30,13 +31,20 @@ export default function Scene({ style }: Props): ReactElement {
     if (gl === null) throw new Error('Failed to create a webgl2 context.');
 
     const scene = new SceneRenderer(gl);
-    const mesh = new Mesh(vertexData, 36);
-    scene.setMesh(mesh);
     updateProgram(state.vertexSource, state.fragmentSource);
     scene.setRunning(true);
 
     sceneRef.current = scene;
   }, []);
+
+  useEffect(() => {
+    if (!sceneRef.current) return;
+    const scene = sceneRef.current;
+
+    if (meshState.mesh) {
+      scene.setMesh(meshState.mesh);
+    }
+  }, [meshState]);
 
   useEffect(() => {
     updateProgram(state.vertexSource, state.fragmentSource);
@@ -77,56 +85,7 @@ export default function Scene({ style }: Props): ReactElement {
         onPointerLeave={() => setPointerDown(false)}
         onWheel={(e) => handleMouseWheel(e)}
       />
+      {meshState.error && <span className={styles.error}>Failed to load model :(</span>}
     </div>
   );
 }
-
-const vertexData = new Float32Array([
-  // Front face
-  -1.0, -1.0, 1.0, 0.0, 0.0, 1.0,
-  1.0, 1.0, 1.0, 0.0, 0.0, 1.0,
-  -1.0, 1.0, 1.0, 0.0, 0.0, 1.0,
-  -1.0, -1.0, 1.0, 0.0, 0.0, 1.0,
-  1.0, -1.0, 1.0, 0.0, 0.0, 1.0,
-  1.0, 1.0, 1.0, 0.0, 0.0, 1.0,
-
-  // Back face
-  1.0, -1.0, -1.0, 0.0, 0.0, -1.0,
-  -1.0, 1.0, -1.0, 0.0, 0.0, -1.0,
-  1.0, 1.0, -1.0, 0.0, 0.0, -1.0,
-  1.0, -1.0, -1.0, 0.0, 0.0, -1.0,
-  -1.0, -1.0, -1.0, 0.0, 0.0, -1.0,
-  -1.0, 1.0, -1.0, 0.0, 0.0, -1.0,
-
-  // Right face
-  1.0, -1.0, 1.0, 1.0, 0.0, 0.0,
-  1.0, 1.0, -1.0, 1.0, 0.0, 0.0,
-  1.0, 1.0, 1.0, 1.0, 0.0, 0.0,
-  1.0, -1.0, 1.0, 1.0, 0.0, 0.0,
-  1.0, -1.0, -1.0, 1.0, 0.0, 0.0,
-  1.0, 1.0, -1.0, 1.0, 0.0, 0.0,
-
-  // Left face
-  -1.0, 1.0, 1.0, -1.0, 0.0, 0.0,
-  -1.0, -1.0, -1.0, -1.0, 0.0, 0.0,
-  -1.0, -1.0, 1.0, -1.0, 0.0, 0.0,
-  -1.0, 1.0, 1.0, -1.0, 0.0, 0.0,
-  -1.0, 1.0, -1.0, -1.0, 0.0, 0.0,
-  -1.0, -1.0, -1.0, -1.0, 0.0, 0.0,
-
-  // Top face
-  -1.0, 1.0, 1.0, 0.0, 1.0, 0.0,
-  1.0, 1.0, -1.0, 0.0, 1.0, 0.0,
-  -1.0, 1.0, -1.0, 0.0, 1.0, 0.0,
-  -1.0, 1.0, 1.0, 0.0, 1.0, 0.0,
-  1.0, 1.0, 1.0, 0.0, 1.0, 0.0,
-  1.0, 1.0, -1.0, 0.0, 1.0, 0.0,
-
-  // Bottom face
-  -1.0, -1.0, -1.0, 0.0, -1.0, 0.0,
-  1.0, -1.0, 1.0, 0.0, -1.0, 0.0,
-  -1.0, -1.0, 1.0, 0.0, -1.0, 0.0,
-  -1.0, -1.0, -1.0, 0.0, -1.0, 0.0,
-  1.0, -1.0, -1.0, 0.0, -1.0, 0.0,
-  1.0, -1.0, 1.0, 0.0, -1.0, 0.0,
-]);

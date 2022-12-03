@@ -75,9 +75,13 @@ export default class SceneRenderer {
       mat4.invert(normalMatrix, modelViewMatrix);
       mat4.transpose(normalMatrix, normalMatrix);
 
-      const buffer = gl.createBuffer();
-      if (buffer === null) throw new Error('Failed to create gl buffer.');
-      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+      const vertexBuffer = gl.createBuffer();
+      if (vertexBuffer === null) throw new Error('Failed to create gl buffer.');
+      gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+
+      const indexBuffer = gl.createBuffer();
+      if (indexBuffer === null) throw new Error('Failed to create gl buffer.');
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
 
       // FIXME: Make it so the program is verified ahead of time so we don't need to null check this stuff!
       const positionAttributeInfo = this.programInfo.attributes.get('aVertexPosition');
@@ -110,8 +114,9 @@ export default class SceneRenderer {
       }
 
       // Render the mesh
-      gl.bufferData(gl.ARRAY_BUFFER, this.mesh.vertexData, gl.STATIC_DRAW, 0);
-      gl.drawArrays(gl.TRIANGLES, 0, this.mesh.vertexCount);
+      gl.bufferData(gl.ARRAY_BUFFER, this.mesh.vertices, gl.STATIC_DRAW);
+      gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this.mesh.indices, gl.STATIC_DRAW);
+      gl.drawElements(gl.TRIANGLES, this.mesh.indices.length, gl.UNSIGNED_INT, 0);
     }
 
     // Continue render loop if we're still running
