@@ -83,35 +83,10 @@ export default class SceneRenderer {
       if (indexBuffer === null) throw new Error('Failed to create gl buffer.');
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
 
-      // FIXME: Make it so the program is verified ahead of time so we don't need to null check this stuff!
-      const positionAttributeInfo = this.programInfo.attributes.get('aVertexPosition');
-      if (positionAttributeInfo) {
-        gl.enableVertexAttribArray(positionAttributeInfo.location);
-        gl.vertexAttribPointer(positionAttributeInfo.location, 3, gl.FLOAT, false, 24, 0);
-      }
+      this.setUpVertexAttributes();
 
-      const normalAttributeInfo = this.programInfo.attributes.get('aVertexNormal');
-      if (normalAttributeInfo) {
-        gl.enableVertexAttribArray(normalAttributeInfo.location);
-        gl.vertexAttribPointer(normalAttributeInfo.location, 3, gl.FLOAT, true, 24, 12);
-      }
-
-      // Tell WebGL to use our program when drawing
       gl.useProgram(this.program);
-
-      // Set the shader uniforms
-      const projectionMatrixUniformInfo = this.programInfo.uniforms.get('uProjectionMatrix');
-      if (projectionMatrixUniformInfo) {
-        gl.uniformMatrix4fv(projectionMatrixUniformInfo.location, false, projectionMatrix);
-      }
-      const modelViewMatrixUniformInfo = this.programInfo.uniforms.get('uModelViewMatrix');
-      if (modelViewMatrixUniformInfo) {
-        gl.uniformMatrix4fv(modelViewMatrixUniformInfo.location, false, modelViewMatrix);
-      }
-      const normalMatrixUniformInfo = this.programInfo.uniforms.get('uNormalMatrix');
-      if (normalMatrixUniformInfo) {
-        gl.uniformMatrix4fv(normalMatrixUniformInfo.location, false, normalMatrix);
-      }
+      this.setUpUniforms(projectionMatrix, modelViewMatrix, normalMatrix);
 
       // Render the mesh
       gl.bufferData(gl.ARRAY_BUFFER, this.mesh.vertices, gl.STATIC_DRAW);
@@ -121,6 +96,43 @@ export default class SceneRenderer {
 
     // Continue render loop if we're still running
     if (this.running) requestAnimationFrame(this.render.bind(this));
+  }
+
+  private setUpVertexAttributes() {
+    if (!this.programInfo) return;
+    const gl = this.gl;
+
+    const positionAttributeInfo = this.programInfo.attributes.get('aVertexPosition');
+    if (positionAttributeInfo) {
+      gl.enableVertexAttribArray(positionAttributeInfo.location);
+      gl.vertexAttribPointer(positionAttributeInfo.location, 3, gl.FLOAT, false, 24, 0);
+    }
+
+    const normalAttributeInfo = this.programInfo.attributes.get('aVertexNormal');
+    if (normalAttributeInfo) {
+      gl.enableVertexAttribArray(normalAttributeInfo.location);
+      gl.vertexAttribPointer(normalAttributeInfo.location, 3, gl.FLOAT, true, 24, 12);
+    }
+  }
+
+  private setUpUniforms(projectionMatrix: mat4, modelViewMatrix: mat4, normalMatrix: mat4): void {
+    if (!this.programInfo) return;
+    const gl = this.gl;
+
+    const projectionMatrixUniformInfo = this.programInfo.uniforms.get('uProjectionMatrix');
+    if (projectionMatrixUniformInfo) {
+      gl.uniformMatrix4fv(projectionMatrixUniformInfo.location, false, projectionMatrix);
+    }
+
+    const modelViewMatrixUniformInfo = this.programInfo.uniforms.get('uModelViewMatrix');
+    if (modelViewMatrixUniformInfo) {
+      gl.uniformMatrix4fv(modelViewMatrixUniformInfo.location, false, modelViewMatrix);
+    }
+
+    const normalMatrixUniformInfo = this.programInfo.uniforms.get('uNormalMatrix');
+    if (normalMatrixUniformInfo) {
+      gl.uniformMatrix4fv(normalMatrixUniformInfo.location, false, normalMatrix);
+    }
   }
 
   getEulerAngles(): vec2 {
