@@ -3,7 +3,7 @@ import { useEditorStateContext } from '../../hooks/editor-state';
 import SceneRenderer from './webgl/scene-renderer';
 import styles from './scene.module.css';
 import { vec2 } from 'gl-matrix';
-import useMeshFromModel from '../../hooks/use-model';
+import useMeshFromModel from '../../hooks/use-mesh-from-model';
 
 type Props = {
   style: CSSProperties
