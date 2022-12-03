@@ -13,8 +13,19 @@ export default class SceneRenderer {
   private eulerAngles: vec2 = vec2.create();
   private cameraDistance: number = 6;
 
+  private vertexBuffer: WebGLBuffer;
+  private indexBuffer: WebGLBuffer;
+
   constructor(gl: WebGL2RenderingContext) {
     this.gl = gl;
+
+    const vertexBuffer = gl.createBuffer();
+    if (!vertexBuffer) throw new Error('Failed to create gl buffer.');
+    this.vertexBuffer = vertexBuffer;
+
+    const indexBuffer = gl.createBuffer();
+    if (!indexBuffer) throw new Error('Failed to create gl buffer.');
+    this.indexBuffer = indexBuffer;
   }
 
   render() {
@@ -54,13 +65,8 @@ export default class SceneRenderer {
       mat4.invert(normalMatrix, modelViewMatrix);
       mat4.transpose(normalMatrix, normalMatrix);
 
-      const vertexBuffer = gl.createBuffer();
-      if (vertexBuffer === null) throw new Error('Failed to create gl buffer.');
-      gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-
-      const indexBuffer = gl.createBuffer();
-      if (indexBuffer === null) throw new Error('Failed to create gl buffer.');
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
 
       this.setUpVertexAttributes();
 
@@ -68,8 +74,6 @@ export default class SceneRenderer {
       this.setUpUniforms(projectionMatrix, modelViewMatrix, normalMatrix);
 
       // Render the mesh
-      gl.bufferData(gl.ARRAY_BUFFER, this.mesh.vertices, gl.STATIC_DRAW);
-      gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this.mesh.indices, gl.STATIC_DRAW);
       gl.drawElements(gl.TRIANGLES, this.mesh.indices.length, gl.UNSIGNED_INT, 0);
     }
 
@@ -124,6 +128,14 @@ export default class SceneRenderer {
   }
 
   setMesh(mesh: Mesh): void {
+    const gl = this.gl;
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, mesh.vertices, gl.STATIC_DRAW);
+
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, mesh.indices, gl.STATIC_DRAW);
+
     this.mesh = mesh;
   }
 
