@@ -26,13 +26,13 @@ export default function ProgramEditor({ style }: Props): ReactElement {
     <div className={styles.editor} style={style} >
       <TabBar>
         <Tab
-          title='example.vert'
+          title='program.vert'
           active={activeTab === ShaderType.Vertex}
           error={vertexShaderHasErrors || linkerHasErrors}
           onClick={() => setActiveTab(ShaderType.Vertex)}
         />
         <Tab
-          title='example.frag'
+          title='program.frag'
           active={activeTab === ShaderType.Fragment}
           error={fragmentShaderHasErrors || linkerHasErrors}
           onClick={() => setActiveTab(ShaderType.Fragment)}
