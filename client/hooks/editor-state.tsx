@@ -37,6 +37,8 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
   }
 }
 
+// FIXME: This context is adding complexity without any upside right now. If this is still the case after the editor
+//        is built a bit, we should remove this.
 export const EditorContext = createContext<[EditorState, Dispatch<EditorAction>]>([createInitialState(), () => {}]);
 
 export function useCreateEditorState(): [EditorState, Dispatch<EditorAction>, typeof EditorContext.Provider] {
