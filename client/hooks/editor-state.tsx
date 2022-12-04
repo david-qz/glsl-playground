@@ -28,8 +28,8 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
         ...state,
         program: {
           ...state.program,
-          vertexShaderSource: action.vertexSource || state.program.vertexShaderSource,
-          fragmentShaderSource: action.fragmentSource || state.program.fragmentShaderSource
+          vertexSource: action.vertexSource || state.program.vertexSource,
+          fragmentSource: action.fragmentSource || state.program.fragmentSource
         }
       };
     case 'set-errors':
@@ -54,8 +54,8 @@ function createInitialState(): EditorState {
       id: 'example',
       userId: 'anon',
       title: 'example-program',
-      vertexShaderSource: exampleVertexShader,
-      fragmentShaderSource: exampleFragmentShader,
+      vertexSource: exampleVertexShader,
+      fragmentSource: exampleFragmentShader,
       didCompile: true,
       createdAt: Date.now().toString(),
       modifiedAt: Date.now().toString()

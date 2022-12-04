@@ -17,8 +17,8 @@ insert into programs
 (
   user_id,
   title,
-  vertex_shader_source,
-  fragment_shader_source,
+  vertex_source,
+  fragment_source,
   did_compile
 )
 values

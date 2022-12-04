@@ -12,8 +12,8 @@ export interface ProgramData {
   id: string;
   userId: string;
   title: string;
-  vertexShaderSource: string;
-  fragmentShaderSource: string;
+  vertexSource: string;
+  fragmentSource: string;
   didCompile: boolean;
   createdAt: string;
   modifiedAt: string;

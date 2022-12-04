@@ -39,14 +39,14 @@ export default function ProgramEditor({ style }: Props): ReactElement {
         />
       </TabBar>
       <GLSLEditor
-        source={editorState.program.vertexShaderSource}
+        source={editorState.program.vertexSource}
         onChange={source => dispatch({ action: 'set-sources', vertexSource: source })}
         active={activeTab === ShaderType.Vertex}
         annotations={activeTab === ShaderType.Vertex ? annotations : []}
         markers={activeTab === ShaderType.Vertex ? markers : []}
       />
       <GLSLEditor
-        source={editorState.program.fragmentShaderSource}
+        source={editorState.program.fragmentSource}
         onChange={source => dispatch({ action: 'set-sources', fragmentSource: source })}
         active={activeTab === ShaderType.Fragment}
         annotations={activeTab === ShaderType.Fragment ? annotations : []}
@@ -62,8 +62,8 @@ export default function ProgramEditor({ style }: Props): ReactElement {
 
 function collectAnnotationsAndMarkers(state: EditorState, activeTab: ShaderType): [Array<IMarker>, Array<IAnnotation>] {
   const source = activeTab === ShaderType.Vertex
-    ? state.program.vertexShaderSource
-    : state.program.fragmentShaderSource;
+    ? state.program.vertexSource
+    : state.program.fragmentSource;
   const compilationErrors = activeTab === ShaderType.Vertex
     ? state.errors.vertexShaderErrors
     : state.errors.fragmentShaderErrors;

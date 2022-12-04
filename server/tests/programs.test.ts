@@ -18,8 +18,8 @@ describe('API /programs routes', () => {
       id: expect.any(String),
       userId: expect.any(String),
       title: expect.any(String),
-      vertexShaderSource: expect.any(String),
-      fragmentShaderSource: expect.any(String),
+      vertexSource: expect.any(String),
+      fragmentSource: expect.any(String),
       didCompile: expect.any(Boolean),
       createdAt: expect.any(String),
       modifiedAt: expect.any(String),
@@ -40,8 +40,8 @@ describe('API /programs routes', () => {
 
     const newProgramData = {
       title: 'a new program',
-      vertexShaderSource: 'bahfjasdhlkjg',
-      fragmentShaderSource: 'ajhsdfliuhefa',
+      vertexSource: 'bahfjasdhlkjg',
+      fragmentSource: 'ajhsdfliuhefa',
       didCompile: false
     };
 
@@ -51,8 +51,8 @@ describe('API /programs routes', () => {
       id: expect.any(String),
       userId: expect.any(String),
       title: newProgramData.title,
-      vertexShaderSource: newProgramData.vertexShaderSource,
-      fragmentShaderSource: newProgramData.fragmentShaderSource,
+      vertexSource: newProgramData.vertexSource,
+      fragmentSource: newProgramData.fragmentSource,
       didCompile: false,
       createdAt: expect.any(String),
       modifiedAt: expect.any(String)
@@ -62,8 +62,8 @@ describe('API /programs routes', () => {
   it('POST /programs requires authentication', async () => {
     const newProgramData = {
       title: 'a new program',
-      vertexShaderSource: 'bahfjasdhlkjg',
-      fragmentShaderSource: 'ajhsdfliuhefa',
+      vertexSource: 'bahfjasdhlkjg',
+      fragmentSource: 'ajhsdfliuhefa',
       didCompile: false
     };
 
@@ -80,8 +80,8 @@ describe('API /programs routes', () => {
 
     // Get some updated data
     const updateData = {
-      vertexShaderSource: 'new vertex code',
-      fragmentShaderSource: 'new fragment code'
+      vertexSource: 'new vertex code',
+      fragmentSource: 'new fragment code'
     };
 
     // Do the update
@@ -91,8 +91,8 @@ describe('API /programs routes', () => {
       id: expect.any(String),
       userId: expect.any(String),
       title: expect.any(String),
-      vertexShaderSource: updateData.vertexShaderSource,
-      fragmentShaderSource: updateData.fragmentShaderSource,
+      vertexSource: updateData.vertexSource,
+      fragmentSource: updateData.fragmentSource,
       didCompile: expect.any(Boolean),
       createdAt: expect.any(String),
       modifiedAt: expect.any(String),

@@ -13,8 +13,8 @@ create table programs (
   id bigint generated always as identity primary key,
   user_id bigint references users(id) on delete cascade not null,
   title text not null,
-  vertex_shader_source text not null,
-  fragment_shader_source text not null,
+  vertex_source text not null,
+  fragment_source text not null,
   did_compile boolean not null,
   created_at timestamp default now(),
   modified_at timestamp default now()

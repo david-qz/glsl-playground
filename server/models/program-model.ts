@@ -5,8 +5,8 @@ type ProgramRow = {
   id: string,
   user_id: string,
   title: string,
-  vertex_shader_source: string,
-  fragment_shader_source: string,
+  vertex_source: string,
+  fragment_source: string,
   did_compile: boolean,
   created_at: string,
   modified_at: string
@@ -16,8 +16,8 @@ export default class Program implements ProgramData {
   readonly id: string;
   readonly userId: string;
   readonly title: string;
-  readonly vertexShaderSource: string;
-  readonly fragmentShaderSource: string;
+  readonly vertexSource: string;
+  readonly fragmentSource: string;
   readonly didCompile: boolean;
   readonly createdAt: string;
   readonly modifiedAt: string;
@@ -26,8 +26,8 @@ export default class Program implements ProgramData {
     this.id = row.id;
     this.userId = row.user_id;
     this.title = row.title;
-    this.vertexShaderSource = row.vertex_shader_source;
-    this.fragmentShaderSource = row.fragment_shader_source;
+    this.vertexSource = row.vertex_source;
+    this.fragmentSource = row.fragment_source;
     this.didCompile = row.did_compile;
     this.createdAt = row.created_at;
     this.modifiedAt = row.modified_at;
@@ -42,11 +42,11 @@ export default class Program implements ProgramData {
   static async insert(userId: string, data: Partial<ProgramData>): Promise<Program> {
     const { rows } = await pool.query<ProgramRow>(
       `
-      insert into programs (user_id, title, vertex_shader_source, fragment_shader_source, did_compile)
+      insert into programs (user_id, title, vertex_source, fragment_source, did_compile)
       values ($1, $2, $3, $4, $5)
       returning *;
       `,
-      [userId, data.title, data.vertexShaderSource, data.fragmentShaderSource, data.didCompile]
+      [userId, data.title, data.vertexSource, data.fragmentSource, data.didCompile]
     );
 
     // If there isn't a row, the above query would have thrown.
@@ -60,8 +60,8 @@ export default class Program implements ProgramData {
       `
       update programs set
         title = $2,
-        vertex_shader_source = $3,
-        fragment_shader_source = $4,
+        vertex_source = $3,
+        fragment_source = $4,
         did_compile = $5
       where id = $1
       returning *;
@@ -69,8 +69,8 @@ export default class Program implements ProgramData {
       [
         id,
         updated.title,
-        updated.vertexShaderSource,
-        updated.fragmentShaderSource,
+        updated.vertexSource,
+        updated.fragmentSource,
         updated.didCompile
       ]
     );

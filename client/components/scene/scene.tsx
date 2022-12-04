@@ -16,7 +16,7 @@ export default function Scene({ style }: Props): ReactElement {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sceneRef = useRef<SceneRenderer>();
 
-  const { vertexShaderSource, fragmentShaderSource } = editorState.program;
+  const { vertexSource: vertexShaderSource, fragmentSource: fragmentShaderSource } = editorState.program;
 
   function updateProgram(vertexSource: string, fragmentSource: string): void {
     const errors = sceneRef.current?.loadProgram(vertexSource, fragmentSource);
