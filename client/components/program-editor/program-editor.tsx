@@ -12,15 +12,15 @@ type Props = {
 };
 
 export default function ProgramEditor({ style }: Props): ReactElement {
-  const [state, dispatch] = useEditorStateContext();
+  const [editorState, dispatch] = useEditorStateContext();
   const [activeTab, setActiveTab] = useState<ShaderType>(ShaderType.Vertex);
 
-  const [markers, annotations] = collectAnnotationsAndMarkers(state, activeTab);
+  const [markers, annotations] = collectAnnotationsAndMarkers(editorState, activeTab);
 
-  const vertexShaderHasErrors = state.errors.vertexShaderErrors.length !== 0;
-  const fragmentShaderHasErrors = state.errors.fragmentShaderErrors.length !== 0;
-  const linkerHasErrors = state.errors.linkerErrors.length !== 0;
-  const combinedLinkerErrorMessage = state.errors.linkerErrors.map(error => error.message).join('\n');
+  const vertexShaderHasErrors = editorState.errors.vertexShaderErrors.length !== 0;
+  const fragmentShaderHasErrors = editorState.errors.fragmentShaderErrors.length !== 0;
+  const linkerHasErrors = editorState.errors.linkerErrors.length !== 0;
+  const combinedLinkerErrorMessage = editorState.errors.linkerErrors.map(error => error.message).join('\n');
 
   return (
     <div className={styles.editor} style={style} >
@@ -39,14 +39,14 @@ export default function ProgramEditor({ style }: Props): ReactElement {
         />
       </TabBar>
       <GLSLEditor
-        source={state.vertexSource}
+        source={editorState.program.vertexShaderSource}
         onChange={source => dispatch({ action: 'set-sources', vertexSource: source })}
         active={activeTab === ShaderType.Vertex}
         annotations={activeTab === ShaderType.Vertex ? annotations : []}
         markers={activeTab === ShaderType.Vertex ? markers : []}
       />
       <GLSLEditor
-        source={state.fragmentSource}
+        source={editorState.program.fragmentShaderSource}
         onChange={source => dispatch({ action: 'set-sources', fragmentSource: source })}
         active={activeTab === ShaderType.Fragment}
         annotations={activeTab === ShaderType.Fragment ? annotations : []}
@@ -62,8 +62,8 @@ export default function ProgramEditor({ style }: Props): ReactElement {
 
 function collectAnnotationsAndMarkers(state: EditorState, activeTab: ShaderType): [Array<IMarker>, Array<IAnnotation>] {
   const source = activeTab === ShaderType.Vertex
-    ? state.vertexSource
-    : state.fragmentSource;
+    ? state.program.vertexShaderSource
+    : state.program.fragmentShaderSource;
   const compilationErrors = activeTab === ShaderType.Vertex
     ? state.errors.vertexShaderErrors
     : state.errors.fragmentShaderErrors;

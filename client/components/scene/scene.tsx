@@ -11,10 +11,12 @@ type Props = {
 
 export default function Scene({ style }: Props): ReactElement {
   const meshState = useMeshFromModel('/models/smooth-teapot.obj');
-  const [state, dispatch] = useEditorStateContext();
+  const [editorState, dispatch] = useEditorStateContext();
   const [pointerDown, setPointerDown] = useState<boolean>(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sceneRef = useRef<SceneRenderer>();
+
+  const { vertexShaderSource, fragmentShaderSource } = editorState.program;
 
   function updateProgram(vertexSource: string, fragmentSource: string): void {
     const errors = sceneRef.current?.loadProgram(vertexSource, fragmentSource);
@@ -32,7 +34,7 @@ export default function Scene({ style }: Props): ReactElement {
     if (gl === null) throw new Error('Failed to create a webgl2 context.');
 
     const scene = new SceneRenderer(gl);
-    updateProgram(state.vertexSource, state.fragmentSource);
+    updateProgram(vertexShaderSource, fragmentShaderSource);
     scene.setRunning(true);
 
     sceneRef.current = scene;
@@ -48,8 +50,8 @@ export default function Scene({ style }: Props): ReactElement {
   }, [meshState]);
 
   useEffect(() => {
-    updateProgram(state.vertexSource, state.fragmentSource);
-  }, [state.vertexSource, state.fragmentSource]);
+    updateProgram(vertexShaderSource, fragmentShaderSource);
+  }, [vertexShaderSource, fragmentShaderSource]);
 
   function handleDrag(e: PointerEvent<HTMLCanvasElement>) {
     if (!pointerDown) return;

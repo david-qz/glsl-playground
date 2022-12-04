@@ -1,10 +1,10 @@
 import { createContext, Dispatch, useContext, useReducer } from 'react';
 import { exampleFragmentShader, exampleVertexShader } from '../utils/example-shaders';
 import { type ProgramCompilationErrors } from '../components/scene/webgl/shaders';
+import { ProgramData } from '../../common/api-types';
 
 export type EditorState = {
-  vertexSource: string,
-  fragmentSource: string,
+  program: ProgramData
   errors: ProgramCompilationErrors
 };
 
@@ -21,36 +21,49 @@ type EditorActionSetErrors = {
 
 type EditorAction = EditorActionSetSources | EditorActionSetErrors;
 
-const initialState: EditorState = {
-  vertexSource: exampleVertexShader,
-  fragmentSource: exampleFragmentShader,
-  errors: {
-    vertexShaderErrors: [],
-    fragmentShaderErrors: [],
-    linkerErrors: [],
-  }
-};
-
 function reducer(state: EditorState, action: EditorAction): EditorState {
   switch (action.action) {
     case 'set-sources':
       return {
         ...state,
-        vertexSource: action.vertexSource || state.vertexSource,
-        fragmentSource: action.fragmentSource || state.fragmentSource
+        program: {
+          ...state.program,
+          vertexShaderSource: action.vertexSource || state.program.vertexShaderSource,
+          fragmentShaderSource: action.fragmentSource || state.program.fragmentShaderSource
+        }
       };
     case 'set-errors':
       return { ...state, errors: action.errors };
   }
 }
 
-export const EditorContext = createContext<[EditorState, Dispatch<EditorAction>]>([initialState, () => {}]);
+export const EditorContext = createContext<[EditorState, Dispatch<EditorAction>]>([createInitialState(), () => {}]);
 
 export function useCreateEditorState(): [EditorState, Dispatch<EditorAction>, typeof EditorContext.Provider] {
-  const [state, dispatch] = useReducer<typeof reducer>(reducer, initialState);
+  const [state, dispatch] = useReducer<typeof reducer>(reducer, createInitialState());
   return [state, dispatch, EditorContext.Provider];
 }
 
 export function useEditorStateContext(): [EditorState, Dispatch<EditorAction>] {
   return useContext(EditorContext);
+}
+
+function createInitialState(): EditorState {
+  return {
+    program: {
+      id: 'example',
+      userId: 'anon',
+      title: 'example-program',
+      vertexShaderSource: exampleVertexShader,
+      fragmentShaderSource: exampleFragmentShader,
+      didCompile: true,
+      createdAt: Date.now().toString(),
+      modifiedAt: Date.now().toString()
+    },
+    errors: {
+      vertexShaderErrors: [],
+      fragmentShaderErrors: [],
+      linkerErrors: [],
+    }
+  };
 }
