@@ -4,9 +4,13 @@ import Header from '../header/header';
 import Scene from '../scene/scene';
 import styles from './editor.module.css';
 import Title from '../title/title';
+import { useParams } from 'react-router-dom';
+import { useAuthContext } from '../../hooks/auth-context';
 
 export default function Editor() {
-  const [editorState, dispatch, EditorContextProvider] = useCreateEditorState();
+  const [user] = useAuthContext();
+  const { id: programId } = useParams();
+  const [editorState, dispatch, EditorContextProvider] = useCreateEditorState(programId);
 
   return (
     <EditorContextProvider value={[editorState, dispatch]}>

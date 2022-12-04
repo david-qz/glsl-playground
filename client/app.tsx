@@ -17,6 +17,7 @@ root.render(
       <Router>
         <Routes>
           <Route path="/" element={<Editor />} />
+          <Route path="/program/:id" element={<Editor />} />
           <Route element={<HeaderLayout />} >
             <Route path="/auth/log-in" element={<AuthForm method='log-in' />} />
             <Route path="/auth/sign-up" element={<AuthForm method='sign-up' />} />
