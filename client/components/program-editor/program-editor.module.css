@@ -3,7 +3,6 @@
   color: var(--text-color);
   background-color: var(--background-color-light);
   display: grid;
-  grid-template-rows: min-content auto;
 }
 
 .error-marker {
@@ -11,34 +10,6 @@
   z-index: 3;
   border-radius: 0;
   border-bottom: 1px dotted var(--error-color);
-}
-
-.tab-bar {
-  display: flex;
-  border-bottom: 1px solid var(--border-color-dark);
-}
-
-.tab {
-  height: 30px;
-  padding: 0 10px;
-  font-size: 1.1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 4px;
-  cursor: pointer;
-  user-select: none;
-}
-.tab.active {
-  border-bottom: 2px solid var(--accent-color-orange);
-  background-color: var(--background-color-highlighted);
-}
-.tab.error {
-  color: var(--error-color);
-}
-.tab.error::after {
-  content: '!';
-  font-weight: bold;
 }
 
 .error-overlay {

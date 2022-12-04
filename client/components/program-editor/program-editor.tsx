@@ -4,8 +4,6 @@ import styles from './program-editor.module.css';
 import { EditorState, useEditorStateContext } from '../../hooks/editor-state';
 import { ShaderType } from '../scene/webgl/shaders';
 import GLSLEditor from './glsl-editor';
-import TabBar from './tab-bar';
-import Tab from './tab';
 
 type Props = {
   style?: CSSProperties
@@ -13,44 +11,27 @@ type Props = {
 
 export default function ProgramEditor({ style }: Props): ReactElement {
   const [editorState, dispatch] = useEditorStateContext();
-  const [activeTab, setActiveTab] = useState<ShaderType>(ShaderType.Vertex);
 
-  const [markers, annotations] = collectAnnotationsAndMarkers(editorState, activeTab);
+  const [markers, annotations] = collectAnnotationsAndMarkers(editorState, editorState.activeTab);
 
-  const vertexShaderHasErrors = editorState.errors.vertexShaderErrors.length !== 0;
-  const fragmentShaderHasErrors = editorState.errors.fragmentShaderErrors.length !== 0;
   const linkerHasErrors = editorState.errors.linkerErrors.length !== 0;
   const combinedLinkerErrorMessage = editorState.errors.linkerErrors.map(error => error.message).join('\n');
 
   return (
     <div className={styles.editor} style={style} >
-      <TabBar>
-        <Tab
-          title='program.vert'
-          active={activeTab === ShaderType.Vertex}
-          error={vertexShaderHasErrors || linkerHasErrors}
-          onClick={() => setActiveTab(ShaderType.Vertex)}
-        />
-        <Tab
-          title='program.frag'
-          active={activeTab === ShaderType.Fragment}
-          error={fragmentShaderHasErrors || linkerHasErrors}
-          onClick={() => setActiveTab(ShaderType.Fragment)}
-        />
-      </TabBar>
       <GLSLEditor
         source={editorState.program.vertexSource}
         onChange={source => dispatch({ action: 'set-sources', vertexSource: source })}
-        active={activeTab === ShaderType.Vertex}
-        annotations={activeTab === ShaderType.Vertex ? annotations : []}
-        markers={activeTab === ShaderType.Vertex ? markers : []}
+        active={editorState.activeTab === ShaderType.Vertex}
+        annotations={editorState.activeTab === ShaderType.Vertex ? annotations : []}
+        markers={editorState.activeTab === ShaderType.Vertex ? markers : []}
       />
       <GLSLEditor
         source={editorState.program.fragmentSource}
         onChange={source => dispatch({ action: 'set-sources', fragmentSource: source })}
-        active={activeTab === ShaderType.Fragment}
-        annotations={activeTab === ShaderType.Fragment ? annotations : []}
-        markers={activeTab === ShaderType.Fragment ? markers : []}
+        active={editorState.activeTab === ShaderType.Fragment}
+        annotations={editorState.activeTab === ShaderType.Fragment ? annotations : []}
+        markers={editorState.activeTab === ShaderType.Fragment ? markers : []}
       />
       {
         linkerHasErrors

@@ -1,10 +1,11 @@
 import { createContext, Dispatch, useContext, useEffect, useReducer } from 'react';
 import { exampleFragmentShader, exampleVertexShader } from '../utils/example-shaders';
-import { type ProgramCompilationErrors } from '../components/scene/webgl/shaders';
+import { ShaderType, type ProgramCompilationErrors } from '../components/scene/webgl/shaders';
 import { ProgramData } from '../../common/api-types';
 
 export type EditorState = {
-  program: ProgramData
+  program: ProgramData,
+  activeTab: ShaderType,
   errors: ProgramCompilationErrors
   loading: boolean
 };
@@ -16,6 +17,10 @@ type EditorActionSetProgram = {
 type EditorStateSetTitle = {
   action: 'set-title',
   title: string
+};
+type EditorStateSetActiveTab = {
+  action: 'set-tab',
+  tab: ShaderType
 };
 type EditorActionSetSources = {
   action: 'set-sources',
@@ -34,6 +39,7 @@ type EditorStateSetLoading = {
 type EditorAction =
   | EditorActionSetProgram
   | EditorStateSetTitle
+  | EditorStateSetActiveTab
   | EditorActionSetSources
   | EditorActionSetErrors
   | EditorStateSetLoading;
@@ -49,6 +55,11 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
           ...state.program,
           title: action.title
         }
+      };
+    case 'set-tab':
+      return {
+        ...state,
+        activeTab: action.tab
       };
     case 'set-sources':
       return {
@@ -78,6 +89,7 @@ function createInitialState(programId: string | undefined): EditorState {
       createdAt: Date.now().toString(),
       modifiedAt: Date.now().toString()
     },
+    activeTab: ShaderType.Vertex,
     errors: {
       vertexShaderErrors: [],
       fragmentShaderErrors: [],

@@ -3,8 +3,9 @@
   display: grid;
   grid-template-areas:
     "header header"
+    "toolbar toolbar"
     "editor scene"
   ;
-  grid-template-rows: min-content auto;
+  grid-template-rows: min-content 30px auto;
   grid-template-columns: 1fr 1fr;
 }
