@@ -1,5 +1,6 @@
 import { FormEvent, ReactElement, useState } from 'react';
 import Input from '../form-controls/input';
+import EditIcon from '@mui/icons-material/Edit';
 import styles from './title.module.css';
 
 type Props = {
@@ -35,11 +36,13 @@ export default function Title({ title, onChange }: Props): ReactElement {
       </form>
     )
     : (
-      <span
-        onDoubleClick={() => setEditing(true)}
-        className={styles.title}
-      >
-        {title}
-      </span>
+      <>
+        <span className={styles.title}>
+          {title}
+          <div className={styles.editButton} onClick={() => setEditing(true)}>
+            <EditIcon />
+          </div>
+        </span>
+      </>
     );
 }

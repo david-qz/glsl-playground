@@ -34,7 +34,9 @@ export default function Header({ style, children }: Props): ReactElement {
       <div className={styles.left}>
         GLSL Playground
       </div>
-      {children}
+      <div>
+        {children}
+      </div>
       <div className={styles.right}>
         {userSlot}
       </div>

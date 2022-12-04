@@ -1,5 +1,13 @@
 .title {
   font-size: 1.6rem;
+  position: relative;
+}
+
+.edit-button {
+  display: inline;
+  position: absolute;
+  margin-left: 5px;
+  cursor: pointer;
 }
 
 .title-input {
