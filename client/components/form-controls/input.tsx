@@ -6,9 +6,9 @@ type Props = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputE
 
 export default function Input(props: Props): ReactElement {
   const extendedClassName = classes(
-    props.className || false,
     styles.control,
-    styles.input
+    styles.input,
+    props.className || false
   );
 
   return (
