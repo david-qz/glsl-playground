@@ -11,7 +11,7 @@ export default class SceneRenderer {
 
   private running: boolean = false;
   private eulerAngles: vec2 = vec2.create();
-  private cameraDistance: number = 6;
+  private cameraDistance: number = 4;
 
   private vertexBuffer: WebGLBuffer;
   private indexBuffer: WebGLBuffer;
