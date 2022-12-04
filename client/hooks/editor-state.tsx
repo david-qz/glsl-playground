@@ -68,7 +68,7 @@ function createInitialState(): EditorState {
     program: {
       id: 'example',
       userId: 'anon',
-      title: 'example-program',
+      title: 'Untitled Program',
       vertexSource: exampleVertexShader,
       fragmentSource: exampleFragmentShader,
       didCompile: true,
