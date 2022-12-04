@@ -27,7 +27,6 @@ export default function AuthForm({ method }: Props): ReactElement {
     const password: string = formData.get('password') as string;
 
     const response = await authFunction(email, password);
-    console.log(response);
     if (typeof response === 'string') {
       setErrorMessage(response);
     } else {
