@@ -16,7 +16,7 @@ export default function Title({ title, onChange }: Props): ReactElement {
     const formData = new FormData(e.target as HTMLFormElement);
     const newTitle = formData.get('new-title') as string;
 
-    onChange(newTitle);
+    onChange(newTitle.trim());
     setEditing(false);
   }
 
@@ -28,7 +28,8 @@ export default function Title({ title, onChange }: Props): ReactElement {
           defaultValue={title}
           name='new-title'
           required
-          maxLength={50}
+          pattern='\s*\S+\s*'
+          title='A valid title must not be empty or only whitespace.'
           autoComplete='off'
           autoFocus={true}
           size={50}
