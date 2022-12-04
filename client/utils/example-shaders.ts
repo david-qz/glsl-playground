@@ -1,32 +1,36 @@
 export const exampleFragmentShader =
-`precision highp float;
+`#version 300 es
 
-varying vec3 vNormal;
+precision highp float;
+
+in vec3 normal;
+out vec4 fragment_color;
 
 void main() {
-  const float ambientIntensity = 0.1;
   const vec3 materialColor = vec3(1.0, 1.0, 1.0);
+  const vec3 lightDirection = normalize(vec3(1.0, 1.0, 1.0));
+  const float ambientLightIntensity = 0.1;
 
-  vec3 normal = normalize(vNormal);
-  vec3 lightDirection = normalize(vec3(1.0, 1.0, 1.0));
-  float intensity = max(dot(normal, lightDirection), ambientIntensity);
+  vec3 normal = normalize(normal);
+  float lightIntensity = max(dot(normal, lightDirection), ambientLightIntensity);
 
-  gl_FragColor = vec4(materialColor * intensity, 1.0);
+  fragment_color = vec4(materialColor * lightIntensity, 1.0);
 }
 `;
 
 export const exampleVertexShader =
-`attribute vec4 aVertexPosition;
-attribute vec4 aVertexNormal;
+`#version 300 es
 
 uniform mat4 uModelViewMatrix;
 uniform mat4 uProjectionMatrix;
 uniform mat4 uNormalMatrix;
 
-varying vec3 vNormal;
+in vec4 aVertexPosition;
+in vec4 aVertexNormal;
+out vec3 normal;
 
 void main() {
-  vNormal = (uNormalMatrix * aVertexNormal).xyz;
+  normal = (uNormalMatrix * aVertexNormal).xyz;
   gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
 }
 `;
