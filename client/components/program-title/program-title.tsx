@@ -1,14 +1,14 @@
 import { FormEvent, ReactElement, useState } from 'react';
 import Input from '../form-controls/input';
 import EditIcon from '@mui/icons-material/Edit';
-import styles from './title.module.css';
+import styles from './program-title.module.css';
 
 type Props = {
   title: string
   onChange: (title: string) => void
 };
 
-export default function Title({ title, onChange }: Props): ReactElement {
+export default function ProgramTitle({ title, onChange }: Props): ReactElement {
   const [editing, setEditing] = useState<boolean>(false);
 
   function handleFormSubmit(e: FormEvent<HTMLFormElement>) {
