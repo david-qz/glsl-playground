@@ -19,7 +19,12 @@ type EditorActionSetErrors = {
   errors: ProgramCompilationErrors
 };
 
-type EditorAction = EditorActionSetSources | EditorActionSetErrors;
+type EditorStateSetTitle = {
+  action: 'set-title',
+  title: string
+};
+
+type EditorAction = EditorActionSetSources | EditorActionSetErrors | EditorStateSetTitle;
 
 function reducer(state: EditorState, action: EditorAction): EditorState {
   switch (action.action) {
@@ -34,6 +39,14 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
       };
     case 'set-errors':
       return { ...state, errors: action.errors };
+    case 'set-title':
+      return {
+        ...state,
+        program: {
+          ...state.program,
+          title: action.title
+        }
+      };
   }
 }
 

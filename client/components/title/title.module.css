@@ -1,0 +1,11 @@
+.title {
+  font-size: 1.6rem;
+}
+
+.title-input {
+  font-size: 1.6rem;
+  padding: 0px;
+  text-align: center;
+  outline-offset: 3px;
+  border: none;
+}

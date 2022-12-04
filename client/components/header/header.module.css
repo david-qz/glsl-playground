@@ -1,15 +1,20 @@
 .header {
   padding: 15px 10px;
-  font-size: 1.5rem;
-  font-weight: 500;
   background-color: var(--background-color-light);
   border-bottom: 1px solid var(--border-color-dark);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  place-items: center;
 }
 
-.header > div {
+.left {
+  font-size: 1.8rem;
+  font-weight: 600;
+  justify-self: start;
+}
+
+.right {
+  justify-self: end;
   display: flex;
   gap: 10px;
 }

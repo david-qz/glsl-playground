@@ -1,4 +1,4 @@
-import { type ReactElement, type CSSProperties } from 'react';
+import { type ReactElement, type CSSProperties, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../hooks/auth-context';
 import { logOut } from '../../services/auth-service';
@@ -6,10 +6,11 @@ import Button from '../form-controls/button';
 import styles from './header.module.css';
 
 type Props = {
-  style?: CSSProperties
+  style?: CSSProperties,
+  children?: ReactNode
 };
 
-export default function Header({ style }: Props): ReactElement {
+export default function Header({ style, children }: Props): ReactElement {
   const [user, setUser] = useAuthContext();
   const navigate = useNavigate();
 
@@ -30,10 +31,11 @@ export default function Header({ style }: Props): ReactElement {
 
   return (
     <div className={styles.header} style={style}>
-      <div>
+      <div className={styles.left}>
         GLSL Playground
       </div>
-      <div>
+      {children}
+      <div className={styles.right}>
         {userSlot}
       </div>
     </div>
