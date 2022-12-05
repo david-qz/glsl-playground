@@ -31,7 +31,7 @@ export default {
   // All Webpack bundles require a single entry point from which the entire
   // bundling process starts.
   entry: './client/app.tsx',
-  mode: process.env.NODE === 'production' ? 'production' : 'development',
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   // This indicates how and where the final output is bundled.
   output: {
     filename: 'bundle.[contenthash].js',
