@@ -80,7 +80,7 @@ export default function Editor(): ReactElement {
           </ToolbarLeftGroup>
           <ToolbarRightGroup className={styles.buttonGroup}>
             {isOwnProgram && <Button className={styles.editorButton} onClick={handleSave}>
-              <SaveIcon fontSize='large' />
+              <SaveIcon />
             </Button>}
           </ToolbarRightGroup>
         </Toolbar>
