@@ -1,9 +1,9 @@
 .tab-bar {
   display: flex;
+  height: 100%;
 }
 
 .tab {
-  height: 30px;
   padding: 0 10px;
   font-size: 1.1rem;
   display: flex;

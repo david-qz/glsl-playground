@@ -6,6 +6,20 @@
     "toolbar toolbar"
     "editor scene"
   ;
-  grid-template-rows: min-content 30px auto;
+  grid-template-rows: min-content min-content auto;
   grid-template-columns: 1fr 1fr;
+}
+
+.button-group {
+ margin-right: 5px;
+ padding: 2px;
+}
+
+.editor-button {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
 }

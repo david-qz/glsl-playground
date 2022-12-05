@@ -19,24 +19,26 @@ export default function Toolbar({ style, children }: ToolbarProps): ReactElement
 }
 
 type ToolbarLeftGroupProps = {
+  className?: string,
   children: ReactNode
 };
 
-export function ToolbarLeftGroup({ children }: ToolbarLeftGroupProps): ReactElement {
+export function ToolbarLeftGroup({ className, children }: ToolbarLeftGroupProps): ReactElement {
   return (
-    <div className={styles.toolbarLeft}>
+    <div className={className}>
       {children}
     </div>
   );
 }
 
 type ToolbarRightGroupProps = {
+  className?: string,
   children: ReactNode
 };
 
-export function ToolbarRightGroup({ children }: ToolbarRightGroupProps): ReactElement {
+export function ToolbarRightGroup({ className, children }: ToolbarRightGroupProps): ReactElement {
   return (
-    <div className={styles.toolbarRight}>
+    <div className={className}>
       {children}
     </div>
   );

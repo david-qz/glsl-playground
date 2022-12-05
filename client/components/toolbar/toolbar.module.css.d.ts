@@ -2,10 +2,6 @@
 // Please do not change this file!
 interface CssExports {
   'toolbar': string;
-  'toolbar-left': string;
-  'toolbar-right': string;
-  'toolbarLeft': string;
-  'toolbarRight': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

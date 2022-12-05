@@ -12,6 +12,7 @@ import { ShaderType } from '../scene/webgl/shaders';
 import SaveIcon from '@mui/icons-material/Save';
 import * as ProgramsService from '../../services/programs-service';
 import { ReactElement } from 'react';
+import Button from '../form-controls/button';
 
 export default function Editor(): ReactElement {
   const navigate = useNavigate();
@@ -77,10 +78,10 @@ export default function Editor(): ReactElement {
               />
             </TabBar>
           </ToolbarLeftGroup>
-          <ToolbarRightGroup>
-            {isOwnProgram && <button onClick={handleSave}>
-              <SaveIcon />
-            </button>}
+          <ToolbarRightGroup className={styles.buttonGroup}>
+            {isOwnProgram && <Button className={styles.editorButton} onClick={handleSave}>
+              <SaveIcon fontSize='large' />
+            </Button>}
           </ToolbarRightGroup>
         </Toolbar>
         <ProgramEditor style={{ gridArea: 'editor' }} />
