@@ -30,7 +30,7 @@ export default function ProgramTitle({ editable, title, onChange }: Props): Reac
           defaultValue={title}
           name='new-title'
           required
-          pattern='\s*\S+\s*'
+          pattern='[\w\s]*\S+[\w\s]*'
           title='A valid title must not be empty or only whitespace.'
           autoComplete='off'
           autoFocus={true}
