@@ -19,6 +19,9 @@ export default function Editor(): ReactElement {
   const { id: programId } = useParams();
   const [editorState, dispatch, EditorContextProvider] = useCreateEditorState(programId, user?.id);
 
+  const isNewProgram = editorState.program.id === 'new';
+  const isOwnProgram = isNewProgram || (!!user && user.id === editorState.program.userId);
+
   async function handleSave() {
     const localProgram = editorState.program;
 
@@ -51,7 +54,11 @@ export default function Editor(): ReactElement {
     <EditorContextProvider value={[editorState, dispatch]}>
       <div className={styles.layout}>
         <Header style={{ gridArea: 'header' }}>
-          <ProgramTitle title={editorState.program.title} onChange={(title) => dispatch({ action: 'set-title', title })} />
+          <ProgramTitle
+            editable={isOwnProgram}
+            title={editorState.program.title}
+            onChange={(title) => dispatch({ action: 'set-title', title })}
+          />
         </Header>
         <Toolbar style={{ gridArea: 'toolbar' }}>
           <ToolbarLeftGroup>
@@ -71,9 +78,9 @@ export default function Editor(): ReactElement {
             </TabBar>
           </ToolbarLeftGroup>
           <ToolbarRightGroup>
-            <button onClick={handleSave}>
+            {isOwnProgram && <button onClick={handleSave}>
               <SaveIcon />
-            </button>
+            </button>}
           </ToolbarRightGroup>
         </Toolbar>
         <ProgramEditor style={{ gridArea: 'editor' }} />
