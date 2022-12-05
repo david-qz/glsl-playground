@@ -77,11 +77,11 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
   }
 }
 
-function createInitialState(programId: string | undefined): EditorState {
+function createInitialState(programId: string | undefined, userId: string | undefined): EditorState {
   return {
     program: {
-      id: '',
-      userId: '',
+      id: programId || 'new',
+      userId: userId || 'anon',
       title: programId ? '' : 'Untitled Program',
       vertexSource: programId ? '' : exampleVertexShader,
       fragmentSource: programId ? '' : exampleFragmentShader,
@@ -103,10 +103,10 @@ type EditorContextValue = [EditorState, Dispatch<EditorAction>];
 
 // FIXME: This context is adding complexity without any upside right now. If this is still the case after the editor
 //        is built a bit, we should remove this.
-export const EditorContext = createContext<EditorContextValue>([createInitialState(undefined), () => {}]);
+export const EditorContext = createContext<EditorContextValue>([createInitialState(undefined, undefined), () => {}]);
 
-export function useCreateEditorState(programId: string | undefined,): [...EditorContextValue, typeof EditorContext.Provider] {
-  const [state, dispatch] = useReducer<typeof reducer>(reducer, createInitialState(programId));
+export function useCreateEditorState(programId: string | undefined, userId: string | undefined): [...EditorContextValue, typeof EditorContext.Provider] {
+  const [state, dispatch] = useReducer<typeof reducer>(reducer, createInitialState(programId, userId));
 
   useEffect(() => {
     if (!programId) return;
