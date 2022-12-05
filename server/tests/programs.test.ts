@@ -31,6 +31,29 @@ describe('API /programs routes', () => {
     expect(response.status).toEqual(404);
   });
 
+  it('GET /programs should return all the user\'s programs', async () => {
+    const credentials: UserCredentials = testUsers.existing;
+
+    // Log in
+    const agent = request.agent(app);
+    await agent.post('/users/sessions').send(credentials);
+
+    // Get programs
+    const response = await agent.get('/programs');
+    expect(response.status).toEqual(200);
+    expect(response.body).toBeInstanceOf(Array);
+    expect(response.body[0]).toEqual({
+      id: expect.any(String),
+      userId: expect.any(String),
+      title: expect.any(String),
+      vertexSource: expect.any(String),
+      fragmentSource: expect.any(String),
+      didCompile: expect.any(Boolean),
+      createdAt: expect.any(String),
+      modifiedAt: expect.any(String)
+    });
+  });
+
   it('POST /programs should create and return a new program', async () => {
     const credentials: UserCredentials = testUsers.existing;
 

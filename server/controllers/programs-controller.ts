@@ -19,6 +19,17 @@ router.get('/:id', async (request: Request, response: Response, next: NextFuncti
   }
 });
 
+router.get('/', [authenticate], async (request: AuthenticatedRequest, response: Response, next: NextFunction) => {
+  try {
+    const user = request.user!;
+    const programs = await Program.getByUserId(user.id);
+
+    response.json(programs);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post('/', [authenticate], async (request: AuthenticatedRequest, response: Response, next: NextFunction) => {
   try {
     const user = request.user!;

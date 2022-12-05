@@ -39,6 +39,11 @@ export default class Program implements ProgramData {
     return new Program(rows[0]);
   }
 
+  static async getByUserId(userId: string): Promise<Array<Program>> {
+    const { rows } = await pool.query<ProgramRow>('select * from programs where user_id = $1', [userId]);
+    return rows.map(r => new Program(r));
+  }
+
   static async insert(userId: string, data: Partial<ProgramData>): Promise<Program> {
     const { rows } = await pool.query<ProgramRow>(
       `
