@@ -25,7 +25,7 @@ function parseBoolean({ key, value }: RawEnvironmentEntry): EnvironmentEntry<boo
   if (!value) return { key, value: undefined };
 
   let parsed: boolean | undefined = undefined;
-  if (value.toLowerCase() === 'true ' || value === '1') {
+  if (value.toLowerCase() === 'true' || value === '1') {
     parsed = true;
   } else if (value.toLowerCase() === 'false' || value === '0') {
     parsed = false;
