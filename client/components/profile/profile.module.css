@@ -1,0 +1,38 @@
+.layout {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.section {
+  background-color: var(--background-color-medium);
+  padding: 25px;
+}
+
+.heading {
+  display: inline-block;
+  font-size: 2rem;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--accent-color-orange);
+  margin-bottom: 20px;
+}
+
+.programs-table {
+  font-size: 1.2rem;
+}
+.programs-table thead {
+  font-weight: 600;
+}
+.programs-table td {
+  padding: 10px 15px;
+}
+.programs-table thead tr {
+  border-bottom: 1px solid var(--border-color-light);
+}
+.programs-table tbody tr {
+  border-bottom: 1px solid var(--border-color-light);
+}
+.programs-table tbody tr:last-child {
+  border-bottom: none;
+}

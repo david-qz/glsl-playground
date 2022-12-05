@@ -11,6 +11,16 @@ export async function getById(id: string): Promise<ProgramData | undefined> {
   return await response.json() as ProgramData;
 }
 
+export async function getUsersPrograms(): Promise<Array<ProgramData> | undefined> {
+  const response = await fetch(apiPrefix + '/programs');
+
+  if (!response.ok) {
+    return;
+  }
+
+  return await response.json() as Array<ProgramData>;
+}
+
 export async function create(program: ProgramData): Promise<ProgramData | undefined> {
   const response = await fetch(apiPrefix + '/programs', {
     method: 'POST',
