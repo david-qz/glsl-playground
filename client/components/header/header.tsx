@@ -21,7 +21,12 @@ export default function Header({ style, children }: Props): ReactElement {
   }
 
   const userSlot = user
-    ? <Button className={styles.headerButton} onClick={handleLogOut}>Log Out</Button>
+    ? (
+      <>
+        <Button className={styles.headerButton} onClick={() => navigate('/profile')}>Profile</Button>
+        <Button className={styles.headerButton} onClick={handleLogOut}>Log Out</Button>
+      </>
+    )
     : (
       <>
         <Button className={styles.headerButton} onClick={() => navigate('/auth/sign-up')}>Sign Up</Button>
