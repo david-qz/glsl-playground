@@ -26,7 +26,7 @@ router.post('/', async (request: Request, response: Response, next: NextFunction
   }
 });
 
-router.get('/', [authenticate], async (request: AuthenticatedRequest, response: Response, next: NextFunction) => {
+router.get('/me', [authenticate], async (request: AuthenticatedRequest, response: Response, next: NextFunction) => {
   try {
     const user = request.user!;
     response.json(user);

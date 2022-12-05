@@ -2,7 +2,7 @@ import apiPrefix from './api-prefix';
 import { type UserToken, type ApiError } from '../../common/api-types';
 
 export async function getUser(): Promise<UserToken | null> {
-  const response = await fetch(apiPrefix + '/users');
+  const response = await fetch(apiPrefix + '/users/me');
 
   if (!response.ok) return null;
 
