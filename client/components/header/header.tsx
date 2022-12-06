@@ -1,5 +1,5 @@
 import { type ReactElement, type CSSProperties, ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../hooks/auth-context';
 import { logOut } from '../../services/auth-service';
 import Button from '../form-controls/button';
@@ -46,7 +46,7 @@ export default function Header({ style, children }: Props): ReactElement {
   return (
     <div className={styles.header} style={style}>
       <div className={styles.left}>
-        GLSL Playground
+        <Link className={styles.siteName} to='/'>GLSL Playground</Link>
       </div>
       <div>
         {children}

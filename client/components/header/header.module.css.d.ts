@@ -8,6 +8,7 @@ interface CssExports {
   'red-text': string;
   'redText': string;
   'right': string;
+  'siteName': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

@@ -8,8 +8,6 @@
 }
 
 .left {
-  font-size: 1.8rem;
-  font-weight: 600;
   justify-self: start;
 }
 
@@ -17,6 +15,12 @@
   justify-self: end;
   display: flex;
   gap: 10px;
+}
+
+.siteName {
+  font-size: 1.8rem;
+  font-weight: 600;
+  text-decoration: none;
 }
 
 .header-button {
