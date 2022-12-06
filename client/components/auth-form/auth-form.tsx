@@ -11,7 +11,7 @@ type Method = 'log-in' | 'sign-up';
 type Props = { method: Method };
 
 export default function AuthForm({ method }: Props): ReactElement {
-  const [user, setUser] = useAuthContext();
+  const { user, setUser }  = useAuthContext();
   const [errorMessage, setErrorMessage] = useState<string>();
 
   if (user) {

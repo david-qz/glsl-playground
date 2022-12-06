@@ -6,7 +6,7 @@ import usePrograms from '../../hooks/use-programs';
 import styles from './dashboard.module.css';
 
 export default function Dashboard(): ReactElement {
-  const [user] = useAuthContext();
+  const { user } = useAuthContext();
   const programs = usePrograms();
 
   if (!user) {

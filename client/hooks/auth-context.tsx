@@ -2,9 +2,18 @@ import { createContext, ReactElement, ReactNode, useContext, useEffect, useState
 import { UserToken } from '../../common/api-types';
 import { getUser } from '../services/auth-service';
 
-type AuthContextValue = [UserToken | null, (user: UserToken | null) => void];
+type UserSetter = (user: UserToken | null) => void;
+type AuthContextValue = {
+  user: UserToken | null,
+  userId: string,
+  setUser: UserSetter
+};
 
-const AuthContext = createContext<AuthContextValue>([null, () => {}]);
+const AuthContext = createContext<AuthContextValue>({
+  user: null,
+  userId: 'anon',
+  setUser: () => {}
+});
 
 export function AuthContextProvider({ children }: { children: ReactNode }): ReactElement {
   const [user, setUser] = useState<UserToken | null>(null);
@@ -22,7 +31,7 @@ export function AuthContextProvider({ children }: { children: ReactNode }): Reac
   }
 
   return (
-    <AuthContext.Provider value={[user, setUser]}>
+    <AuthContext.Provider value={{ user, userId: user?.id || 'anon', setUser }}>
       {children}
     </AuthContext.Provider>
   );

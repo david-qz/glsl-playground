@@ -16,7 +16,7 @@ import Button from '../form-controls/button';
 
 export default function Editor(): ReactElement {
   const navigate = useNavigate();
-  const [user] = useAuthContext();
+  const { user } = useAuthContext();
   const { id: programId } = useParams();
   const [editorState, dispatch, EditorContextProvider] = useCreateEditorState(programId, user?.id);
 

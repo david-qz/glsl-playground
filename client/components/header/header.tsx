@@ -12,7 +12,7 @@ type Props = {
 };
 
 export default function Header({ style, children }: Props): ReactElement {
-  const [user, setUser] = useAuthContext();
+  const { user, setUser } = useAuthContext();
   const navigate = useNavigate();
 
   async function handleLogOut() {
