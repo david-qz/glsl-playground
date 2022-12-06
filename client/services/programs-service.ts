@@ -46,7 +46,17 @@ export async function update(program: ProgramData): Promise<ProgramData | undefi
     body: JSON.stringify(program)
   });
 
-  console.log('patching');
+  if (!response.ok) {
+    return;
+  }
+
+  return await response.json() as ProgramData;
+}
+
+export async function deleteProgram(programId: string): Promise<ProgramData | undefined> {
+  const response = await fetch(apiPrefix + '/programs/' + programId, {
+    method: 'DELETE'
+  });
 
   if (!response.ok) {
     return;

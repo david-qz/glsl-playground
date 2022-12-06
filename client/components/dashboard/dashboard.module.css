@@ -26,6 +26,7 @@
 }
 .programs-table td {
   padding: 10px 15px;
+  vertical-align: middle;
 }
 .programs-table thead tr {
   border-bottom: 1px solid var(--border-color-light);

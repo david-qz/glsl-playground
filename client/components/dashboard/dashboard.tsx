@@ -4,13 +4,24 @@ import { ProgramData } from '../../../common/api-types';
 import { useAuthContext } from '../../hooks/auth-context';
 import usePrograms from '../../hooks/use-programs';
 import styles from './dashboard.module.css';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import IconButton from '../form-controls/icon-button';
+import * as ProgramsService from '../../services/programs-service';
 
 export default function Dashboard(): ReactElement {
   const { user } = useAuthContext();
-  const programs = usePrograms();
+  const { programs, setPrograms } = usePrograms();
 
   if (!user) {
     return <Navigate to='/auth/log-in' replace={true} />;
+  }
+
+  async function handleDelete(programId: string) {
+    const result = await ProgramsService.deleteProgram(programId);
+    if (!result) return;
+    setPrograms(programs.filter(p => p.id !== programId));
   }
 
   return (
@@ -24,10 +35,11 @@ export default function Dashboard(): ReactElement {
               <td>Compiled</td>
               <td>Last Modified</td>
               <td>Created</td>
+              <td>Actions</td>
             </tr>
           </thead>
           <tbody>
-            {programs.map(p => tableRowFromProgram(p))}
+            {programs.map(p => tableRowFromProgram(p, handleDelete))}
           </tbody>
         </table>
       </section>
@@ -35,7 +47,7 @@ export default function Dashboard(): ReactElement {
   );
 }
 
-function tableRowFromProgram(program: ProgramData) {
+function tableRowFromProgram(program: ProgramData, handleDelete: (programId: string) => void) {
   return <tr key={program.id}>
     <td>
       <Link to={`/program/${program.id}`}>
@@ -45,5 +57,10 @@ function tableRowFromProgram(program: ProgramData) {
     <td>{program.didCompile.toString()}</td>
     <td>{new Date(program.modifiedAt).toLocaleDateString()}</td>
     <td>{new Date(program.createdAt).toLocaleDateString()}</td>
+    <td>
+      <IconButton onClick={() => handleDelete(program.id)}>
+        <DeleteIcon />
+      </IconButton>
+    </td>
   </tr>;
 }
