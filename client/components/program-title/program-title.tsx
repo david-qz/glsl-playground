@@ -1,4 +1,4 @@
-import { FormEvent, ReactElement, useState } from 'react';
+import { FormEvent, ReactElement, useRef, useState } from 'react';
 import Input from '../form-controls/input';
 import EditIcon from '@mui/icons-material/Edit';
 import styles from './program-title.module.css';
@@ -12,6 +12,8 @@ type Props = {
 
 export default function ProgramTitle({ editable, title, onChange }: Props): ReactElement {
   const [editing, setEditing] = useState<boolean>(false);
+  const [lastBlur, setLastBlur] = useState<number>(0);
+  const formRef = useRef<HTMLFormElement>(null);
 
   function handleFormSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -22,9 +24,28 @@ export default function ProgramTitle({ editable, title, onChange }: Props): Reac
     setEditing(false);
   }
 
+  function handleBlur() {
+    if (!formRef.current) return;
+    const form = formRef.current;
+
+    if (Date.now() - lastBlur < 1000) {
+      setEditing(false);
+      setLastBlur(0);
+      return;
+    }
+
+    if (form.checkValidity()) {
+      form.requestSubmit();
+      setLastBlur(0);
+    } else {
+      form.reportValidity();
+      setLastBlur(Date.now());
+    }
+  }
+
   return editing
     ? (
-      <form onSubmit={handleFormSubmit} onBlur={() => setEditing(false)}>
+      <form ref={formRef} onSubmit={handleFormSubmit} onBlur={handleBlur}>
         <Input
           className={styles.titleInput}
           defaultValue={title}
