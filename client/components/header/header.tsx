@@ -28,7 +28,7 @@ export default function Header({ style, children }: Props): ReactElement {
           {`Signed in as ${user.email}`}
         </MenuTitle>
         <MenuDivider />
-        <MenuItem onClick={() => navigate('/profile')}>
+        <MenuItem onClick={() => navigate('/dashboard')}>
           Dashboard
         </MenuItem>
         <MenuItem onClick={handleLogOut}>

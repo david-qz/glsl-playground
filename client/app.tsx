@@ -7,7 +7,7 @@ import Editor from './components/editor/editor';
 import AuthForm from './components/auth-form/auth-form';
 import HeaderLayout from './components/header-layout/header-layout';
 import { AuthContextProvider } from './hooks/auth-context';
-import Profile from './components/profile/profile';
+import Dashboard from './components/dashboard/dashboard';
 
 const container = document.getElementById('app') || document.createElement('div');
 container.id = 'app';
@@ -22,7 +22,7 @@ root.render(
           <Route element={<HeaderLayout />} >
             <Route path="/auth/log-in" element={<AuthForm method='log-in' />} />
             <Route path="/auth/sign-up" element={<AuthForm method='sign-up' />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/dashboard" element={<Dashboard />} />
           </Route>
           <Route path='*' element={'not found'} />
         </Routes>

@@ -3,9 +3,9 @@ import { Link, Navigate } from 'react-router-dom';
 import { ProgramData } from '../../../common/api-types';
 import { useAuthContext } from '../../hooks/auth-context';
 import usePrograms from '../../hooks/use-programs';
-import styles from './profile.module.css';
+import styles from './dashboard.module.css';
 
-export default function Profile(): ReactElement {
+export default function Dashboard(): ReactElement {
   const [user] = useAuthContext();
   const programs = usePrograms();
 
