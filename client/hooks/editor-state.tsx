@@ -17,6 +17,9 @@ type EditorActionLoadProgram = {
   action: 'load-program',
   program: ProgramData
 };
+type EditorActionRevert = {
+  action: 'revert'
+};
 type EditorStateSetTitle = {
   action: 'set-title',
   title: string
@@ -41,6 +44,7 @@ type EditorStateSetLoading = {
 
 type EditorAction =
   | EditorActionLoadProgram
+  | EditorActionRevert
   | EditorStateSetTitle
   | EditorStateSetActiveTab
   | EditorActionSetSources
@@ -55,6 +59,11 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
         program: action.program,
         originalProgram: action.program,
         loading: false
+      };
+    case 'revert':
+      return {
+        ...state,
+        program: { ...state.originalProgram }
       };
     case 'set-title':
       return {

@@ -10,6 +10,7 @@ import Toolbar, { ToolbarLeftGroup, ToolbarRightGroup } from '../toolbar/toolbar
 import TabBar, { Tab } from '../tabs/tabs';
 import { ShaderType } from '../scene/webgl/shaders';
 import SaveIcon from '@mui/icons-material/Save';
+import RestorePageIcon from '@mui/icons-material/RestorePage';
 import * as ProgramsService from '../../services/programs-service';
 import { ReactElement } from 'react';
 import Button from '../form-controls/button';
@@ -48,6 +49,10 @@ export default function Editor(): ReactElement {
     }
   }
 
+  function handleRevert() {
+    dispatch({ action: 'revert' });
+  }
+
   const vertexShaderHasErrors = editorState.errors.vertexShaderErrors.length !== 0;
   const fragmentShaderHasErrors = editorState.errors.fragmentShaderErrors.length !== 0;
   const linkerHasErrors = editorState.errors.linkerErrors.length !== 0;
@@ -80,9 +85,14 @@ export default function Editor(): ReactElement {
             </TabBar>
           </ToolbarLeftGroup>
           <ToolbarRightGroup className={styles.buttonGroup}>
-            {isOwnProgram && <Button className={styles.editorButton} onClick={handleSave}>
-              <SaveIcon />
-            </Button>}
+            <Button className={styles.editorButton} onClick={handleRevert}>
+              <RestorePageIcon />
+            </Button>
+            {isOwnProgram && (
+              <Button className={styles.editorButton} onClick={handleSave}>
+                <SaveIcon />
+              </Button>
+            )}
           </ToolbarRightGroup>
         </Toolbar>
         <ProgramEditor style={{ gridArea: 'editor' }} />
