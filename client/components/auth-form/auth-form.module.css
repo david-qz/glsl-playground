@@ -33,7 +33,8 @@
 
 .form h1 {
   display: inline-block;
-  padding-bottom: 6px;
+  padding-bottom: var(--heading-decoration-padding);
+  border-bottom: var(--heading-decoration-border);
   border-bottom: 2px solid var(--accent-color-orange);
   margin-bottom: 10px;
 }

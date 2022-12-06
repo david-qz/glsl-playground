@@ -13,8 +13,8 @@
 .heading {
   display: inline-block;
   font-size: 2rem;
-  padding-bottom: 6px;
-  border-bottom: 2px solid var(--accent-color-orange);
+  padding-bottom: var(--heading-decoration-padding);
+  border-bottom: var(--heading-decoration-border);
   margin-bottom: 20px;
 }
 
