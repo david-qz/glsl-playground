@@ -22,6 +22,9 @@
 
   /* misc */
   --preferred-border-radius: 3px;
+
+  --heading-decoration-padding: 6px;
+  --heading-decoration-border: 2px solid var(--accent-color-orange);
 }
 
 body {

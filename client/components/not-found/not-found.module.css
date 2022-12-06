@@ -1,0 +1,30 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  padding: 30px;
+  background-color: var(--background-color-light);
+  width: fit-content;
+  max-width: 800px;
+}
+
+.title {
+  display: inline-block;
+  font-size: 2.5rem;
+  font-weight: 600;
+  border-bottom: var(--heading-decoration-border);
+  padding-bottom: var(--heading-decoration-padding);
+  margin-bottom: 30px;
+}
+
+.message {
+  font-size: 1.8rem;
+  margin-bottom: 80px;
+}
+
+.link {
+  font-size: 1.5rem;
+}

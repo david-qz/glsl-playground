@@ -8,6 +8,7 @@ import AuthForm from './components/auth-form/auth-form';
 import HeaderLayout from './components/header-layout/header-layout';
 import { AuthContextProvider } from './hooks/auth-context';
 import Dashboard from './components/dashboard/dashboard';
+import NotFound from './components/not-found/not-found';
 
 const container = document.getElementById('app') || document.createElement('div');
 container.id = 'app';
@@ -23,8 +24,8 @@ root.render(
             <Route path="/auth/log-in" element={<AuthForm method='log-in' />} />
             <Route path="/auth/sign-up" element={<AuthForm method='sign-up' />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path='*' element={<NotFound />} />
           </Route>
-          <Route path='*' element={'not found'} />
         </Routes>
       </Router>
     </AuthContextProvider>
