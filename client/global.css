@@ -18,7 +18,11 @@
 
   /* fonts */
   --sans-serif-font-family: 'Inter', sans-serif;
-  --monospace-font-family: 'Roboto Mono', monospace;}
+  --monospace-font-family: 'Roboto Mono', monospace;
+
+  /* misc */
+  --preferred-border-radius: 3px;
+}
 
 body {
   margin: 0;
