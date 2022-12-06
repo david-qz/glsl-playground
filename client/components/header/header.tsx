@@ -32,7 +32,7 @@ export default function Header({ style, children }: Props): ReactElement {
           Dashboard
         </MenuItem>
         <MenuItem onClick={handleLogOut}>
-          Log Out
+          <span className={styles.redText}>Log Out</span>
         </MenuItem>
       </Menu>
     )

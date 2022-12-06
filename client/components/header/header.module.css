@@ -19,7 +19,11 @@
   gap: 10px;
 }
 
-.header-button{
+.header-button {
   padding: 5px;
   font-size: 1.2rem;
+}
+
+.red-text {
+  color: var(--error-color);
 }

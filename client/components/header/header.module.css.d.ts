@@ -5,6 +5,8 @@ interface CssExports {
   'header-button': string;
   'headerButton': string;
   'left': string;
+  'red-text': string;
+  'redText': string;
   'right': string;
 }
 export const cssExports: CssExports;
