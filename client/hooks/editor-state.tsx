@@ -163,7 +163,7 @@ function createNewProgram(programId: string, userId: string): ProgramData {
   return {
     id: programId,
     userId,
-    title: 'Untitled Program',
+    title: 'New Program',
     vertexSource: exampleVertexShader,
     fragmentSource: exampleFragmentShader,
     didCompile: true,
