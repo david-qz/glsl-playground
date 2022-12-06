@@ -6,8 +6,8 @@ import { ProgramData } from '../../common/api-types';
 export type EditorState = {
   program: ProgramData,
   activeTab: ShaderType,
-  errors: ProgramCompilationErrors
-  loading: boolean
+  errors: ProgramCompilationErrors,
+  loading: boolean,
 };
 
 type EditorActionSetProgram = {
@@ -70,8 +70,20 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
           fragmentSource: action.fragmentSource || state.program.fragmentSource
         }
       };
-    case 'set-errors':
-      return { ...state, errors: action.errors };
+    case 'set-errors': {
+      const didCompile = action.errors.vertexShaderErrors.length === 0
+       && action.errors.fragmentShaderErrors.length === 0
+       && action.errors.linkerErrors.length === 0;
+
+      return {
+        ...state,
+        program: {
+          ...state.program,
+          didCompile
+        },
+        errors: action.errors
+      };
+    }
     case 'set-loading':
       return { ...state, loading: action.loading };
   }

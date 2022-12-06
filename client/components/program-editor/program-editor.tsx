@@ -1,5 +1,5 @@
 import { type IAnnotation, type IMarker } from 'react-ace';
-import { type CSSProperties, useState, ReactElement } from 'react';
+import { type CSSProperties, ReactElement } from 'react';
 import styles from './program-editor.module.css';
 import { EditorState, useEditorStateContext } from '../../hooks/editor-state';
 import { ShaderType } from '../scene/webgl/shaders';
@@ -12,7 +12,7 @@ type Props = {
 export default function ProgramEditor({ style }: Props): ReactElement {
   const [editorState, dispatch] = useEditorStateContext();
 
-  const [markers, annotations] = collectAnnotationsAndMarkers(editorState, editorState.activeTab);
+  const [markers, annotations] = collectAnnotationsAndMarkers(editorState);
 
   const linkerHasErrors = editorState.errors.linkerErrors.length !== 0;
   const combinedLinkerErrorMessage = editorState.errors.linkerErrors.map(error => error.message).join('\n');
@@ -41,13 +41,15 @@ export default function ProgramEditor({ style }: Props): ReactElement {
   );
 }
 
-function collectAnnotationsAndMarkers(state: EditorState, activeTab: ShaderType): [Array<IMarker>, Array<IAnnotation>] {
+function collectAnnotationsAndMarkers(editorState: EditorState): [Array<IMarker>, Array<IAnnotation>] {
+  const activeTab = editorState.activeTab;
+
   const source = activeTab === ShaderType.Vertex
-    ? state.program.vertexSource
-    : state.program.fragmentSource;
+    ? editorState.program.vertexSource
+    : editorState.program.fragmentSource;
   const compilationErrors = activeTab === ShaderType.Vertex
-    ? state.errors.vertexShaderErrors
-    : state.errors.fragmentShaderErrors;
+    ? editorState.errors.vertexShaderErrors
+    : editorState.errors.fragmentShaderErrors;
 
   const markers = new Map<number, IMarker>();
   const annotations = new Map<number, IAnnotation>();

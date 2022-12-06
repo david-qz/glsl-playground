@@ -22,7 +22,7 @@ export default function Scene({ style }: Props): ReactElement {
     const errors = sceneRef.current?.loadProgram(vertexSource, fragmentSource);
     dispatch({
       action: 'set-errors',
-      errors: errors || { vertexShaderErrors:[], fragmentShaderErrors: [], linkerErrors: [] }
+      errors: errors || { vertexShaderErrors: [], fragmentShaderErrors: [], linkerErrors: [] }
     });
   }
 
