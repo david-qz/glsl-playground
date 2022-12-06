@@ -17,8 +17,9 @@ import Button from '../form-controls/button';
 export default function Editor(): ReactElement {
   const navigate = useNavigate();
   const { user } = useAuthContext();
-  const { id: programId } = useParams();
-  const [editorState, dispatch, EditorContextProvider] = useCreateEditorState(programId, user?.id);
+  const params = useParams();
+  const programId = params.id || 'new';
+  const [editorState, dispatch, EditorContextProvider] = useCreateEditorState(programId);
 
   const isNewProgram = editorState.program.id === 'new';
   const isOwnProgram = isNewProgram || (!!user && user.id === editorState.program.userId);
@@ -37,7 +38,7 @@ export default function Editor(): ReactElement {
         return;
       }
 
-      dispatch({ action: 'set-program', program });
+      dispatch({ action: 'load-program', program });
 
       if (localProgram.id === 'new') {
         navigate('/program/' + program.id, { replace: true });

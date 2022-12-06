@@ -2,16 +2,19 @@ import { createContext, Dispatch, useContext, useEffect, useReducer } from 'reac
 import { exampleFragmentShader, exampleVertexShader } from '../utils/example-shaders';
 import { ShaderType, type ProgramCompilationErrors } from '../components/scene/webgl/shaders';
 import { ProgramData } from '../../common/api-types';
+import * as ProgramsService from '../services/programs-service';
+import { useAuthContext } from './auth-context';
 
 export type EditorState = {
   program: ProgramData,
+  originalProgram: ProgramData,
   activeTab: ShaderType,
   errors: ProgramCompilationErrors,
   loading: boolean,
 };
 
-type EditorActionSetProgram = {
-  action: 'set-program',
+type EditorActionLoadProgram = {
+  action: 'load-program',
   program: ProgramData
 };
 type EditorStateSetTitle = {
@@ -37,7 +40,7 @@ type EditorStateSetLoading = {
 };
 
 type EditorAction =
-  | EditorActionSetProgram
+  | EditorActionLoadProgram
   | EditorStateSetTitle
   | EditorStateSetActiveTab
   | EditorActionSetSources
@@ -46,8 +49,13 @@ type EditorAction =
 
 function reducer(state: EditorState, action: EditorAction): EditorState {
   switch (action.action) {
-    case 'set-program':
-      return { ...state, program: action.program };
+    case 'load-program':
+      return {
+        ...state,
+        program: action.program,
+        originalProgram: action.program,
+        loading: false
+      };
     case 'set-title':
       return {
         ...state,
@@ -89,45 +97,26 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
   }
 }
 
-function createInitialState(programId: string | undefined, userId: string | undefined): EditorState {
-  return {
-    program: {
-      id: programId || 'new',
-      userId: userId || 'anon',
-      title: programId ? '' : 'Untitled Program',
-      vertexSource: programId ? '' : exampleVertexShader,
-      fragmentSource: programId ? '' : exampleFragmentShader,
-      didCompile: true,
-      createdAt: Date.now().toString(),
-      modifiedAt: Date.now().toString()
-    },
-    activeTab: ShaderType.Vertex,
-    errors: {
-      vertexShaderErrors: [],
-      fragmentShaderErrors: [],
-      linkerErrors: [],
-    },
-    loading: !!programId
-  };
-}
-
 type EditorContextValue = [EditorState, Dispatch<EditorAction>];
 
 // FIXME: This context is adding complexity without any upside right now. If this is still the case after the editor
 //        is built a bit, we should remove this.
-export const EditorContext = createContext<EditorContextValue>([createInitialState(undefined, undefined), () => {}]);
+export const EditorContext = createContext<EditorContextValue>([createInitialState(), () => {}]);
 
-export function useCreateEditorState(programId: string | undefined, userId: string | undefined): [...EditorContextValue, typeof EditorContext.Provider] {
-  const [state, dispatch] = useReducer<typeof reducer>(reducer, createInitialState(programId, userId));
+export function useCreateEditorState(programId: string): [...EditorContextValue, typeof EditorContext.Provider] {
+  const [state, dispatch] = useReducer<typeof reducer>(reducer, createInitialState());
+  const { userId } = useAuthContext();
 
   useEffect(() => {
-    if (!programId) return;
-    (async () => {
-      const response = await fetch('/api/v1/programs/' + programId);
-      const program = await response.json() as ProgramData;
-      dispatch({ action: 'set-program', program });
-      dispatch({ action: 'set-loading', loading: false });
-    })();
+    if (programId === 'new') {
+      dispatch({ action: 'load-program', program: createNewProgram(programId, userId) });
+    } else {
+      (async () => {
+        const program = await ProgramsService.getById(programId);
+        if (!program) return;
+        dispatch({ action: 'load-program', program });
+      })();
+    }
   }, [programId]);
 
   return [state, dispatch, EditorContext.Provider];
@@ -135,4 +124,41 @@ export function useCreateEditorState(programId: string | undefined, userId: stri
 
 export function useEditorStateContext(): EditorContextValue {
   return useContext(EditorContext);
+}
+
+function createInitialState(): EditorState {
+  const blankProgram = {
+    id: '',
+    userId: '',
+    title: '',
+    vertexSource: '',
+    fragmentSource: '',
+    didCompile: false,
+    createdAt: '',
+    modifiedAt: ''
+  };
+  return {
+    program: blankProgram,
+    originalProgram: blankProgram,
+    activeTab: ShaderType.Vertex,
+    errors: {
+      vertexShaderErrors: [],
+      fragmentShaderErrors: [],
+      linkerErrors: [],
+    },
+    loading: true
+  };
+}
+
+function createNewProgram(programId: string, userId: string): ProgramData {
+  return {
+    id: programId,
+    userId,
+    title: 'Untitled Program',
+    vertexSource: exampleVertexShader,
+    fragmentSource: exampleFragmentShader,
+    didCompile: true,
+    createdAt: new Date().toISOString(),
+    modifiedAt: new Date().toISOString()
+  };
 }
