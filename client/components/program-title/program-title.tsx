@@ -55,6 +55,7 @@ export default function ProgramTitle({ editable, title, onChange }: Props): Reac
           title='A valid title must not be empty or only whitespace.'
           autoComplete='off'
           autoFocus={true}
+          maxLength={50}
           size={50}
         />
       </form>
