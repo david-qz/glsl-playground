@@ -3,6 +3,7 @@ import Input from '../form-controls/input';
 import EditIcon from '@mui/icons-material/Edit';
 import styles from './program-title.module.css';
 import Button from '../form-controls/button';
+import IconButton from '../form-controls/icon-button';
 
 type Props = {
   editable: boolean,
@@ -64,9 +65,9 @@ export default function ProgramTitle({ editable, title, onChange }: Props): Reac
       <>
         <span className={styles.title}>
           {title}
-          {editable && <Button className={styles.editButton} onClick={() => setEditing(true)}>
+          {editable && <IconButton className={styles.editButton} onClick={() => setEditing(true)}>
             <EditIcon />
-          </Button>}
+          </IconButton>}
         </span>
       </>
     );

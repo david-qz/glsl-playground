@@ -13,7 +13,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import RestorePageIcon from '@mui/icons-material/RestorePage';
 import * as ProgramsService from '../../services/programs-service';
 import { ReactElement } from 'react';
-import Button from '../form-controls/button';
+import IconButton from '../form-controls/icon-button';
 
 export default function Editor(): ReactElement {
   const navigate = useNavigate();
@@ -85,13 +85,13 @@ export default function Editor(): ReactElement {
             </TabBar>
           </ToolbarLeftGroup>
           <ToolbarRightGroup className={styles.buttonGroup}>
-            <Button className={styles.editorButton} onClick={handleRevert}>
+            <IconButton onClick={handleRevert}>
               <RestorePageIcon />
-            </Button>
+            </IconButton>
             {isOwnProgram && (
-              <Button className={styles.editorButton} onClick={handleSave}>
+              <IconButton onClick={handleSave}>
                 <SaveIcon />
-              </Button>
+              </IconButton>
             )}
           </ToolbarRightGroup>
         </Toolbar>

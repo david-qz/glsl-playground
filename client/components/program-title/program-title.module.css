@@ -8,18 +8,8 @@
   bottom: 0;
   right: -5px;
   transform: translate(100%);
-  cursor: pointer;
   display: inline-block;
-
-  width: 25px;
-  height: 25px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
 }
-
-
 
 .title-input {
   font-size: 1.6rem;
