@@ -1,7 +1,15 @@
 .toolbar {
   height: 35px;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   background-color: var(--background-color-light);
   border-bottom: 1px solid var(--border-color-dark);
+}
+
+.toolbar > *:first-child {
+  justify-self: start;
+}
+
+.toolbar > *:last-child {
+  justify-self: end;
 }

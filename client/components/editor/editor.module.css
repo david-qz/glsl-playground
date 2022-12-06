@@ -11,13 +11,16 @@
 }
 
 .button-group {
- margin-right: 5px;
- padding: 2px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 10px;
 }
 
 .editor-button {
-  width: 30px;
-  height: 30px;
+  padding: 0;
+  width: 25px;
+  height: 25px;
   display: flex;
   justify-content: center;
   align-items: center;
