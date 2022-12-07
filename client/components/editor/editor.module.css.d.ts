@@ -6,6 +6,7 @@ interface CssExports {
   'content-area': string;
   'contentArea': string;
   'layout': string;
+  'toolBarLeft': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

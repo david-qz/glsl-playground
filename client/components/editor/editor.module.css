@@ -21,3 +21,10 @@
   grid-row: 2 / 4;
   grid-column: 1 / 3;
 }
+
+.toolBarLeft {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  border-right: 1px solid var(--border-color-dark);
+}

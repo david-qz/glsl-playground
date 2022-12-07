@@ -19,6 +19,10 @@
 .button:active {
   background-color: var(--background-color-medium);
 }
+.button[disabled] {
+  color: var(--text-color-muted);
+  background-color: var(--background-color-dark);
+}
 
 .icon-button {
   padding: 0;
@@ -28,5 +32,7 @@
   justify-content: center;
   align-items: center;
   border: none;
-  cursor: pointer;
+}
+.icon-button[disabled] {
+  background-color: transparent;
 }

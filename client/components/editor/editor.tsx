@@ -10,7 +10,7 @@ import Toolbar, { ToolbarLeftGroup, ToolbarRightGroup } from '../toolbar/toolbar
 import TabBar, { Tab } from '../tabs/tabs';
 import { ShaderType } from '../scene/webgl/shaders';
 import SaveIcon from '@mui/icons-material/Save';
-import RestorePageIcon from '@mui/icons-material/RestorePage';
+import RestoreIcon from '@mui/icons-material/Restore';
 import * as ProgramsService from '../../services/programs-service';
 import { ReactElement, useEffect, useState } from 'react';
 import IconButton from '../form-controls/icon-button';
@@ -93,7 +93,7 @@ export default function Editor(): ReactElement {
     : (
       <>
         <Toolbar style={{ gridArea: 'toolbar' }}>
-          <ToolbarLeftGroup>
+          <ToolbarLeftGroup className={styles.toolBarLeft}>
             <TabBar>
               <Tab
                 title='program.vert'
@@ -108,16 +108,18 @@ export default function Editor(): ReactElement {
                 onClick={() => dispatch({ action: 'set-tab', tab: ShaderType.Fragment })}
               />
             </TabBar>
+            <div className={styles.buttonGroup}>
+              {editorState.programHasUnsavedChanges && <IconButton onClick={handleRevert}>
+                <RestoreIcon />
+              </IconButton>}
+              {isOwnProgram && (
+                <IconButton onClick={handleSave} disabled={!editorState.programHasUnsavedChanges}>
+                  <SaveIcon />
+                </IconButton>
+              )}
+            </div>
           </ToolbarLeftGroup>
-          <ToolbarRightGroup className={styles.buttonGroup}>
-            <IconButton onClick={handleRevert}>
-              <RestorePageIcon />
-            </IconButton>
-            {isOwnProgram && (
-              <IconButton onClick={handleSave}>
-                <SaveIcon />
-              </IconButton>
-            )}
+          <ToolbarRightGroup>
           </ToolbarRightGroup>
         </Toolbar>
         <ProgramEditor style={{ gridArea: 'editor' }} />
