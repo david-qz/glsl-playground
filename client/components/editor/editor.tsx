@@ -1,4 +1,4 @@
-import { useCreateEditorState } from '../../hooks/editor-state';
+import { useEditorState } from '../../hooks/editor-state';
 import ProgramEditor from '../program-editor/program-editor';
 import Header from '../header/header';
 import Scene from '../scene/scene';
@@ -20,7 +20,7 @@ export default function Editor(): ReactElement {
   const { user } = useAuthContext();
   const params = useParams();
   const programId = params.id || 'new';
-  const [editorState, dispatch, EditorContextProvider] = useCreateEditorState(programId);
+  const [editorState, dispatch, EditorContextProvider] = useEditorState(programId);
 
   const isNewProgram = editorState.program.id === 'new';
   const isOwnProgram = isNewProgram || (!!user && user.id === editorState.program.userId);

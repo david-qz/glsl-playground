@@ -112,7 +112,7 @@ type EditorContextValue = [EditorState, Dispatch<EditorAction>];
 //        is built a bit, we should remove this.
 export const EditorContext = createContext<EditorContextValue>([createInitialState(), () => {}]);
 
-export function useCreateEditorState(programId: string): [...EditorContextValue, typeof EditorContext.Provider] {
+export function useEditorState(programId: string): [...EditorContextValue, typeof EditorContext.Provider] {
   const [state, dispatch] = useReducer<typeof reducer>(reducer, createInitialState());
   const { userId } = useAuthContext();
 
