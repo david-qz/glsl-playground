@@ -14,8 +14,7 @@ import RestorePageIcon from '@mui/icons-material/RestorePage';
 import * as ProgramsService from '../../services/programs-service';
 import { ReactElement, useEffect, useState } from 'react';
 import IconButton from '../form-controls/icon-button';
-import { exampleVertexShader, exampleFragmentShader } from '../../utils/example-shaders';
-import { ProgramData } from '../../../common/api-types';
+import { createNewProgram } from '../../utils/new-program';
 import NotFound from '../not-found/not-found';
 
 type LoadingState = {
@@ -144,17 +143,4 @@ export default function Editor(): ReactElement {
       </div>
     </EditorContextProvider>
   );
-}
-
-function createNewProgram(programId: string, userId: string): ProgramData {
-  return {
-    id: programId,
-    userId,
-    title: 'New Program',
-    vertexSource: exampleVertexShader,
-    fragmentSource: exampleFragmentShader,
-    didCompile: true,
-    createdAt: new Date().toISOString(),
-    modifiedAt: new Date().toISOString()
-  };
 }

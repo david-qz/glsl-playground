@@ -1,3 +1,18 @@
+import { ProgramData } from '../../common/api-types';
+
+export function createNewProgram(programId: string, userId: string): ProgramData {
+  return {
+    id: programId,
+    userId,
+    title: 'New Program',
+    vertexSource: exampleVertexShader,
+    fragmentSource: exampleFragmentShader,
+    didCompile: true,
+    createdAt: new Date().toISOString(),
+    modifiedAt: new Date().toISOString()
+  };
+}
+
 export const exampleFragmentShader =
 `#version 300 es
 
