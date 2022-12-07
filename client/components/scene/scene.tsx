@@ -1,5 +1,5 @@
 import { CSSProperties, PointerEvent, WheelEvent, ReactElement, useEffect, useRef, useState } from 'react';
-import { useEditorStateContext } from '../../hooks/editor-state';
+import { useEditorStateContext } from '../../hooks/use-editor-state';
 import SceneRenderer from './webgl/scene-renderer';
 import styles from './scene.module.css';
 import { vec2 } from 'gl-matrix';

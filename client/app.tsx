@@ -6,7 +6,7 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Editor from './components/editor/editor';
 import AuthForm from './components/auth-form/auth-form';
 import HeaderLayout from './components/header-layout/header-layout';
-import { AuthContextProvider } from './hooks/auth-context';
+import { AuthContextProvider } from './hooks/use-auth-context';
 import Dashboard from './components/dashboard/dashboard';
 import NotFound from './components/not-found/not-found';
 

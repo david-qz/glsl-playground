@@ -1,11 +1,11 @@
-import { useEditorState } from '../../hooks/editor-state';
+import { useEditorState } from '../../hooks/use-editor-state';
 import ProgramEditor from '../program-editor/program-editor';
 import Header from '../header/header';
 import Scene from '../scene/scene';
 import styles from './editor.module.css';
 import ProgramTitle from '../program-title/program-title';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useAuthContext } from '../../hooks/auth-context';
+import { useAuthContext } from '../../hooks/use-auth-context';
 import Toolbar, { ToolbarLeftGroup, ToolbarRightGroup } from '../toolbar/toolbar';
 import TabBar, { Tab } from '../tabs/tabs';
 import { ShaderType } from '../scene/webgl/shaders';

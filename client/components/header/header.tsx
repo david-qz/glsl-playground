@@ -1,6 +1,6 @@
 import { type ReactElement, type CSSProperties, ReactNode } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuthContext } from '../../hooks/auth-context';
+import { useAuthContext } from '../../hooks/use-auth-context';
 import { logOut } from '../../services/auth-service';
 import Button from '../form-controls/button';
 import Menu, { MenuItem, MenuDivider, MenuTitle } from '../menu/menu';

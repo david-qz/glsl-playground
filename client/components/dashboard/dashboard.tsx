@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { ProgramData } from '../../../common/api-types';
-import { useAuthContext } from '../../hooks/auth-context';
+import { useAuthContext } from '../../hooks/use-auth-context';
 import usePrograms from '../../hooks/use-programs';
 import styles from './dashboard.module.css';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';

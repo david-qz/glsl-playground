@@ -1,7 +1,7 @@
 import Input from '../form-controls/input';
 import Button from '../form-controls/button';
 import css from './auth-form.module.css';
-import { useAuthContext } from '../../hooks/auth-context';
+import { useAuthContext } from '../../hooks/use-auth-context';
 import { FormEvent, ReactElement, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { logIn, signUp } from '../../services/auth-service';
