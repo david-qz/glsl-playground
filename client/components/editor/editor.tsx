@@ -12,15 +12,31 @@ import { ShaderType } from '../scene/webgl/shaders';
 import SaveIcon from '@mui/icons-material/Save';
 import RestorePageIcon from '@mui/icons-material/RestorePage';
 import * as ProgramsService from '../../services/programs-service';
-import { ReactElement } from 'react';
+import { ReactElement, useEffect } from 'react';
 import IconButton from '../form-controls/icon-button';
+import { exampleVertexShader, exampleFragmentShader } from '../../utils/example-shaders';
+import { ProgramData } from '../../../common/api-types';
 
 export default function Editor(): ReactElement {
+  const { user, userId } = useAuthContext();
   const navigate = useNavigate();
-  const { user } = useAuthContext();
   const params = useParams();
   const programId = params.id || 'new';
-  const [editorState, dispatch, EditorContextProvider] = useEditorState(programId);
+
+  const [editorState, dispatch, EditorContextProvider] = useEditorState();
+
+  useEffect(() => {
+    if (programId === 'new') {
+      const newProgram = createNewProgram(programId, userId);
+      dispatch({ action: 'load-program', program: newProgram });
+    } else {
+      (async () => {
+        const program = await ProgramsService.getById(programId);
+        if (!program) return;
+        dispatch({ action: 'load-program', program });
+      })();
+    }
+  }, [programId, userId]);
 
   const isNewProgram = editorState.program.id === 'new';
   const isOwnProgram = isNewProgram || (!!user && user.id === editorState.program.userId);
@@ -100,4 +116,17 @@ export default function Editor(): ReactElement {
       </div>
     </EditorContextProvider>
   );
+}
+
+function createNewProgram(programId: string, userId: string): ProgramData {
+  return {
+    id: programId,
+    userId,
+    title: 'New Program',
+    vertexSource: exampleVertexShader,
+    fragmentSource: exampleFragmentShader,
+    didCompile: true,
+    createdAt: new Date().toISOString(),
+    modifiedAt: new Date().toISOString()
+  };
 }
