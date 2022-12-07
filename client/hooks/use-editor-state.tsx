@@ -4,7 +4,8 @@ import { ProgramData } from '../../common/api-types';
 
 export type EditorState = {
   program: ProgramData,
-  originalProgram: ProgramData,
+  lastSavedProgram: ProgramData,
+  programHasUnsavedChanges: boolean,
   isNewProgram: boolean,
   activeTab: ShaderType,
   errors: ProgramCompilationErrors,
@@ -47,34 +48,40 @@ type EditorAction =
   | EditorActionSetErrors;
 
 function reducer(state: EditorState, action: EditorAction): EditorState {
+  let nextState: EditorState | undefined;
+
   switch (action.action) {
     case 'load-program':
-      return {
+      nextState = {
         ...state,
         program: action.program,
-        originalProgram: action.program,
+        lastSavedProgram: action.program,
         isNewProgram: action.program.id === 'new'
       };
+      break;
     case 'revert':
-      return {
+      nextState = {
         ...state,
-        program: { ...state.originalProgram }
+        program: { ...state.lastSavedProgram },
       };
+      break;
     case 'set-title':
-      return {
+      nextState = {
         ...state,
         program: {
           ...state.program,
           title: action.title
         }
       };
+      break;
     case 'set-tab':
-      return {
+      nextState = {
         ...state,
         activeTab: action.tab
       };
+      break;
     case 'set-sources':
-      return {
+      nextState = {
         ...state,
         program: {
           ...state.program,
@@ -82,6 +89,7 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
           fragmentSource: action.fragmentSource || state.program.fragmentSource
         }
       };
+      break;
     case 'set-errors': {
       const errors = action.errors;
 
@@ -91,7 +99,7 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
 
       const didCompile = !vertexShaderHasErrors && !fragmentShaderHasErrors && !linkerHasErrors;
 
-      return {
+      nextState = {
         ...state,
         program: {
           ...state.program,
@@ -102,8 +110,13 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
         fragmentShaderHasErrors,
         linkerHasErrors
       };
+      break;
     }
   }
+
+  nextState.programHasUnsavedChanges = !areProgramsEqual(nextState.program, nextState.lastSavedProgram);
+
+  return nextState;
 }
 
 type EditorContextValue = [EditorState, Dispatch<EditorAction>];
@@ -132,7 +145,8 @@ function createInitialState(): EditorState {
   };
   return {
     program: blankProgram,
-    originalProgram: blankProgram,
+    lastSavedProgram: blankProgram,
+    programHasUnsavedChanges: false,
     isNewProgram: true,
     activeTab: ShaderType.Vertex,
     errors: {
@@ -144,4 +158,10 @@ function createInitialState(): EditorState {
     fragmentShaderHasErrors: false,
     linkerHasErrors: false
   };
+}
+
+function areProgramsEqual(a: ProgramData, b: ProgramData): boolean {
+  return a.vertexSource === b.vertexSource
+    && a.fragmentSource === b.fragmentSource
+    && a.title === b.title;
 }

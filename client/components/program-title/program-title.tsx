@@ -2,16 +2,16 @@ import { FormEvent, ReactElement, useRef, useState } from 'react';
 import Input from '../form-controls/input';
 import EditIcon from '@mui/icons-material/Edit';
 import styles from './program-title.module.css';
-import Button from '../form-controls/button';
 import IconButton from '../form-controls/icon-button';
 
 type Props = {
   editable: boolean,
   title: string,
-  onChange: (title: string) => void
+  onChange: (title: string) => void,
+  unsavedChanges: boolean
 };
 
-export default function ProgramTitle({ editable, title, onChange }: Props): ReactElement {
+export default function ProgramTitle({ editable, title, onChange, unsavedChanges }: Props): ReactElement {
   const [editing, setEditing] = useState<boolean>(false);
   const [lastBlur, setLastBlur] = useState<number>(0);
   const formRef = useRef<HTMLFormElement>(null);
@@ -64,7 +64,7 @@ export default function ProgramTitle({ editable, title, onChange }: Props): Reac
     : (
       <>
         <span className={styles.title}>
-          {title}
+          {(unsavedChanges ? '*' : '') + title}
           {editable && <IconButton className={styles.editButton} onClick={() => setEditing(true)}>
             <EditIcon />
           </IconButton>}

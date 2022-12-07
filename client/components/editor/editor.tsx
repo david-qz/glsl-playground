@@ -134,6 +134,7 @@ export default function Editor(): ReactElement {
             !loadingState.loading && !loadingState.error &&
             <ProgramTitle
               editable={isOwnProgram}
+              unsavedChanges={editorState.programHasUnsavedChanges}
               title={editorState.program.title}
               onChange={(title) => dispatch({ action: 'set-title', title })}
             />
