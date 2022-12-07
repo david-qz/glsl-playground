@@ -3,6 +3,8 @@
 interface CssExports {
   'button-group': string;
   'buttonGroup': string;
+  'content-area': string;
+  'contentArea': string;
   'layout': string;
 }
 export const cssExports: CssExports;

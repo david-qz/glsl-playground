@@ -12,10 +12,16 @@ import { ShaderType } from '../scene/webgl/shaders';
 import SaveIcon from '@mui/icons-material/Save';
 import RestorePageIcon from '@mui/icons-material/RestorePage';
 import * as ProgramsService from '../../services/programs-service';
-import { ReactElement, useEffect } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import IconButton from '../form-controls/icon-button';
 import { exampleVertexShader, exampleFragmentShader } from '../../utils/example-shaders';
 import { ProgramData } from '../../../common/api-types';
+import NotFound from '../not-found/not-found';
+
+type LoadingState = {
+  loading: boolean,
+  error: boolean
+};
 
 export default function Editor(): ReactElement {
   const { user, userId } = useAuthContext();
@@ -24,18 +30,27 @@ export default function Editor(): ReactElement {
   const programId = params.id || 'new';
 
   const [editorState, dispatch, EditorContextProvider] = useEditorState();
+  const [loadingState, setLoadingState] = useState<LoadingState>({ loading: true, error: false });
 
   useEffect(() => {
     if (programId === 'new') {
       const newProgram = createNewProgram(programId, userId);
       dispatch({ action: 'load-program', program: newProgram });
-    } else {
-      (async () => {
-        const program = await ProgramsService.getById(programId);
-        if (!program) return;
-        dispatch({ action: 'load-program', program });
-      })();
+      setLoadingState({ loading: false, error: false });
+      return;
     }
+
+    // If we aren't creating a new program, go fetch it.
+    (async () => {
+      setLoadingState({ loading: true, error: false });
+      const program = await ProgramsService.getById(programId);
+      if (!program) {
+        setLoadingState({ loading: false, error: true });
+        return;
+      }
+      dispatch({ action: 'load-program', program });
+      setLoadingState({ loading: false, error: false });
+    })();
   }, [programId, userId]);
 
   const isOwnProgram = editorState.isNewProgram || (!!user && user.id === editorState.program.userId);
@@ -68,16 +83,16 @@ export default function Editor(): ReactElement {
     dispatch({ action: 'revert' });
   }
 
-  return (
-    <EditorContextProvider value={[editorState, dispatch]}>
-      <div className={styles.layout}>
-        <Header style={{ gridArea: 'header' }}>
-          <ProgramTitle
-            editable={isOwnProgram}
-            title={editorState.program.title}
-            onChange={(title) => dispatch({ action: 'set-title', title })}
-          />
-        </Header>
+  if (loadingState.loading) {
+    return <div className={styles.contentArea}></div>;
+  }
+
+  const content = loadingState.error
+    ? (
+      <NotFound className={styles.contentArea} />
+    )
+    : (
+      <>
         <Toolbar style={{ gridArea: 'toolbar' }}>
           <ToolbarLeftGroup>
             <TabBar>
@@ -108,6 +123,23 @@ export default function Editor(): ReactElement {
         </Toolbar>
         <ProgramEditor style={{ gridArea: 'editor' }} />
         <Scene style={{ gridArea: 'scene' }} />
+      </>
+    );
+
+  return (
+    <EditorContextProvider value={[editorState, dispatch]}>
+      <div className={styles.layout}>
+        <Header style={{ gridArea: 'header' }}>
+          {
+            !loadingState.loading && !loadingState.error &&
+            <ProgramTitle
+              editable={isOwnProgram}
+              title={editorState.program.title}
+              onChange={(title) => dispatch({ action: 'set-title', title })}
+            />
+          }
+        </Header>
+        {content}
       </div>
     </EditorContextProvider>
   );

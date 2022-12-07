@@ -16,3 +16,8 @@
   align-items: center;
   margin-right: 10px;
 }
+
+.content-area {
+  grid-row: 2 / 4;
+  grid-column: 1 / 3;
+}

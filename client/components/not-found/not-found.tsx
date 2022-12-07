@@ -1,10 +1,15 @@
 import { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
+import { classes } from '../../utils/style-utils';
 import styles from './not-found.module.css';
 
-export default function NotFound(): ReactElement {
+type Props = {
+  className?: string
+};
+
+export default function NotFound({ className }: Props): ReactElement {
   return (
-    <div className={styles.container}>
+    <div className={classes(styles.container, className || false)}>
       <div className={styles.card}>
         <p className={styles.title}>404</p>
         <p className={styles.message}>The requested resource was not found.</p>
