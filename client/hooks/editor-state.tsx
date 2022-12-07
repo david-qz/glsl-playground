@@ -5,8 +5,12 @@ import { ProgramData } from '../../common/api-types';
 export type EditorState = {
   program: ProgramData,
   originalProgram: ProgramData,
+  isNewProgram: boolean,
   activeTab: ShaderType,
-  errors: ProgramCompilationErrors
+  errors: ProgramCompilationErrors,
+  vertexShaderHasErrors: boolean,
+  fragmentShaderHasErrors: boolean,
+  linkerHasErrors: boolean
 };
 
 type EditorActionLoadProgram = {
@@ -48,7 +52,8 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
       return {
         ...state,
         program: action.program,
-        originalProgram: action.program
+        originalProgram: action.program,
+        isNewProgram: action.program.id === 'new'
       };
     case 'revert':
       return {
@@ -78,9 +83,13 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
         }
       };
     case 'set-errors': {
-      const didCompile = action.errors.vertexShaderErrors.length === 0
-       && action.errors.fragmentShaderErrors.length === 0
-       && action.errors.linkerErrors.length === 0;
+      const errors = action.errors;
+
+      const vertexShaderHasErrors = errors.vertexShaderErrors.length !== 0;
+      const fragmentShaderHasErrors = errors.fragmentShaderErrors.length !== 0;
+      const linkerHasErrors = errors.linkerErrors.length !== 0;
+
+      const didCompile = !vertexShaderHasErrors && !fragmentShaderHasErrors && !linkerHasErrors;
 
       return {
         ...state,
@@ -88,7 +97,10 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
           ...state.program,
           didCompile
         },
-        errors: action.errors
+        errors: action.errors,
+        vertexShaderHasErrors,
+        fragmentShaderHasErrors,
+        linkerHasErrors
       };
     }
   }
@@ -121,11 +133,15 @@ function createInitialState(): EditorState {
   return {
     program: blankProgram,
     originalProgram: blankProgram,
+    isNewProgram: true,
     activeTab: ShaderType.Vertex,
     errors: {
       vertexShaderErrors: [],
       fragmentShaderErrors: [],
       linkerErrors: [],
-    }
+    },
+    vertexShaderHasErrors: false,
+    fragmentShaderHasErrors: false,
+    linkerHasErrors: false
   };
 }

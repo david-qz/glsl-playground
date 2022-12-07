@@ -13,8 +13,6 @@ export default function ProgramEditor({ style }: Props): ReactElement {
   const [editorState, dispatch] = useEditorStateContext();
 
   const [markers, annotations] = collectAnnotationsAndMarkers(editorState);
-
-  const linkerHasErrors = editorState.errors.linkerErrors.length !== 0;
   const combinedLinkerErrorMessage = editorState.errors.linkerErrors.map(error => error.message).join('\n');
 
   return (
@@ -34,7 +32,7 @@ export default function ProgramEditor({ style }: Props): ReactElement {
         markers={editorState.activeTab === ShaderType.Fragment ? markers : []}
       />
       {
-        linkerHasErrors
+        editorState.linkerHasErrors
         && <div className={styles.errorOverlay}>LINKER: {combinedLinkerErrorMessage}</div>
       }
     </div>

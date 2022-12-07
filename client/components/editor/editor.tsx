@@ -38,8 +38,7 @@ export default function Editor(): ReactElement {
     }
   }, [programId, userId]);
 
-  const isNewProgram = editorState.program.id === 'new';
-  const isOwnProgram = isNewProgram || (!!user && user.id === editorState.program.userId);
+  const isOwnProgram = editorState.isNewProgram || (!!user && user.id === editorState.program.userId);
 
   async function handleSave() {
     const localProgram = editorState.program;
@@ -69,10 +68,6 @@ export default function Editor(): ReactElement {
     dispatch({ action: 'revert' });
   }
 
-  const vertexShaderHasErrors = editorState.errors.vertexShaderErrors.length !== 0;
-  const fragmentShaderHasErrors = editorState.errors.fragmentShaderErrors.length !== 0;
-  const linkerHasErrors = editorState.errors.linkerErrors.length !== 0;
-
   return (
     <EditorContextProvider value={[editorState, dispatch]}>
       <div className={styles.layout}>
@@ -89,13 +84,13 @@ export default function Editor(): ReactElement {
               <Tab
                 title='program.vert'
                 active={editorState.activeTab === ShaderType.Vertex}
-                error={vertexShaderHasErrors || linkerHasErrors}
+                error={editorState.vertexShaderHasErrors || editorState.linkerHasErrors}
                 onClick={() => dispatch({ action: 'set-tab', tab: ShaderType.Vertex })}
               />
               <Tab
                 title='program.frag'
                 active={editorState.activeTab === ShaderType.Fragment}
-                error={fragmentShaderHasErrors || linkerHasErrors}
+                error={editorState.fragmentShaderHasErrors || editorState.linkerHasErrors}
                 onClick={() => dispatch({ action: 'set-tab', tab: ShaderType.Fragment })}
               />
             </TabBar>
