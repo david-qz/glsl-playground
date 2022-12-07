@@ -9,8 +9,7 @@ export type EditorState = {
   program: ProgramData,
   originalProgram: ProgramData,
   activeTab: ShaderType,
-  errors: ProgramCompilationErrors,
-  loading: boolean,
+  errors: ProgramCompilationErrors
 };
 
 type EditorActionLoadProgram = {
@@ -37,10 +36,6 @@ type EditorActionSetErrors = {
   action: 'set-errors',
   errors: ProgramCompilationErrors
 };
-type EditorStateSetLoading = {
-  action: 'set-loading',
-  loading: boolean
-};
 
 type EditorAction =
   | EditorActionLoadProgram
@@ -48,8 +43,7 @@ type EditorAction =
   | EditorStateSetTitle
   | EditorStateSetActiveTab
   | EditorActionSetSources
-  | EditorActionSetErrors
-  | EditorStateSetLoading;
+  | EditorActionSetErrors;
 
 function reducer(state: EditorState, action: EditorAction): EditorState {
   switch (action.action) {
@@ -57,8 +51,7 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
       return {
         ...state,
         program: action.program,
-        originalProgram: action.program,
-        loading: false
+        originalProgram: action.program
       };
     case 'revert':
       return {
@@ -101,8 +94,6 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
         errors: action.errors
       };
     }
-    case 'set-loading':
-      return { ...state, loading: action.loading };
   }
 }
 
@@ -154,8 +145,7 @@ function createInitialState(): EditorState {
       vertexShaderErrors: [],
       fragmentShaderErrors: [],
       linkerErrors: [],
-    },
-    loading: true
+    }
   };
 }
 
