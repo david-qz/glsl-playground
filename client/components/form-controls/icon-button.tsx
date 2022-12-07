@@ -10,7 +10,7 @@ type Props = {
 
 export default function IconButton({ children, ...forwardProps }: Props): ReactElement {
   return (
-    <Button {...forwardProps} className={classes(styles.iconButton, forwardProps.className || false)}>
+    <Button {...forwardProps} className={classes(styles.iconButton, forwardProps.className)}>
       {children}
     </Button>
   );

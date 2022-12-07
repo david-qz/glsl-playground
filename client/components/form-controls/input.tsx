@@ -8,7 +8,7 @@ export default function Input(props: Props): ReactElement {
   const extendedClassName = classes(
     styles.control,
     styles.input,
-    props.className || false
+    props.className
   );
 
   return (

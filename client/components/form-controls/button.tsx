@@ -8,7 +8,7 @@ export default function Button(props: Props): ReactElement {
   const extendedClassName = classes(
     styles.control,
     styles.button,
-    props.className || false
+    props.className
   );
 
   return (
