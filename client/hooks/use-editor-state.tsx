@@ -2,17 +2,20 @@ import { createContext, Dispatch, useContext, useReducer } from 'react';
 import { ShaderType, type ProgramCompilationErrors } from '../components/scene/webgl/shaders';
 import { ProgramData } from '../../common/api-types';
 
-export type EditorState = {
+interface CoreEditorState {
   program: ProgramData,
   lastSavedProgram: ProgramData,
+  activeTab: ShaderType,
+  errors: ProgramCompilationErrors
+}
+
+export interface EditorState extends CoreEditorState {
   programHasUnsavedChanges: boolean,
   isNewProgram: boolean,
-  activeTab: ShaderType,
-  errors: ProgramCompilationErrors,
   vertexShaderHasErrors: boolean,
   fragmentShaderHasErrors: boolean,
   linkerHasErrors: boolean
-};
+}
 
 type EditorActionLoadProgram = {
   action: 'load-program',
@@ -48,25 +51,25 @@ type EditorAction =
   | EditorActionSetErrors;
 
 function reducer(state: EditorState, action: EditorAction): EditorState {
-  let nextState: EditorState | undefined;
+  // First, update the state values which can't be derived.
+  let nextCoreState: CoreEditorState | undefined;
 
   switch (action.action) {
     case 'load-program':
-      nextState = {
+      nextCoreState = {
         ...state,
         program: action.program,
         lastSavedProgram: action.program,
-        isNewProgram: action.program.id === 'new'
       };
       break;
     case 'revert':
-      nextState = {
+      nextCoreState = {
         ...state,
         program: { ...state.lastSavedProgram },
       };
       break;
     case 'set-title':
-      nextState = {
+      nextCoreState = {
         ...state,
         program: {
           ...state.program,
@@ -75,13 +78,13 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
       };
       break;
     case 'set-tab':
-      nextState = {
+      nextCoreState = {
         ...state,
         activeTab: action.tab
       };
       break;
     case 'set-sources':
-      nextState = {
+      nextCoreState = {
         ...state,
         program: {
           ...state.program,
@@ -91,30 +94,31 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
       };
       break;
     case 'set-errors': {
-      const errors = action.errors;
-
-      const vertexShaderHasErrors = errors.vertexShaderErrors.length !== 0;
-      const fragmentShaderHasErrors = errors.fragmentShaderErrors.length !== 0;
-      const linkerHasErrors = errors.linkerErrors.length !== 0;
-
-      const didCompile = !vertexShaderHasErrors && !fragmentShaderHasErrors && !linkerHasErrors;
-
-      nextState = {
+      nextCoreState = {
         ...state,
         program: {
-          ...state.program,
-          didCompile
+          ...state.program
         },
-        errors: action.errors,
-        vertexShaderHasErrors,
-        fragmentShaderHasErrors,
-        linkerHasErrors
+        errors: action.errors
       };
       break;
     }
   }
 
-  nextState.programHasUnsavedChanges = !areProgramsEqual(nextState.program, nextState.lastSavedProgram);
+  // Now update all the derived state.
+  const nextState: EditorState = {
+    ...nextCoreState,
+    programHasUnsavedChanges: !areProgramsEqual(nextCoreState.program, nextCoreState.lastSavedProgram),
+    isNewProgram: nextCoreState.program.id === 'new',
+    vertexShaderHasErrors: nextCoreState.errors.vertexShaderErrors.length !== 0,
+    fragmentShaderHasErrors: nextCoreState.errors.fragmentShaderErrors.length !== 0,
+    linkerHasErrors: nextCoreState.errors.linkerErrors.length !== 0,
+  };
+
+  // The type checker can't help out on this one. When adding more state, make sure to watch out for cases like this.
+  nextState.program.didCompile = !nextState.vertexShaderHasErrors
+    && !nextState.fragmentShaderHasErrors
+    && !nextState.linkerHasErrors;
 
   return nextState;
 }
