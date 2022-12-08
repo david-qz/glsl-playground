@@ -1,0 +1,29 @@
+.root {
+  padding: 25px;
+  background-color: var(--background-color-medium);
+}
+
+.root > p {
+  font-size: 1.5rem;
+  margin-bottom: 40px;
+}
+
+.root > div {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.root button {
+  font-size: 1.2rem;
+}
+
+.destructive {
+  background-color: #c94545;
+}
+.destructive:hover {
+  background-color: #d85858;
+}
+.destructive:active {
+  background-color: #b64141;
+}
