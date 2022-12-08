@@ -82,10 +82,6 @@ export default function Editor(): ReactElement {
     dispatch({ action: 'revert' });
   }
 
-  if (loadingState.loading) {
-    return <div className={styles.contentArea}></div>;
-  }
-
   const content = loadingState.error
     ? (
       <NotFound className={styles.contentArea} />
@@ -141,7 +137,7 @@ export default function Editor(): ReactElement {
             />
           }
         </Header>
-        {content}
+        {!loadingState.loading && content}
       </div>
     </EditorContextProvider>
   );
