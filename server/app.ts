@@ -9,6 +9,7 @@ import environment from './environment.js';
 import express, { type Request, type Response } from 'express';
 import path from 'node:path';
 import api from './api.js';
+import expressStaticGzip from 'express-static-gzip';
 import errorHandler from './middleware/error.js';
 import cookieParser from 'cookie-parser';
 
@@ -26,7 +27,7 @@ app.use(environment.API_PREFIX, api);
 // process.cwd() returns) may not be safe in all occasions, but should be good
 // enough since we control the deployment context.
 const publicDir = path.join(process.cwd(), 'public');
-app.use(express.static(publicDir));
+app.use(expressStaticGzip(publicDir, { enableBrotli: true, orderPreference: ['br'] }));
 
 // Sending our index.html to the client on a 404 is required to make HTML5
 // routes. HTML5 routes are the routes using the paths instead of the
