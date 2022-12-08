@@ -1,22 +1,15 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import './reset.css';
-import './global.css';
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import Editor from './components/editor/editor';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AuthForm from './components/auth-form/auth-form';
-import HeaderLayout from './components/header-layout/header-layout';
-import { AuthContextProvider } from './hooks/use-auth-context';
 import Dashboard from './components/dashboard/dashboard';
+import Editor from './components/editor/editor';
+import HeaderLayout from './components/header-layout/header-layout';
 import NotFound from './components/not-found/not-found';
+import { AuthContextProvider } from './hooks/use-auth-context';
 
-const container = document.getElementById('app') || document.createElement('div');
-container.id = 'app';
-const root = createRoot(container);
-root.render(
-  <React.StrictMode>
+export default function App() {
+  return (
     <AuthContextProvider>
-      <Router>
+      <BrowserRouter>
         <Routes>
           <Route path="/" element={<Editor />} />
           <Route path="/program/:id" element={<Editor />} />
@@ -27,7 +20,7 @@ root.render(
             <Route path='*' element={<NotFound />} />
           </Route>
         </Routes>
-      </Router>
+      </BrowserRouter>
     </AuthContextProvider>
-  </React.StrictMode>
-);
+  );
+}

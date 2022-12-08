@@ -30,7 +30,7 @@ const env = Object.fromEntries(
 export default {
   // All Webpack bundles require a single entry point from which the entire
   // bundling process starts.
-  entry: './client/app.tsx',
+  entry: './client/index.tsx',
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   // This indicates how and where the final output is bundled.
   output: {
