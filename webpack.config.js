@@ -132,7 +132,9 @@ export default {
     // This extracts CSS data and puts it into a CSS file, which is then
     // included in our index.html. The gathering of the CSS data is done via the
     // plugin's loader, which can be seen in the rules section below for CSS.
-    new MiniCssExtractPlugin(),
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash].css'
+    }),
     // Bring this in to allow use of process.env in the web. See also the
     // resolve -> alias setting in this file, dotenv usage in this file, and
     // the added process package.
