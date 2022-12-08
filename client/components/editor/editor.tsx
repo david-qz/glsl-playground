@@ -109,7 +109,7 @@ export default function Editor(): ReactElement {
                 <RestoreIcon />
               </IconButton>}
               {isOwnProgram && (
-                <IconButton onClick={handleSave} disabled={!editorState.programHasUnsavedChanges}>
+                <IconButton onClick={handleSave} disabled={!editorState.programHasUnsavedChanges && !editorState.isNewProgram}>
                   <SaveIcon />
                 </IconButton>
               )}
