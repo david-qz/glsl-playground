@@ -20,7 +20,10 @@
 }
 
 .buttons {
-  display: grid;
-  align-items: center;
-  justify-items: end;
+  display: flex;
+  gap: 5px;
+}
+
+.delete-button {
+  color: var(--warning-color);
 }

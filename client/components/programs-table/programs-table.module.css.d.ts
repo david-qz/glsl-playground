@@ -2,6 +2,8 @@
 // Please do not change this file!
 interface CssExports {
   'buttons': string;
+  'delete-button': string;
+  'deleteButton': string;
   'programs-table': string;
   'programsTable': string;
 }

@@ -22,6 +22,10 @@ export default function Dashboard(): ReactElement {
     setPrograms(programs.filter(p => p.id !== programId));
   }
 
+  function handleEdit(programId: string) {
+    navigate('/program/' + programId);
+  }
+
   return (
     <div className={styles.layout}>
       <section className={styles.section}>
@@ -29,7 +33,7 @@ export default function Dashboard(): ReactElement {
           <h2 className={styles.heading}>Your Programs</h2>
         </div>
         {programs.length !== 0
-          ? <ProgramsTable programs={programs} handleDelete={handleDelete} />
+          ? <ProgramsTable programs={programs} handleDelete={handleDelete} handleEdit={handleEdit} />
           : <p>You don't have any programs yet.</p>}
         <Button
           className={styles.newProgramButton}
