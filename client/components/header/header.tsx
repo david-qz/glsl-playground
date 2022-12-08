@@ -34,7 +34,7 @@ export default function Header({ style, children }: Props): ReactElement {
         </MenuTitle>
         <MenuDivider />
         {navigationLinksToShow.map(nl => (
-          <MenuItem onClick={() => navigate(nl.path)}>
+          <MenuItem key={nl.path} onClick={() => navigate(nl.path)}>
             {nl.text}
           </MenuItem>
         ))}
