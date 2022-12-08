@@ -13,7 +13,7 @@ type Props = {
 };
 
 export default function Header({ style, children }: Props): ReactElement {
-  const { user, setUser } = useAuthContext();
+  const { user, setUser, userHasLoaded } = useAuthContext();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -25,8 +25,9 @@ export default function Header({ style, children }: Props): ReactElement {
 
   const navigationLinksToShow = navigationLinks.filter(nl => !nl.hidePattern.exec(location.pathname));
 
-  const userSlot = user
-    ? (
+  let userSlot: ReactNode = <></>;
+  if (user) {
+    userSlot = (
       <Menu>
         <MenuTitle>
           {`Signed in as ${user.email}`}
@@ -41,13 +42,15 @@ export default function Header({ style, children }: Props): ReactElement {
           <span className={styles.redText}>Log Out</span>
         </MenuItem>
       </Menu>
-    )
-    : (
+    );
+  } else if (userHasLoaded && !user) {
+    userSlot = (
       <>
         <Button className={styles.headerButton} onClick={() => navigate('/auth/sign-up')}>Sign Up</Button>
         <Button className={styles.headerButton} onClick={() => navigate('/auth/log-in')}>Log In</Button>
       </>
     );
+  }
 
   return (
     <div className={styles.header} style={style}>

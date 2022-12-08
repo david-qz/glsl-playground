@@ -11,10 +11,10 @@ import IconButton from '../form-controls/icon-button';
 import * as ProgramsService from '../../services/programs-service';
 
 export default function Dashboard(): ReactElement {
-  const { user } = useAuthContext();
+  const { user, userHasLoaded } = useAuthContext();
   const { programs, setPrograms } = usePrograms();
 
-  if (!user) {
+  if (userHasLoaded && !user) {
     return <Navigate to='/auth/log-in' replace={true} />;
   }
 

@@ -6,12 +6,14 @@ type UserSetter = (user: UserToken | null) => void;
 type AuthContextValue = {
   user: UserToken | null,
   userId: string,
+  userHasLoaded: boolean,
   setUser: UserSetter
 };
 
 const AuthContext = createContext<AuthContextValue>({
   user: null,
   userId: 'anon',
+  userHasLoaded: false,
   setUser: () => {}
 });
 
@@ -26,12 +28,8 @@ export function AuthContextProvider({ children }: { children: ReactNode }): Reac
     });
   }, []);
 
-  if (!responseReceived) {
-    return <></>;
-  }
-
   return (
-    <AuthContext.Provider value={{ user, userId: user?.id || 'anon', setUser }}>
+    <AuthContext.Provider value={{ user, userId: user?.id || 'anon', userHasLoaded: responseReceived, setUser }}>
       {children}
     </AuthContext.Provider>
   );
