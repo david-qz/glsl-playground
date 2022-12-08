@@ -1,18 +1,16 @@
 import { ReactElement } from 'react';
-import { Link, Navigate } from 'react-router-dom';
-import { ProgramData } from '../../../common/api-types';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../hooks/use-auth-context';
 import usePrograms from '../../hooks/use-programs';
 import styles from './dashboard.module.css';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import IconButton from '../form-controls/icon-button';
 import * as ProgramsService from '../../services/programs-service';
+import ProgramsTable from '../programs-table/programs-table';
+import Button from '../form-controls/button';
 
 export default function Dashboard(): ReactElement {
   const { user, userHasLoaded } = useAuthContext();
   const { programs, setPrograms } = usePrograms();
+  const navigate = useNavigate();
 
   if (userHasLoaded && !user) {
     return <Navigate to='/auth/log-in' replace={true} />;
@@ -27,40 +25,19 @@ export default function Dashboard(): ReactElement {
   return (
     <div className={styles.layout}>
       <section className={styles.section}>
-        <h2 className={styles.heading}>Your Programs</h2>
-        <table className={styles.programsTable}>
-          <thead>
-            <tr>
-              <td>Title</td>
-              <td>Compiled</td>
-              <td>Last Modified</td>
-              <td>Created</td>
-              <td>Actions</td>
-            </tr>
-          </thead>
-          <tbody>
-            {programs.map(p => tableRowFromProgram(p, handleDelete))}
-          </tbody>
-        </table>
+        <div>
+          <h2 className={styles.heading}>Your Programs</h2>
+        </div>
+        {programs.length !== 0
+          ? <ProgramsTable programs={programs} handleDelete={handleDelete} />
+          : <p>You don't have any programs yet.</p>}
+        <Button
+          className={styles.newProgramButton}
+          onClick={() => navigate('/')}
+        >
+          New Program
+        </Button>
       </section>
     </div>
   );
-}
-
-function tableRowFromProgram(program: ProgramData, handleDelete: (programId: string) => void) {
-  return <tr key={program.id}>
-    <td>
-      <Link to={`/program/${program.id}`}>
-        {program.title}
-      </Link>
-    </td>
-    <td>{program.didCompile.toString()}</td>
-    <td>{new Date(program.modifiedAt).toLocaleDateString()}</td>
-    <td>{new Date(program.createdAt).toLocaleDateString()}</td>
-    <td>
-      <IconButton onClick={() => handleDelete(program.id)}>
-        <DeleteIcon />
-      </IconButton>
-    </td>
-  </tr>;
 }
