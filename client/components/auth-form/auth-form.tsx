@@ -42,11 +42,11 @@ export default function AuthForm({ method }: Props): ReactElement {
         </div>
         <label>
           <span className={css.mediumText}>Email</span>
-          <Input className={css.smallText} name='email' type='email' />
+          <Input className={css.smallText} name='email' type='email' required />
         </label>
         <label>
           <span className={css.mediumText}>Password</span>
-          <Input className={css.smallText} name='password' type="password" />
+          <Input className={css.smallText} name='password' type="password" required minLength={6} />
         </label>
         <span className={css.smallText + ' ' + css.error}>{errorMessage}</span>
         <div className={css.grow}></div>
