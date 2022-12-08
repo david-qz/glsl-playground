@@ -1,6 +1,6 @@
 import { type Request, type Response, type NextFunction, Router } from 'express';
 import Program from '../models/program-model.js';
-import authenticate, { AuthenticatedRequest } from '../middleware/authenticate.js';
+import authenticate from '../middleware/authenticate.js';
 import HttpError from '../utils/http-error.js';
 import { ProgramData } from '../../common/api-types.js';
 
@@ -19,7 +19,7 @@ router.get('/:id', async (request: Request, response: Response, next: NextFuncti
   }
 });
 
-router.get('/', [authenticate], async (request: AuthenticatedRequest, response: Response, next: NextFunction) => {
+router.get('/', [authenticate], async (request: Request, response: Response, next: NextFunction) => {
   try {
     const user = request.user!;
     const programs = await Program.getByUserId(user.id);
@@ -30,7 +30,7 @@ router.get('/', [authenticate], async (request: AuthenticatedRequest, response: 
   }
 });
 
-router.post('/', [authenticate], async (request: AuthenticatedRequest, response: Response, next: NextFunction) => {
+router.post('/', [authenticate], async (request: Request, response: Response, next: NextFunction) => {
   try {
     const user = request.user!;
 
@@ -43,7 +43,7 @@ router.post('/', [authenticate], async (request: AuthenticatedRequest, response:
   }
 });
 
-router.patch('/:id', [authenticate], async (request: AuthenticatedRequest, response: Response, next: NextFunction) => {
+router.patch('/:id', [authenticate], async (request: Request, response: Response, next: NextFunction) => {
   try {
     const id = request.params.id!;
     const user = request.user!;
@@ -62,7 +62,7 @@ router.patch('/:id', [authenticate], async (request: AuthenticatedRequest, respo
   }
 });
 
-router.delete('/:id', [authenticate], async (request: AuthenticatedRequest, response: Response, next: NextFunction) => {
+router.delete('/:id', [authenticate], async (request: Request, response: Response, next: NextFunction) => {
   try {
     const id = request.params.id!;
     const user = request.user!;

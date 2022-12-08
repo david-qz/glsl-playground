@@ -1,6 +1,6 @@
 import { type Request, type Response, type NextFunction, Router } from 'express';
 import environment from '../environment.js';
-import authenticate, { type AuthenticatedRequest } from '../middleware/authenticate.js';
+import authenticate from '../middleware/authenticate.js';
 import * as UsersService from '../services/users-service.js';
 import HttpError from '../utils/http-error.js';
 
@@ -26,7 +26,7 @@ router.post('/', async (request: Request, response: Response, next: NextFunction
   }
 });
 
-router.get('/me', [authenticate], async (request: AuthenticatedRequest, response: Response, next: NextFunction) => {
+router.get('/me', [authenticate], async (request: Request, response: Response, next: NextFunction) => {
   try {
     const user = request.user!;
     response.json(user);
