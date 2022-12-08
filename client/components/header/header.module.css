@@ -1,5 +1,6 @@
 .header {
-  padding: 15px 10px;
+  min-height: 55px;
+  padding: 10px 10px;
   background-color: var(--background-color-light);
   border-bottom: 1px solid var(--border-color-dark);
   display: grid;
@@ -24,8 +25,16 @@
 }
 
 .header-button {
-  padding: 5px;
+  padding: 8px;
   font-size: 1.2rem;
+  background-color: var(--background-color-highlighted);
+  border: none;
+}
+.header-button:hover {
+  background-color: var(--background-color-bright);
+}
+.header-button:active {
+  background-color: var(--background-color-medium);
 }
 
 .red-text {
