@@ -141,11 +141,7 @@ export default {
     new webpack.ProvidePlugin({
       process: 'process/browser',
       React: 'react',
-    }),
-    // Prevent Webpack from rebuilding when the css.d.ts files are written out.
-    new webpack.WatchIgnorePlugin({
-      paths: [/css\.d\.ts$/],
-    }),
+    })
   ],
   resolve: {
     alias: {
