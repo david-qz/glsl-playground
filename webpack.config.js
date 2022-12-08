@@ -29,6 +29,30 @@ const env = Object.fromEntries(
   Object.entries(process.env).filter(([k, _v]) => frontEndVariables.includes(k))
 );
 
+const compressionPlugins = process.env.NODE_ENV === 'production'
+  ? [
+    new CompressionPlugin({
+      filename: '[path][base].gz',
+      algorithm: 'gzip',
+      test: /\.(js|css|html|svg|obj)$/,
+      threshold: 10240,
+      minRatio: 0.8,
+    }),
+    new CompressionPlugin({
+      filename: '[path][base].br',
+      algorithm: 'brotliCompress',
+      test: /\.(js|css|html|svg|obj)$/,
+      compressionOptions: {
+        params: {
+          [zlib.constants.BROTLI_PARAM_QUALITY]: 11,
+        },
+      },
+      threshold: 10240,
+      minRatio: 0.8,
+    })
+  ]
+  : [];
+
 export default {
   // All Webpack bundles require a single entry point from which the entire
   // bundling process starts.
@@ -76,25 +100,7 @@ export default {
     },
   },
   plugins: [
-    new CompressionPlugin({
-      filename: '[path][base].gz',
-      algorithm: 'gzip',
-      test: /\.(js|css|html|svg|obj)$/,
-      threshold: 10240,
-      minRatio: 0.8,
-    }),
-    new CompressionPlugin({
-      filename: '[path][base].br',
-      algorithm: 'brotliCompress',
-      test: /\.(js|css|html|svg|obj)$/,
-      compressionOptions: {
-        params: {
-          [zlib.constants.BROTLI_PARAM_QUALITY]: 11,
-        },
-      },
-      threshold: 10240,
-      minRatio: 0.8,
-    }),
+    ...compressionPlugins,
     // HtmlWebpackPlugin is able to take an HTML file and properly stuff in any
     // assets it thinks we are using, such as style sheets (CSS), JavaScript,
     // and even fonts. Anything included statically in our UI code will be
