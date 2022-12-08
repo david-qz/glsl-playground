@@ -27,7 +27,17 @@ app.use(environment.API_PREFIX, api);
 // process.cwd() returns) may not be safe in all occasions, but should be good
 // enough since we control the deployment context.
 const publicDir = path.join(process.cwd(), 'public');
-app.use(expressStaticGzip(publicDir, { enableBrotli: true, orderPreference: ['br'] }));
+app.use(expressStaticGzip(publicDir, {
+  enableBrotli: true,
+  orderPreference: ['br'],
+  serveStatic: {
+    setHeaders: (response, path, stat) => {
+      if (path.match(/\.obj(\.br|\.gz)?$/)) {
+        response.setHeader('Content-Type', 'text/plain');
+      }
+    }
+  }
+}));
 
 // Sending our index.html to the client on a 404 is required to make HTML5
 // routes. HTML5 routes are the routes using the paths instead of the
