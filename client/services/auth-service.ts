@@ -7,6 +7,9 @@ export async function getUser(): Promise<UserToken | null> {
   if (!response.ok) return null;
 
   const json: unknown = await response.json();
+
+  if (json === null) return null;
+
   return json as UserToken;
 }
 

@@ -65,7 +65,8 @@ describe('API /users routes', () => {
   it('GET /users/me should return 401 status if not logged in', async () => {
     // Get the current user without logging in
     const response = await request(app).get('/users/me');
-    expect(response.status).toEqual(401);
+    expect(response.status).toEqual(200);
+    expect(response.body).toEqual(null);
   });
 
   it('POST /users/sessions should log a user in', async () => {

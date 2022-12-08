@@ -1,4 +1,6 @@
 import { type Request, type Response, type NextFunction, Router } from 'express';
+import jwt from 'jsonwebtoken';
+import { UserToken } from '../../common/api-types.js';
 import environment from '../environment.js';
 import authenticate from '../middleware/authenticate.js';
 import * as UsersService from '../services/users-service.js';
@@ -26,12 +28,16 @@ router.post('/', async (request: Request, response: Response, next: NextFunction
   }
 });
 
-router.get('/me', [authenticate], async (request: Request, response: Response, next: NextFunction) => {
+router.get('/me', async (request: Request, response: Response, next: NextFunction) => {
   try {
-    const user = request.user!;
-    response.json(user);
+    const cookie: string = request.cookies[environment.SESSION_COOKIE] || '';
+
+    const jwtPayload: any = jwt.verify(cookie, environment.JWT_SECRET);
+    const token: UserToken = { id: jwtPayload.id, email: jwtPayload.email };
+
+    response.json(token);
   } catch (error) {
-    next(error);
+    response.json(null);
   }
 });
 
