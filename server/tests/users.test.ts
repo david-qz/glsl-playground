@@ -39,7 +39,7 @@ describe('API /users routes', () => {
 
   it('POST /users should error if email already exists', async () => {
     // Some credentials with the same email as an existing user
-    const userCredentials: UserCredentials = { ...testUsers.existing, password: 'blah' };
+    const userCredentials: UserCredentials = { ...testUsers.existing, password: 'blahblahblah' };
 
     // Expect sign-up request to fail
     const response = await request(app).post('/users').send(userCredentials);
