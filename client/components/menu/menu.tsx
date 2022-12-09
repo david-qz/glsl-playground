@@ -1,4 +1,5 @@
-import { FC, ReactElement, ReactNode, useEffect, useRef, useState } from 'react';
+import type { ReactElement, ReactNode } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import Button from '../form-controls/button';
 import styles from './menu.module.css';

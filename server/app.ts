@@ -36,8 +36,8 @@ app.use(expressStaticGzip(publicDir, {
         response.setHeader('Content-Type', 'text/plain');
       }
     },
-    maxAge: 3600000
-  }
+    maxAge: 3600000,
+  },
 }));
 
 app.all('*', (req: Request, res: Response) => {

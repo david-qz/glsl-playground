@@ -13,12 +13,12 @@ export default pool;
 const setupQueryPromise: Promise<string> = fs.readFile(path.resolve('./sql/setup.sql'), { encoding: 'utf-8' });
 const seedQueryPromise: Promise<string> = fs.readFile(path.resolve('./sql/seed.sql'), { encoding: 'utf-8' });
 
-export async function setupDatabase() {
+export async function setupDatabase(): Promise<pg.QueryResult> {
   const setupQuery = await setupQueryPromise;
   return await pool.query(setupQuery);
 }
 
-export async function seedDatabase() {
+export async function seedDatabase(): Promise<pg.QueryResult> {
   const seedQuery = await seedQueryPromise;
   return await pool.query(seedQuery);
 }

@@ -1,5 +1,6 @@
-import Mesh from './mesh';
-import { compileProgram, ProgramCompilationErrors, type ProgramInfo } from './shaders';
+import type Mesh from './mesh';
+import type { ProgramCompilationErrors } from './shaders';
+import { compileProgram, type ProgramInfo } from './shaders';
 import { mat4, vec2 } from 'gl-matrix';
 
 export default class SceneRenderer {
@@ -35,7 +36,7 @@ export default class SceneRenderer {
     this.initializeTexture();
   }
 
-  private render() {
+  private render(): void {
     const gl = this.gl;
 
     const canvas = gl.canvas;
@@ -88,7 +89,7 @@ export default class SceneRenderer {
     if (this.running) requestAnimationFrame(this.render.bind(this));
   }
 
-  private setUpVertexAttributes() {
+  private setUpVertexAttributes(): void {
     if (!this.programInfo) return;
     const gl = this.gl;
 
@@ -136,7 +137,7 @@ export default class SceneRenderer {
     }
   }
 
-  private initializeTexture() {
+  private initializeTexture(): void {
     const gl = this.gl;
 
     gl.bindTexture(gl.TEXTURE_2D, this.texture);

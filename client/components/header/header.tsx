@@ -1,4 +1,5 @@
-import { type ReactElement, type CSSProperties, ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import { type ReactElement, type CSSProperties } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../hooks/use-auth-context';
 import navigationLinks from '../../navigation-links';
@@ -17,7 +18,7 @@ export default function Header({ style, children }: Props): ReactElement {
   const navigate = useNavigate();
   const location = useLocation();
 
-  async function handleLogOut() {
+  async function handleLogOut(): Promise<void> {
     if (await logOut()) {
       setUser(null);
     }

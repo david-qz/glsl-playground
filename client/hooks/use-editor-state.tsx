@@ -1,12 +1,13 @@
-import { createContext, Dispatch, useContext, useReducer } from 'react';
+import type { Dispatch } from 'react';
+import { createContext, useContext, useReducer } from 'react';
 import { ShaderType, type ProgramCompilationErrors } from '../components/scene/webgl/shaders';
-import { ProgramData } from '../../common/api-types';
+import type { ProgramData } from '../../common/api-types';
 
 interface CoreEditorState {
   program: ProgramData,
   lastSavedProgram: ProgramData,
   activeTab: ShaderType,
-  errors: ProgramCompilationErrors
+  errors: ProgramCompilationErrors,
 }
 
 export interface EditorState extends CoreEditorState {
@@ -73,14 +74,14 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
         ...state,
         program: {
           ...state.program,
-          title: action.title
-        }
+          title: action.title,
+        },
       };
       break;
     case 'set-tab':
       nextCoreState = {
         ...state,
-        activeTab: action.tab
+        activeTab: action.tab,
       };
       break;
     case 'set-sources':
@@ -89,17 +90,17 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
         program: {
           ...state.program,
           vertexSource: action.vertexSource || state.program.vertexSource,
-          fragmentSource: action.fragmentSource || state.program.fragmentSource
-        }
+          fragmentSource: action.fragmentSource || state.program.fragmentSource,
+        },
       };
       break;
     case 'set-errors': {
       nextCoreState = {
         ...state,
         program: {
-          ...state.program
+          ...state.program,
         },
-        errors: action.errors
+        errors: action.errors,
       };
       break;
     }
@@ -145,7 +146,7 @@ function createInitialState(): EditorState {
     fragmentSource: '',
     didCompile: false,
     createdAt: '',
-    modifiedAt: ''
+    modifiedAt: '',
   };
   return {
     program: blankProgram,
@@ -160,7 +161,7 @@ function createInitialState(): EditorState {
     },
     vertexShaderHasErrors: false,
     fragmentShaderHasErrors: false,
-    linkerHasErrors: false
+    linkerHasErrors: false,
   };
 }
 

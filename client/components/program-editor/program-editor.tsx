@@ -1,7 +1,9 @@
 import { type IAnnotation, type IMarker } from 'react-ace';
-import { type CSSProperties, ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import { type CSSProperties } from 'react';
 import styles from './program-editor.module.css';
-import { EditorState, useEditorStateContext } from '../../hooks/use-editor-state';
+import type { EditorState } from '../../hooks/use-editor-state';
+import { useEditorStateContext } from '../../hooks/use-editor-state';
 import { ShaderType } from '../scene/webgl/shaders';
 import GLSLEditor from './glsl-editor';
 
@@ -65,7 +67,7 @@ function collectAnnotationsAndMarkers(editorState: EditorState): [Array<IMarker>
           endRow: rowNumber,
           endCol: span[1],
           className: styles.errorMarker,
-          type: 'text'
+          type: 'text',
         });
       }
     }

@@ -17,9 +17,9 @@ export async function logIn(email: string, password: string): Promise<UserToken 
   const response = await fetch(apiPrefix + '/users/sessions', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify({ email, password }),
   });
   const json: unknown = await response.json();
 
@@ -30,7 +30,7 @@ export async function logIn(email: string, password: string): Promise<UserToken 
 
 export async function logOut(): Promise<boolean> {
   const response = await fetch(apiPrefix + '/users/sessions', {
-    method: 'DELETE'
+    method: 'DELETE',
   });
   return response.ok;
 }
@@ -39,9 +39,9 @@ export async function signUp(email: string, password: string): Promise<UserToken
   const response = await fetch(apiPrefix + '/users', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify({ email, password }),
   });
   const json: unknown = await response.json();
 

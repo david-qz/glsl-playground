@@ -1,4 +1,5 @@
-import { ReactElement, useState } from 'react';
+import type { ReactElement } from 'react';
+import { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../hooks/use-auth-context';
 import usePrograms from '../../hooks/use-programs';
@@ -8,7 +9,7 @@ import ProgramsTable from '../programs-table/programs-table';
 import Button from '../form-controls/button';
 import Modal from '../modal/modal';
 import Confirmation from '../../confirmation/confirmation';
-import { ProgramData } from '../../../common/api-types';
+import type { ProgramData } from '../../../common/api-types';
 
 export default function Dashboard(): ReactElement {
   const { user, userHasLoaded } = useAuthContext();
@@ -20,7 +21,7 @@ export default function Dashboard(): ReactElement {
     return <Navigate to='/auth/log-in' replace={true} />;
   }
 
-  async function handleDelete() {
+  async function handleDelete(): Promise<void> {
     if (!programToDelete) return;
 
     const programId = programToDelete.id;
@@ -32,13 +33,13 @@ export default function Dashboard(): ReactElement {
     setProgramToDelete(null);
   }
 
-  function handleDeleteButtonPressed(programId: string) {
+  function handleDeleteButtonPressed(programId: string): void {
     const program = programs.find(p => p.id === programId);
     if (!program) return;
     setProgramToDelete(program);
   }
 
-  function handleEdit(programId: string) {
+  function handleEdit(programId: string): void {
     navigate('/program/' + programId);
   }
 

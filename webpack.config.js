@@ -49,7 +49,7 @@ const compressionPlugins = process.env.NODE_ENV === 'production'
       },
       threshold: 10240,
       minRatio: 0.8,
-    })
+    }),
   ]
   : [];
 
@@ -92,7 +92,7 @@ export default {
           // This rewritres the /api/v1 (coming from the browser) to nothing.
           // See API_PREFIX. When deployed, we set API_PREFIX to be /api/v1, but
           // if the API were ever to be versioned, we'd set it to /api/v2.
-          '^/api/v1': ''
+          '^/api/v1': '',
         },
         // This is our server that we want to reverse-proxy to.
         target: 'http://localhost:7890',
@@ -133,7 +133,7 @@ export default {
     // included in our index.html. The gathering of the CSS data is done via the
     // plugin's loader, which can be seen in the rules section below for CSS.
     new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css'
+      filename: '[name].[contenthash].css',
     }),
     // Bring this in to allow use of process.env in the web. See also the
     // resolve -> alias setting in this file, dotenv usage in this file, and
@@ -141,7 +141,7 @@ export default {
     new webpack.ProvidePlugin({
       process: 'process/browser',
       React: 'react',
-    })
+    }),
   ],
   resolve: {
     alias: {
@@ -189,7 +189,7 @@ export default {
           {
             loader: 'css-modules-typescript-loader',
             options: {
-              mode: process.env.CI ? 'verify' : 'emit'
+              mode: process.env.CI ? 'verify' : 'emit',
             },
           },
           {

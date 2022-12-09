@@ -1,4 +1,5 @@
-import { ReactElement, type DetailedHTMLProps, type InputHTMLAttributes } from 'react';
+import type { ReactElement } from 'react';
+import { type DetailedHTMLProps, type InputHTMLAttributes } from 'react';
 import { classes } from '../../utils/style-utils';
 import styles from './form-controls.module.css';
 

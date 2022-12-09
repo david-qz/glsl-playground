@@ -1,4 +1,4 @@
-import { MouseEvent, ReactElement, ReactNode } from 'react';
+import type { MouseEvent, ReactElement } from 'react';
 import styles from './modal.module.css';
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
 };
 
 export default function Modal({ children, open, onClickOut }: Props): ReactElement {
-  function handleClick(e: MouseEvent<HTMLDivElement>) {
+  function handleClick(e: MouseEvent<HTMLDivElement>): void {
     if (onClickOut && e.target === e.currentTarget) {
       onClickOut();
     }

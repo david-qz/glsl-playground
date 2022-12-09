@@ -14,7 +14,11 @@
     "jest": true
   },
   "rules": {
-    "no-unused-vars": "off",
+    "no-unused-vars": ["error", {
+      "args": "none",
+      "argsIgnorePattern": "^_",
+      "destructuredArrayIgnorePattern": "^_"
+    }],
     "indent": [
       "error",
       2,
@@ -28,6 +32,7 @@
     "space-infix-ops": "error",
     "object-curly-spacing": ["error", "always"],
     "comma-spacing": "error",
+    "comma-dangle": ["error", "always-multiline"],
     "eol-last": ["error", "always"],
     "arrow-spacing": [
       "error",
@@ -47,8 +52,7 @@
     "prefer-const": "error",
     "no-var": "error",
     "rest-spread-spacing": "error",
-    "prefer-arrow-callback": "error",
-    "object-shorthand": ["error", "always"]
+    "prefer-arrow-callback": "error"
   },
   "overrides": [
     {
@@ -57,8 +61,23 @@
       "parserOptions": { "project": ["./tsconfig.json"] },
       "plugins": ["@typescript-eslint"],
       "rules": {
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": ["error", {
+          "args": "none",
+          "argsIgnorePattern": "^_",
+          "destructuredArrayIgnorePattern": "^_"
+        }],
         "semi": "off",
-        "@typescript-eslint/semi": "error"
+        "@typescript-eslint/semi": "error",
+        "comma-dangle": "off",
+        "@typescript-eslint/comma-dangle": ["error", "always-multiline"],
+        "object-curly-spacing": "off",
+        "@typescript-eslint/object-curly-spacing": ["error", "always"],
+        "@typescript-eslint/consistent-type-exports": "error",
+        "@typescript-eslint/consistent-type-imports": "error",
+        "@typescript-eslint/explicit-function-return-type": ["error", {
+          "allowExpressions": true
+        }]
       }
     }
   ]

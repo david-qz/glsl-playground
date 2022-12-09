@@ -11,7 +11,7 @@ export default {
     'js',
     'jsx',
     'tsx',
-    'ts'
+    'ts',
   ],
   maxWorkers: 1,
   moduleNameMapper: {

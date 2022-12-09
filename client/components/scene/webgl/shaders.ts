@@ -1,6 +1,6 @@
 export enum ShaderType {
   Vertex = 'vertex-shader',
-  Fragment = 'fragment-shader'
+  Fragment = 'fragment-shader',
 }
 
 type ProgramCompilationResult =
@@ -160,7 +160,7 @@ function parseCompilerErrors(error: string): Array<CompilationError> {
       errorType: errorType === 'ERROR' ? ErrorType.Error : ErrorType.Warning,
       columnNumber: parseInt(column),
       lineNumber: parseInt(line),
-      message
+      message,
     });
   }
 

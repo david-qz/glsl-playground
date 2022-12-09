@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import HttpError from '../utils/http-error.js';
 import { type UserToken } from '../../common/api-types';
 
-export default async function authenticate(request: Request, response: Response, next: NextFunction) {
+export default async function authenticate(request: Request, response: Response, next: NextFunction): Promise<void> {
   try {
     const cookie: string = request.cookies[environment.SESSION_COOKIE] || '';
 
