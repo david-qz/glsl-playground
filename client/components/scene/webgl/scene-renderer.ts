@@ -15,6 +15,7 @@ export default class SceneRenderer {
 
   private vertexBuffer: WebGLBuffer;
   private indexBuffer: WebGLBuffer;
+  private texture: WebGLTexture;
 
   constructor(gl: WebGL2RenderingContext) {
     this.gl = gl;
@@ -26,6 +27,12 @@ export default class SceneRenderer {
     const indexBuffer = gl.createBuffer();
     if (!indexBuffer) throw new Error('Failed to create gl buffer.');
     this.indexBuffer = indexBuffer;
+
+    const texture = gl.createTexture();
+    if (!texture) throw new Error('Failed to create gl texture.');
+    this.texture = texture;
+
+    this.initializeTexture();
   }
 
   private render() {
@@ -88,13 +95,19 @@ export default class SceneRenderer {
     const positionAttributeInfo = this.programInfo.attributes.get('aVertexPosition');
     if (positionAttributeInfo) {
       gl.enableVertexAttribArray(positionAttributeInfo.location);
-      gl.vertexAttribPointer(positionAttributeInfo.location, 3, gl.FLOAT, false, 24, 0);
+      gl.vertexAttribPointer(positionAttributeInfo.location, 3, gl.FLOAT, false, 32, 0);
     }
 
     const normalAttributeInfo = this.programInfo.attributes.get('aVertexNormal');
     if (normalAttributeInfo) {
       gl.enableVertexAttribArray(normalAttributeInfo.location);
-      gl.vertexAttribPointer(normalAttributeInfo.location, 3, gl.FLOAT, true, 24, 12);
+      gl.vertexAttribPointer(normalAttributeInfo.location, 3, gl.FLOAT, true, 32, 12);
+    }
+
+    const uvAttributeInfo = this.programInfo.attributes.get('aTextureCoord');
+    if (uvAttributeInfo) {
+      gl.enableVertexAttribArray(uvAttributeInfo.location);
+      gl.vertexAttribPointer(uvAttributeInfo.location, 2, gl.FLOAT, false, 32, 24);
     }
   }
 
@@ -115,6 +128,34 @@ export default class SceneRenderer {
     const normalMatrixUniformInfo = this.programInfo.uniforms.get('uNormalMatrix');
     if (normalMatrixUniformInfo) {
       gl.uniformMatrix4fv(normalMatrixUniformInfo.location, false, normalMatrix);
+    }
+
+    const textureSampler = this.programInfo.uniforms.get('uTextureSampler');
+    if (textureSampler) {
+      gl.uniform1i(textureSampler.location, 0);
+    }
+  }
+
+  private initializeTexture() {
+    const gl = this.gl;
+
+    gl.bindTexture(gl.TEXTURE_2D, this.texture);
+    // Textures have to be loaded asynchronously, so we initialize the texture with a single black pixel while the
+    // actual texture is loading.
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 0, 255]));
+  }
+
+  async loadTextureAsync(url: string): Promise<void> {
+    const gl = this.gl;
+
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const imageBitmap = await createImageBitmap(blob);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, imageBitmap.width, imageBitmap.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, imageBitmap);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    } catch (error) {
+      console.error(error);
     }
   }
 
