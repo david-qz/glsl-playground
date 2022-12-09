@@ -35,7 +35,7 @@ export default class Mesh {
 
         const position = model.vertices[positionIndex];
         const normal = model.vertexNormals[normalIndex];
-        // const uv = model.textureCoords[uvIndex];
+        const uv = model.textureCoords[uvIndex];
 
         serializedVertices.push(position?.x || 0);
         serializedVertices.push(position?.y || 0);
@@ -45,8 +45,8 @@ export default class Mesh {
         serializedVertices.push(normal?.y || 0);
         serializedVertices.push(normal?.z || 0);
 
-        // serializedVertices.push(uv?.u || 0);
-        // serializedVertices.push(uv?.v || 0);
+        serializedVertices.push(uv?.u || 0);
+        serializedVertices.push(uv?.v || 0);
 
         serializedIndices.push(vertexCount);
         vertexToIndex.set(key, vertexCount);

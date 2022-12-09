@@ -10,7 +10,7 @@ type Props = {
 };
 
 export default function Scene({ style }: Props): ReactElement {
-  const meshState = useMeshFromModel('/models/smooth-teapot.obj');
+  const meshState = useMeshFromModel('/models/smooth-textured-teapot.obj');
   const [editorState, dispatch] = useEditorStateContext();
   const [pointerDown, setPointerDown] = useState<boolean>(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -35,6 +35,7 @@ export default function Scene({ style }: Props): ReactElement {
 
     const scene = new SceneRenderer(gl);
     updateProgram(vertexShaderSource, fragmentShaderSource);
+    scene.loadTextureAsync('/textures/granite.png');
     scene.setRunning(true);
 
     sceneRef.current = scene;
