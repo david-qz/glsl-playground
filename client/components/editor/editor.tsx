@@ -12,7 +12,8 @@ import { ShaderType } from '../scene/webgl/shaders';
 import SaveIcon from '@mui/icons-material/Save';
 import RestoreIcon from '@mui/icons-material/Restore';
 import * as ProgramsService from '../../services/programs-service';
-import { ReactElement, useEffect, useState } from 'react';
+import type { ReactElement } from 'react';
+import { useEffect, useState } from 'react';
 import IconButton from '../form-controls/icon-button';
 import { createNewProgram } from '../../utils/new-program';
 import NotFound from '../not-found/not-found';
@@ -54,7 +55,7 @@ export default function Editor(): ReactElement {
 
   const isOwnProgram = editorState.isNewProgram || (!!user && user.id === editorState.program.userId);
 
-  async function handleSave() {
+  async function handleSave(): Promise<void> {
     const localProgram = editorState.program;
 
     if (user && localProgram.userId === user.id) {
@@ -78,7 +79,7 @@ export default function Editor(): ReactElement {
     }
   }
 
-  function handleRevert() {
+  function handleRevert(): void {
     dispatch({ action: 'revert' });
   }
 

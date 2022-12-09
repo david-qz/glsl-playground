@@ -1,4 +1,4 @@
-import { ProgramData } from '../../common/api-types.js';
+import type { ProgramData } from '../../common/api-types.js';
 import pool from '../database.js';
 
 type ProgramRow = {
@@ -76,7 +76,7 @@ export default class Program implements ProgramData {
         updated.title,
         updated.vertexSource,
         updated.fragmentSource,
-        updated.didCompile
+        updated.didCompile,
       ]
     );
 

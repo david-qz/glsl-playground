@@ -3,7 +3,8 @@ import { describe, expect, it } from '@jest/globals';
 import request from 'supertest';
 import app from '../app';
 import { setupDatabase, seedDatabase } from '../database.js';
-import { testUsers, UserCredentials } from './utils';
+import type { UserCredentials } from './utils';
+import { testUsers } from './utils';
 
 describe('API /programs routes', () => {
   beforeEach(async () => {
@@ -50,7 +51,7 @@ describe('API /programs routes', () => {
       fragmentSource: expect.any(String),
       didCompile: expect.any(Boolean),
       createdAt: expect.any(String),
-      modifiedAt: expect.any(String)
+      modifiedAt: expect.any(String),
     });
   });
 
@@ -65,7 +66,7 @@ describe('API /programs routes', () => {
       title: 'a new program',
       vertexSource: 'bahfjasdhlkjg',
       fragmentSource: 'ajhsdfliuhefa',
-      didCompile: false
+      didCompile: false,
     };
 
     const response = await agent.post('/programs').send(newProgramData);
@@ -78,7 +79,7 @@ describe('API /programs routes', () => {
       fragmentSource: newProgramData.fragmentSource,
       didCompile: false,
       createdAt: expect.any(String),
-      modifiedAt: expect.any(String)
+      modifiedAt: expect.any(String),
     });
   });
 
@@ -87,7 +88,7 @@ describe('API /programs routes', () => {
       title: 'a new program',
       vertexSource: 'bahfjasdhlkjg',
       fragmentSource: 'ajhsdfliuhefa',
-      didCompile: false
+      didCompile: false,
     };
 
     const response = await request(app).post('/programs').send(newProgramData);
@@ -104,7 +105,7 @@ describe('API /programs routes', () => {
     // Get some updated data
     const updateData = {
       vertexSource: 'new vertex code',
-      fragmentSource: 'new fragment code'
+      fragmentSource: 'new fragment code',
     };
 
     // Do the update

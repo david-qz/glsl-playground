@@ -1,4 +1,4 @@
-import { ProgramData } from '../../common/api-types';
+import type { ProgramData } from '../../common/api-types';
 
 export function createNewProgram(programId: string, userId: string): ProgramData {
   return {
@@ -9,7 +9,7 @@ export function createNewProgram(programId: string, userId: string): ProgramData
     fragmentSource: exampleFragmentShader,
     didCompile: true,
     createdAt: new Date().toISOString(),
-    modifiedAt: new Date().toISOString()
+    modifiedAt: new Date().toISOString(),
   };
 }
 

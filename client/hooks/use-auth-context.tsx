@@ -1,5 +1,6 @@
-import { createContext, ReactElement, ReactNode, useContext, useEffect, useState } from 'react';
-import { UserToken } from '../../common/api-types';
+import type { ReactElement, ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
+import type { UserToken } from '../../common/api-types';
 import { getUser } from '../services/auth-service';
 
 type UserSetter = (user: UserToken | null) => void;
@@ -14,7 +15,7 @@ const AuthContext = createContext<AuthContextValue>({
   user: null,
   userId: 'anon',
   userHasLoaded: false,
-  setUser: () => {}
+  setUser: () => {},
 });
 
 export function AuthContextProvider({ children }: { children: ReactNode }): ReactElement {

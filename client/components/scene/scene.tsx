@@ -1,4 +1,5 @@
-import { CSSProperties, PointerEvent, WheelEvent, ReactElement, useEffect, useRef, useState } from 'react';
+import type { CSSProperties, PointerEvent, WheelEvent, ReactElement } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useEditorStateContext } from '../../hooks/use-editor-state';
 import SceneRenderer from './webgl/scene-renderer';
 import styles from './scene.module.css';
@@ -22,7 +23,7 @@ export default function Scene({ style }: Props): ReactElement {
     const errors = sceneRef.current?.loadProgram(vertexSource, fragmentSource);
     dispatch({
       action: 'set-errors',
-      errors: errors || { vertexShaderErrors: [], fragmentShaderErrors: [], linkerErrors: [] }
+      errors: errors || { vertexShaderErrors: [], fragmentShaderErrors: [], linkerErrors: [] },
     });
   }
 
@@ -54,7 +55,7 @@ export default function Scene({ style }: Props): ReactElement {
     updateProgram(vertexShaderSource, fragmentShaderSource);
   }, [vertexShaderSource, fragmentShaderSource]);
 
-  function handleDrag(e: PointerEvent<HTMLCanvasElement>) {
+  function handleDrag(e: PointerEvent<HTMLCanvasElement>): void {
     if (!pointerDown) return;
     if (!sceneRef.current || !canvasRef.current) return;
     const scene = sceneRef.current;
@@ -70,7 +71,7 @@ export default function Scene({ style }: Props): ReactElement {
     scene.setEulerAngles(rotation);
   }
 
-  function handleMouseWheel(e: WheelEvent<HTMLCanvasElement>) {
+  function handleMouseWheel(e: WheelEvent<HTMLCanvasElement>): void {
     if (!sceneRef.current) return;
     const scene = sceneRef.current;
 

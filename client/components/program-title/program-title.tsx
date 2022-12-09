@@ -1,4 +1,5 @@
-import { FormEvent, ReactElement, useRef, useState } from 'react';
+import type { FormEvent, ReactElement } from 'react';
+import { useRef, useState } from 'react';
 import Input from '../form-controls/input';
 import EditIcon from '@mui/icons-material/Edit';
 import styles from './program-title.module.css';
@@ -16,7 +17,7 @@ export default function ProgramTitle({ editable, title, onChange, unsavedChanges
   const [lastBlur, setLastBlur] = useState<number>(0);
   const formRef = useRef<HTMLFormElement>(null);
 
-  function handleFormSubmit(e: FormEvent<HTMLFormElement>) {
+  function handleFormSubmit(e: FormEvent<HTMLFormElement>): void {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const newTitle = formData.get('new-title') as string;
@@ -25,7 +26,7 @@ export default function ProgramTitle({ editable, title, onChange, unsavedChanges
     setEditing(false);
   }
 
-  function handleBlur() {
+  function handleBlur(): void {
     if (!formRef.current) return;
     const form = formRef.current;
 

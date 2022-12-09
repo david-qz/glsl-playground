@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import Button from '../components/form-controls/button';
 import { classes } from '../utils/style-utils';
 import styles from './confirmation.module.css';

@@ -1,4 +1,4 @@
-import { ProgramData } from '../../common/api-types';
+import type { ProgramData } from '../../common/api-types';
 import apiPrefix from './api-prefix';
 
 export async function getById(id: string): Promise<ProgramData | undefined> {
@@ -25,9 +25,9 @@ export async function create(program: ProgramData): Promise<ProgramData | undefi
   const response = await fetch(apiPrefix + '/programs', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify(program)
+    body: JSON.stringify(program),
   });
 
   if (!response.ok) {
@@ -41,9 +41,9 @@ export async function update(program: ProgramData): Promise<ProgramData | undefi
   const response = await fetch(apiPrefix + '/programs/' + program.id, {
     method: 'PATCH',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify(program)
+    body: JSON.stringify(program),
   });
 
   if (!response.ok) {
@@ -55,7 +55,7 @@ export async function update(program: ProgramData): Promise<ProgramData | undefi
 
 export async function deleteProgram(programId: string): Promise<ProgramData | undefined> {
   const response = await fetch(apiPrefix + '/programs/' + programId, {
-    method: 'DELETE'
+    method: 'DELETE',
   });
 
   if (!response.ok) {

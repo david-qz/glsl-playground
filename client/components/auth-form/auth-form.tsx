@@ -2,10 +2,11 @@ import Input from '../form-controls/input';
 import Button from '../form-controls/button';
 import css from './auth-form.module.css';
 import { useAuthContext } from '../../hooks/use-auth-context';
-import { FormEvent, ReactElement, useState } from 'react';
+import type { FormEvent, ReactElement } from 'react';
+import { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { logIn, signUp } from '../../services/auth-service';
-import { UserToken } from '../../../common/api-types';
+import type { UserToken } from '../../../common/api-types';
 
 type Method = 'log-in' | 'sign-up';
 type Props = { method: Method };
@@ -20,7 +21,7 @@ export default function AuthForm({ method }: Props): ReactElement {
 
   const [actionPhrase, alternativePhrase, alternativePath, authFunction] = derivedValues[method];
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const email: string = formData.get('email') as string;
@@ -65,12 +66,12 @@ const derivedValues: Record<Method, [string, string, string, AuthFunction]> = {
     'Log In',
     'Need to create an account? Sign up.',
     '/auth/sign-up',
-    logIn
+    logIn,
   ],
   'sign-up': [
     'Sign Up',
     'Already have an account? Log in.',
     '/auth/log-in',
-    signUp
-  ]
+    signUp,
+  ],
 };

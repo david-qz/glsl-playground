@@ -8,8 +8,8 @@ const navigationLinks: Array<NavigationLink> = [
   {
     text: 'Dashboard',
     path: '/dashboard',
-    hidePattern: /^\/dashboard/
-  }
+    hidePattern: /^\/dashboard/,
+  },
 ];
 
 export default navigationLinks;

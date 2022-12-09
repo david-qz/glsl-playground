@@ -29,7 +29,7 @@ describe('API /users routes', () => {
     const user = response.body;
     expect(user).toEqual({
       id: expect.any(String),
-      email: newUser.email
+      email: newUser.email,
     });
 
     // Should create a session cookie
@@ -58,7 +58,7 @@ describe('API /users routes', () => {
     expect(response.status).toEqual(200);
     expect(response.body).toEqual({
       id: expect.any(String),
-      email: userCredentials.email
+      email: userCredentials.email,
     });
   });
 

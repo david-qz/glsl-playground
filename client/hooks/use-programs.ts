@@ -1,8 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
-import { ProgramData } from '../../common/api-types';
+import type { ProgramData } from '../../common/api-types';
 import * as ProgramsService from '../services/programs-service';
 
-export default function usePrograms() {
+type ProgramsState = {
+  programs: Array<ProgramData>,
+  setPrograms: (programs: Array<ProgramData>) => void
+};
+
+export default function usePrograms(): ProgramsState
+{
   const [programs, setPrograms] = useState<Array<ProgramData>>([]);
 
   const setProgramsSorted = useCallback((programs: Array<ProgramData>) => {

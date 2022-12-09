@@ -1,8 +1,7 @@
 import { type Request, type Response, type NextFunction, Router } from 'express';
 import jwt from 'jsonwebtoken';
-import { UserToken } from '../../common/api-types.js';
+import type { UserToken } from '../../common/api-types.js';
 import environment from '../environment.js';
-import authenticate from '../middleware/authenticate.js';
 import * as UsersService from '../services/users-service.js';
 import HttpError from '../utils/http-error.js';
 

@@ -1,6 +1,5 @@
-import { ReactElement } from 'react';
-import { Link } from 'react-router-dom';
-import { ProgramData } from '../../../common/api-types';
+import type { ReactElement } from 'react';
+import type { ProgramData } from '../../../common/api-types';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '../form-controls/icon-button';
