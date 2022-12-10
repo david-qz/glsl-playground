@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 import compress from 'vite-plugin-compression';
 import sassDts from 'vite-plugin-sass-dts';
 
@@ -31,6 +32,7 @@ export default defineConfig({
     emptyOutDir: true,
   },
   plugins: [
+    react(),
     sassDts(),
     compress({
       filter: /\.(js|css|html|obj)$/i,
