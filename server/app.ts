@@ -32,11 +32,10 @@ app.use(expressStaticGzip(publicDir, {
   orderPreference: ['br'],
   serveStatic: {
     setHeaders: (response, path, stat) => {
-      if (path.match(/\.obj(\.br|\.gz)?$/)) {
-        response.setHeader('Content-Type', 'text/plain');
+      if (!path.match(/index\.html$/)) {
+        response.setHeader('Cache-Control', 'public, max-age=21600');
       }
     },
-    maxAge: 3600000,
   },
 }));
 
