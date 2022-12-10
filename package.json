@@ -13,7 +13,7 @@
     "setup-db": "ts-node --esm setup-db.ts",
     "start": "npm-run-all --parallel start:server start:web",
     "start:web": "vite",
-    "start:server": "nodemon --esm server/index.ts",
+    "start:server": "nodemon --ignore client/ --esm server/index.ts",
     "start:production": "node dist/server/index.js",
     "build": "npm-run-all --parallel build:web build:server",
     "build:web": "vite build",
@@ -80,8 +80,5 @@
     "vite": "^4.0.0",
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-sass-dts": "^1.2.7"
-  },
-  "nodemonConfig": {
-    "ignore": ["**/*.css.d.ts"]
   }
 }
