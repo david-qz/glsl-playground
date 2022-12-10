@@ -20,7 +20,8 @@ jobs:
         with:
           node-version: '18.x'
       - run: npm ci
-      - run: npm run lint
+      - run: npm run check
+      - run: npm run build
       - name: test
         run: |
           npm run setup-db

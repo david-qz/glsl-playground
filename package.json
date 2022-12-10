@@ -7,7 +7,9 @@
   "scripts": {
     "test": "jest",
     "test:watch": "npm run test -- --watch",
+    "check": "npm-run-all lint check-types",
     "lint": "eslint .",
+    "check-types": "tsc --noEmit",
     "setup-db": "ts-node --esm setup-db.ts",
     "start": "npm-run-all --parallel start:server start:web",
     "start:web": "vite",
