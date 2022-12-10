@@ -35,8 +35,10 @@ app.use(expressStaticGzip(publicDir, {
       if (path.match(/\.obj(\.br|\.gz)?$/)) {
         response.setHeader('Content-Type', 'text/plain');
       }
+      if (!path.match(/index\.html$/)) {
+        response.setHeader('Cache-Control', 'public, max-age=14400');
+      }
     },
-    maxAge: 3600000,
   },
 }));
 
