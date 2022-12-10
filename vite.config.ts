@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import compress from 'vite-plugin-compression';
+import sassDts from 'vite-plugin-sass-dts';
 
 export default defineConfig({
   root: './client',
@@ -24,6 +25,7 @@ export default defineConfig({
     emptyOutDir: true,
   },
   plugins: [
+    sassDts(),
     compress({
       filter: /\.(js|css|html|obj)$/i,
       algorithm: 'gzip',
