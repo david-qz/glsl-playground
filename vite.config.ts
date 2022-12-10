@@ -20,6 +20,7 @@ export default defineConfig({
       },
     },
   },
+  assetsInclude: ['**/*.obj'],
   css: {
     modules: {
       localsConvention: 'camelCaseOnly',

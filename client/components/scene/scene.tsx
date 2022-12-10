@@ -5,13 +5,15 @@ import SceneRenderer from './webgl/scene-renderer';
 import styles from './scene.module.css';
 import { vec2 } from 'gl-matrix';
 import useMeshFromModel from '../../hooks/use-mesh-from-model';
+import teapot from '../../assets/models/teapot.obj';
+import texture from '../../assets/textures/granite.png';
 
 type Props = {
   style: CSSProperties
 };
 
 export default function Scene({ style }: Props): ReactElement {
-  const meshState = useMeshFromModel('/models/smooth-textured-teapot.obj');
+  const meshState = useMeshFromModel(teapot);
   const [editorState, dispatch] = useEditorStateContext();
   const [pointerDown, setPointerDown] = useState<boolean>(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -36,7 +38,7 @@ export default function Scene({ style }: Props): ReactElement {
 
     const scene = new SceneRenderer(gl);
     updateProgram(vertexShaderSource, fragmentShaderSource);
-    scene.loadTextureAsync('/textures/granite.png');
+    scene.loadTextureAsync(texture);
     scene.setRunning(true);
 
     sceneRef.current = scene;
