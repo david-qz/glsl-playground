@@ -4,6 +4,7 @@ declare const classNames: {
   readonly bigText: 'bigText';
   readonly mediumText: 'mediumText';
   readonly smallText: 'smallText';
+  readonly fakeLink: 'fakeLink';
   readonly error: 'error';
   readonly grow: 'grow';
 };
@@ -14,5 +15,6 @@ export type ClassNames =
   | 'bigText'
   | 'mediumText'
   | 'smallText'
+  | 'fakeLink'
   | 'error'
   | 'grow';

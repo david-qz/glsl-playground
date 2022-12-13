@@ -27,6 +27,12 @@
   font-size: 1.2rem;
 }
 
+.fake-link {
+  text-decoration: underline;
+  cursor: pointer;
+  user-select: none;
+}
+
 .error {
   color: var(--accent-color-orange);
 }

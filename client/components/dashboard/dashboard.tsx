@@ -18,7 +18,7 @@ export default function Dashboard(): ReactElement {
   const navigate = useNavigate();
 
   if (userHasLoaded && !user) {
-    return <Navigate to='/auth/log-in' replace={true} />;
+    return <Navigate to='/auth' replace={true} />;
   }
 
   async function handleDelete(): Promise<void> {

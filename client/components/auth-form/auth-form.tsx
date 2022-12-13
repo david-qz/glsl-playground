@@ -4,22 +4,24 @@ import css from './auth-form.module.css';
 import { useAuthContext } from '../../hooks/use-auth-context';
 import type { FormEvent, ReactElement } from 'react';
 import { useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Navigate, useSearchParams } from 'react-router-dom';
 import { logIn, signUp } from '../../services/auth-service';
 import type { UserToken } from '../../../common/api-types';
+import { classes } from '../../utils/style-utils';
 
-type Method = 'log-in' | 'sign-up';
-type Props = { method: Method };
+export type AuthMethod = 'log-in' | 'sign-up';
 
-export default function AuthForm({ method }: Props): ReactElement {
+export default function AuthForm(): ReactElement {
   const { user, setUser, userHasLoaded }  = useAuthContext();
   const [errorMessage, setErrorMessage] = useState<string>();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const authMethod: AuthMethod = searchParams.get('method') === 'sign-up' ? 'sign-up' : 'log-in';
 
   if (userHasLoaded && user) {
     return <Navigate to="/" replace={true} />;
   }
 
-  const [actionPhrase, alternativePhrase, alternativePath, authFunction] = derivedValues[method];
+  const [actionPhrase, alternativePhrase, alternativeMethod, authFunction] = derivedValues[authMethod];
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
@@ -33,6 +35,14 @@ export default function AuthForm({ method }: Props): ReactElement {
     } else {
       setUser(response);
     }
+  }
+
+  function handleSwitchAuthMethod(): void {
+    setSearchParams(searchParams => {
+      const newParams = new URLSearchParams(searchParams);
+      newParams.set('method', alternativeMethod);
+      return newParams;
+    });
   }
 
   return (
@@ -52,26 +62,24 @@ export default function AuthForm({ method }: Props): ReactElement {
         <span className={css.smallText + ' ' + css.error}>{errorMessage}</span>
         <div className={css.grow}></div>
         <Button className={css.mediumText}>{actionPhrase}</Button>
-        <span className={css.smallText}>
-          <Link to={alternativePath}>{alternativePhrase}</Link>
-        </span>
+        <span className={classes(css.smallText, css.fakeLink)} onClick={handleSwitchAuthMethod}>{alternativePhrase}</span>
       </form>
     </div>
   );
 }
 
 type AuthFunction = (email: string, password: string) => Promise<UserToken | string>;
-const derivedValues: Record<Method, [string, string, string, AuthFunction]> = {
+const derivedValues: Record<AuthMethod, [string, string, AuthMethod, AuthFunction]> = {
   'log-in': [
     'Log In',
     'Need to create an account? Sign up.',
-    '/auth/sign-up',
+    'sign-up',
     logIn,
   ],
   'sign-up': [
     'Sign Up',
     'Already have an account? Log in.',
-    '/auth/log-in',
+    'log-in',
     signUp,
   ],
 };
