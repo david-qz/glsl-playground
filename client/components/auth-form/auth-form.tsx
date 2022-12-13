@@ -15,10 +15,12 @@ export default function AuthForm(): ReactElement {
   const { user, setUser, userHasLoaded }  = useAuthContext();
   const [errorMessage, setErrorMessage] = useState<string>();
   const [searchParams, setSearchParams] = useSearchParams();
+
   const authMethod: AuthMethod = searchParams.get('method') === 'sign-up' ? 'sign-up' : 'log-in';
+  const redirect: string = searchParams.get('redirect') || '/';
 
   if (userHasLoaded && user) {
-    return <Navigate to="/" replace={true} />;
+    return <Navigate to={redirect} replace={true} />;
   }
 
   const [actionPhrase, alternativePhrase, alternativeMethod, authFunction] = derivedValues[authMethod];
