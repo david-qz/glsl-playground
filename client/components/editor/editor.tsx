@@ -75,7 +75,8 @@ export default function Editor(): ReactElement {
         navigate('/program/' + program.id, { replace: true });
       }
     } else {
-      // TODO: let anonymous users save their programs by going through the auth flow.
+      window.sessionStorage.setItem('programToSave', JSON.stringify(editorState.program));
+      navigate('/auth?redirect=/save-program');
     }
   }
 

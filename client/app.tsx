@@ -5,6 +5,7 @@ import Dashboard from './components/dashboard/dashboard';
 import Editor from './components/editor/editor';
 import HeaderLayout from './components/header-layout/header-layout';
 import NotFound from './components/not-found/not-found';
+import SaveProgram from './components/save-program/save-program';
 import { AuthContextProvider } from './hooks/use-auth-context';
 
 export default function App(): ReactElement {
@@ -17,6 +18,7 @@ export default function App(): ReactElement {
           <Route element={<HeaderLayout />} >
             <Route path="/auth" element={<AuthForm />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path='/save-program' element={<SaveProgram />} />
             <Route path='*' element={<NotFound />} />
           </Route>
         </Routes>
