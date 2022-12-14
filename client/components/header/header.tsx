@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { type ReactElement, type CSSProperties } from 'react';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { isLoaded } from '../../../common/loading';
+import { Loader } from '../../hooks/use-loader';
 import { useAuthContext } from '../../hooks/use-auth-context';
 import navigationLinks from '../../navigation-links';
 import { logOut } from '../../services/auth-service';
@@ -43,7 +43,7 @@ export default function Header({ style, children }: Props): ReactElement {
   const navigationLinksToShow = navigationLinks.filter(nl => !nl.hidePattern.exec(location.pathname));
 
   let userSlot: ReactNode = <></>;
-  if (isLoaded(user) && user.value) {
+  if (Loader.isLoaded(user) && user.value) {
     userSlot = (
       <Menu>
         <MenuTitle>
@@ -60,7 +60,7 @@ export default function Header({ style, children }: Props): ReactElement {
         </MenuItem>
       </Menu>
     );
-  } else if (isLoaded(user) && !user.value) {
+  } else if (Loader.isLoaded(user) && !user.value) {
     userSlot = (
       <>
         <Button className={styles.headerButton} onClick={() => handleAuthButtonClick('sign-up')}>Sign Up</Button>

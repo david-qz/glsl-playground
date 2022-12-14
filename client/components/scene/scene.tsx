@@ -7,7 +7,7 @@ import { vec2 } from 'gl-matrix';
 import useMeshFromModel from '../../hooks/use-mesh-from-model';
 import teapot from '../../assets/models/teapot.obj';
 import texture from '../../assets/textures/granite.png';
-import { isLoaded, loadingDidError } from '../../../common/loading';
+import { Loader } from '../../hooks/use-loader';
 
 type Props = {
   style: CSSProperties
@@ -46,7 +46,7 @@ export default function Scene({ style }: Props): ReactElement {
   }, []);
 
   useEffect(() => {
-    if (!sceneRef.current || !isLoaded(mesh)) return;
+    if (!sceneRef.current || !Loader.isLoaded(mesh)) return;
     sceneRef.current.setMesh(mesh.value);
   }, [mesh]);
 
@@ -89,7 +89,7 @@ export default function Scene({ style }: Props): ReactElement {
         onPointerLeave={() => setPointerDown(false)}
         onWheel={(e) => handleMouseWheel(e)}
       />
-      {loadingDidError(mesh) && <span className={styles.error}>Failed to load model :(</span>}
+      {Loader.loadingDidError(mesh) && <span className={styles.error}>Failed to load model :(</span>}
     </div>
   );
 }

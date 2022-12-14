@@ -8,7 +8,7 @@ import { Navigate, useSearchParams } from 'react-router-dom';
 import { logIn, signUp } from '../../services/auth-service';
 import type { UserToken } from '../../../common/api-types';
 import { classes } from '../../utils/style-utils';
-import { isLoaded } from '../../../common/loading';
+import { Loader } from '../../hooks/use-loader';
 
 export type AuthMethod = 'log-in' | 'sign-up';
 
@@ -20,7 +20,7 @@ export default function AuthForm(): ReactElement {
   const authMethod: AuthMethod = searchParams.get('method') === 'sign-up' ? 'sign-up' : 'log-in';
   const redirect: string = searchParams.get('redirect') || '/';
 
-  if (isLoaded(user) && !!user.value) {
+  if (Loader.isLoaded(user) && !!user.value) {
     return <Navigate to={redirect} replace={true} />;
   }
 

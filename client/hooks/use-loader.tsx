@@ -2,13 +2,41 @@ import type { DependencyList, Dispatch } from 'react';
 import { useCallback } from 'react';
 import { useEffect, useState } from 'react';
 import { isError } from '../../common/result';
-import type { Loader, Loading } from '../../common/loading';
-import { LoadingState } from '../../common/loading';
+import type { Result } from '../../common/result';
+
+export enum LoadingState {
+  LOADING,
+  LOADED,
+  ERROR,
+}
+
+type VariantLoading = { state: LoadingState.LOADING };
+type VariantLoaded<T> = { state: LoadingState.LOADED, value: T };
+type VariantError = { state: LoadingState.ERROR, error: Error };
+
+export type Loading<T> =
+  | VariantLoading
+  | VariantLoaded<T>
+  | VariantError;
+
+export type LoaderFunction<T> = () => Promise<Result<T>>;
+
+export function isLoading<T>(loading: Loading<T>): loading is VariantLoading {
+  return loading.state === LoadingState.LOADING;
+}
+
+export function isLoaded<T>(loading: Loading<T>): loading is VariantLoaded<T> {
+  return loading.state === LoadingState.LOADED;
+}
+
+export function loadingDidError<T>(loading: Loading<T>): loading is VariantError {
+  return loading.state === LoadingState.ERROR;
+}
 
 export type LoadingStateUpdater<T> = (prev: T | undefined) => T | undefined;
 export type LoadingStateAction<T> = T | LoadingStateUpdater<T>;
 
-export default function useLoader<T>(loader: Loader<T>, dependencies?: DependencyList): [Loading<T>, Dispatch<LoadingStateAction<T>>] {
+export function useLoader<T>(loader: LoaderFunction<T>, dependencies?: DependencyList): [Loading<T>, Dispatch<LoadingStateAction<T>>] {
   const [loadingResource, setLoadingResource] = useState<Loading<T>>({ state: LoadingState.LOADING });
 
   useEffect(() => {
@@ -41,3 +69,5 @@ export default function useLoader<T>(loader: Loader<T>, dependencies?: Dependenc
 
   return [loadingResource, setResource];
 }
+
+export * as Loader from './use-loader';

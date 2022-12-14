@@ -17,8 +17,7 @@ import IconButton from '../form-controls/icon-button';
 import { createNewProgram } from '../../utils/new-program';
 import NotFound from '../not-found/not-found';
 import type { ProgramData } from '../../../common/api-types';
-import useLoader from '../../hooks/use-loader';
-import { isLoaded, isLoading, loadingDidError } from '../../../common/loading';
+import { Loader } from '../../hooks/use-loader';
 
 export default function Editor(): ReactElement {
   const { user } = useAuthContext();
@@ -28,7 +27,7 @@ export default function Editor(): ReactElement {
 
   const [editorState, dispatch, EditorContextProvider] = useEditorState();
 
-  const [program] = useLoader<ProgramData>(async () => {
+  const [program] = Loader.useLoader<ProgramData>(async () => {
     let program: ProgramData | undefined;
 
     if (programId === 'new') {
@@ -45,7 +44,7 @@ export default function Editor(): ReactElement {
   }, [programId]);
 
   const isNewProgram = editorState.isNewProgram;
-  const isOwnProgram = !isNewProgram && isLoaded(user) && user.value?.id === editorState.program.userId;
+  const isOwnProgram = !isNewProgram && Loader.isLoaded(user) && user.value?.id === editorState.program.userId;
 
   async function handleSave(): Promise<void> {
     if (isOwnProgram) {
@@ -75,7 +74,7 @@ export default function Editor(): ReactElement {
   }
 
   let content: ReactElement = <></>;
-  if (isLoaded(program)) {
+  if (Loader.isLoaded(program)) {
     content = (
       <>
         <Toolbar style={{ gridArea: 'toolbar' }}>
@@ -112,9 +111,9 @@ export default function Editor(): ReactElement {
         <Scene style={{ gridArea: 'scene' }} />
       </>
     );
-  } else if (isLoading(program)) {
+  } else if (Loader.isLoading(program)) {
     content = <></>;
-  } else if (loadingDidError(program)) {
+  } else if (Loader.loadingDidError(program)) {
     content = <NotFound className={styles.contentArea} />;
   }
 
@@ -122,7 +121,7 @@ export default function Editor(): ReactElement {
     <EditorContextProvider value={[editorState, dispatch]}>
       <div className={styles.layout}>
         <Header style={{ gridArea: 'header' }}>
-          {isLoaded(program) && (
+          {Loader.isLoaded(program) && (
             <ProgramTitle
               editable={isOwnProgram || isNewProgram}
               unsavedChanges={editorState.programHasUnsavedChanges}

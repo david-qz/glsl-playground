@@ -1,11 +1,10 @@
 import type { Dispatch } from 'react';
-import type { Loading } from '../../common/loading';
+import type { Loading, LoadingStateAction } from './use-loader';
 import Mesh from '../components/scene/webgl/mesh';
-import type { LoadingStateAction } from './use-loader';
-import useLoader from './use-loader';
+import { Loader } from './use-loader';
 
 export default function useMeshFromModel(url: string): [Loading<Mesh>, Dispatch<LoadingStateAction<Mesh>>] {
-  return useLoader<Mesh>(async () => {
+  return Loader.useLoader<Mesh>(async () => {
     const response = await fetch(url);
 
     if (!response.ok) {

@@ -9,23 +9,22 @@ import Button from '../form-controls/button';
 import Modal from '../modal/modal';
 import Confirmation from '../../confirmation/confirmation';
 import type { ProgramData } from '../../../common/api-types';
-import { isLoaded } from '../../../common/loading';
-import useLoader from '../../hooks/use-loader';
+import { Loader } from '../../hooks/use-loader';
 
 export default function Dashboard(): ReactElement {
   const navigate = useNavigate();
   const { user } = useAuthContext();
-  const [programs, setPrograms] = useLoader<Array<ProgramData>>(async () => {
+  const [programs, setPrograms] = Loader.useLoader<Array<ProgramData>>(async () => {
     return await ProgramsService.getUsersPrograms() || [];
   }, []);
   const [programToDelete, setProgramToDelete] = useState<ProgramData | null>(null);
 
-  if (isLoaded(user) && !user.value) {
+  if (Loader.isLoaded(user) && !user.value) {
     return <Navigate to='/auth' replace={true} />;
   }
 
   async function handleDelete(): Promise<void> {
-    if (!isLoaded(programs) || !programToDelete) return;
+    if (!Loader.isLoaded(programs) || !programToDelete) return;
 
     const result = await ProgramsService.deleteProgram(programToDelete.id);
     if (!result) return;
@@ -35,7 +34,7 @@ export default function Dashboard(): ReactElement {
   }
 
   function handleDeleteButtonPressed(programId: string): void {
-    if (!isLoaded(programs)) return;
+    if (!Loader.isLoaded(programs)) return;
 
     const program = programs.value.find(p => p.id === programId);
     if (!program) return;
@@ -49,7 +48,7 @@ export default function Dashboard(): ReactElement {
 
   return (
     <div className={styles.layout}>
-      {isLoaded(programs) && (
+      {Loader.isLoaded(programs) && (
         <section className={styles.section}>
           <div>
             <h2 className={styles.heading}>Your Programs</h2>
