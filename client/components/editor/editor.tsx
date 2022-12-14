@@ -17,7 +17,7 @@ import IconButton from '../form-controls/icon-button';
 import { createNewProgram } from '../../utils/new-program';
 import NotFound from '../not-found/not-found';
 import type { ProgramData } from '../../../common/api-types';
-import { Loader } from '../../hooks/use-loader';
+import { isLoaded, Loader } from '../../hooks/use-loader';
 import { isError } from '../../../common/result';
 
 export default function Editor(): ReactElement {
@@ -44,29 +44,31 @@ export default function Editor(): ReactElement {
     return program;
   }, [programId]);
 
-  const isNewProgram = editorState.isNewProgram;
-  const isOwnProgram = !isNewProgram && Loader.isLoaded(user) && user.value?.id === editorState.program.userId;
-
   async function handleSave(): Promise<void> {
-    if (isOwnProgram) {
-      const result = editorState.program.id === 'new'
-        ? await ProgramsService.create(editorState.program)
-        : await ProgramsService.update(editorState.program);
+    if (!isLoaded(user) || !isLoaded(program)) return;
+
+    if (user.value && editorState.isNewProgram) {
+      const result = await ProgramsService.create(editorState.program);
 
       if (isError(result)) {
-        // FIXME: Somehow let the user know this happened so they don't think their changes are safe.
-        console.error(result);
+        console.log(result);
         return;
       }
 
-      const program: ProgramData = result;
+      dispatch({ action: 'load-program', program: result });
+      navigate('/program/' + result.id, { replace: true });
+    }
+    else if (user.value && user.value.id === editorState.program.userId) {
+      const result = await ProgramsService.update(editorState.program);
 
-      dispatch({ action: 'load-program', program });
-
-      if (editorState.program.id === 'new') {
-        navigate('/program/' + program.id, { replace: true });
+      if (isError(result)) {
+        console.log(result);
+        return;
       }
-    } else if (isNewProgram) {
+
+      dispatch({ action: 'load-program', program: result });
+    }
+    else if (!user.value && editorState.isNewProgram) {
       window.sessionStorage.setItem('programToSave', JSON.stringify(editorState.program));
       navigate('/auth?redirect=/save-program');
     }
@@ -75,6 +77,8 @@ export default function Editor(): ReactElement {
   function handleRevert(): void {
     dispatch({ action: 'revert' });
   }
+
+  const isOwnProgram = editorState.isNewProgram || (Loader.isLoaded(user) &&  user.value?.id === editorState.program.userId);
 
   let content: ReactElement = <></>;
   if (Loader.isLoaded(program)) {
@@ -100,7 +104,7 @@ export default function Editor(): ReactElement {
               {editorState.programHasUnsavedChanges && <IconButton onClick={handleRevert}>
                 <RestoreIcon />
               </IconButton>}
-              {(isOwnProgram || isNewProgram) && (
+              {isOwnProgram && (
                 <IconButton onClick={handleSave} disabled={!editorState.programHasUnsavedChanges && !editorState.isNewProgram}>
                   <SaveIcon />
                 </IconButton>
@@ -126,7 +130,7 @@ export default function Editor(): ReactElement {
         <Header style={{ gridArea: 'header' }}>
           {Loader.isLoaded(program) && (
             <ProgramTitle
-              editable={isOwnProgram || isNewProgram}
+              editable={isOwnProgram}
               unsavedChanges={editorState.programHasUnsavedChanges}
               title={editorState.program.title}
               onChange={(title) => dispatch({ action: 'set-title', title })}
