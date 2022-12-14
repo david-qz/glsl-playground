@@ -20,7 +20,7 @@ export default function Header({ style, children }: Props): ReactElement {
   const { user, setUser } = useAuthContext();
   const navigate = useNavigate();
   const location = useLocation();
-  const [_, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   async function handleLogOut(): Promise<void> {
     const result = await logOut();
@@ -36,11 +36,9 @@ export default function Header({ style, children }: Props): ReactElement {
     if (location.pathname !== '/auth') {
       navigate('/auth?method=' + method, { replace: true });
     } else {
-      setSearchParams(searchParams => {
-        const newParams = new URLSearchParams(searchParams);
-        newParams.set('method', method);
-        return newParams;
-      });
+      const newParams = new URLSearchParams(searchParams);
+      newParams.set('method', method);
+      setSearchParams(newParams);
     }
   }
 

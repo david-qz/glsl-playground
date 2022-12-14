@@ -43,11 +43,9 @@ export default function AuthForm(): ReactElement {
   }
 
   function handleSwitchAuthMethod(): void {
-    setSearchParams(searchParams => {
-      const newParams = new URLSearchParams(searchParams);
-      newParams.set('method', alternativeMethod);
-      return newParams;
-    });
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('method', alternativeMethod);
+    setSearchParams(newParams);
   }
 
   return (
