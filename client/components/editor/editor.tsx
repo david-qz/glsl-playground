@@ -111,7 +111,7 @@ export default function Editor(): ReactElement {
               />
             </TabBar>
             <div className={styles.buttonGroup}>
-              {editorState.programHasUnsavedChanges && <IconButton onClick={handleRevert}>
+              {<IconButton onClick={handleRevert} disabled={!editorState.programHasUnsavedChanges}>
                 <RestoreIcon />
               </IconButton>}
               {isOwnProgram && (
