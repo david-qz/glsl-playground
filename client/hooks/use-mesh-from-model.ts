@@ -1,30 +1,20 @@
-import { useEffect, useState } from 'react';
+import type { Dispatch } from 'react';
+import type { Loading } from '../../common/loading';
 import Mesh from '../components/scene/webgl/mesh';
+import type { LoadingStateAction } from './use-loader';
+import useLoader from './use-loader';
 
-type MeshState = {
-  mesh?: Mesh,
-  loading: boolean,
-  error: boolean
-};
+export default function useMeshFromModel(url: string): [Loading<Mesh>, Dispatch<LoadingStateAction<Mesh>>] {
+  return useLoader<Mesh>(async () => {
+    const response = await fetch(url);
 
-export default function useMeshFromModel(url: string): MeshState {
-  const [meshState, setMeshState] = useState<MeshState>({ loading: true, error: false });
+    if (!response.ok) {
+      return new Error(`Failed to load model at ${url}`);
+    }
 
-  useEffect(() => {
-    (async () => {
-      const response = await fetch(url);
+    const rawData = await response.text();
+    const mesh = Mesh.fromObj(rawData);
 
-      if (!response.ok) {
-        setMeshState({ loading: false, error: true });
-        return;
-      }
-
-      const rawData = await response.text();
-      const mesh = Mesh.fromObj(rawData);
-
-      setMeshState({ mesh, loading: false, error: false });
-    })();
-  }, []);
-
-  return meshState;
+    return mesh;
+  }, [url]);
 }

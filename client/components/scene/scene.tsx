@@ -7,13 +7,14 @@ import { vec2 } from 'gl-matrix';
 import useMeshFromModel from '../../hooks/use-mesh-from-model';
 import teapot from '../../assets/models/teapot.obj';
 import texture from '../../assets/textures/granite.png';
+import { isLoaded, loadingDidError } from '../../../common/loading';
 
 type Props = {
   style: CSSProperties
 };
 
 export default function Scene({ style }: Props): ReactElement {
-  const meshState = useMeshFromModel(teapot);
+  const [mesh] = useMeshFromModel(teapot);
   const [editorState, dispatch] = useEditorStateContext();
   const [pointerDown, setPointerDown] = useState<boolean>(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -45,13 +46,9 @@ export default function Scene({ style }: Props): ReactElement {
   }, []);
 
   useEffect(() => {
-    if (!sceneRef.current) return;
-    const scene = sceneRef.current;
-
-    if (meshState.mesh) {
-      scene.setMesh(meshState.mesh);
-    }
-  }, [meshState]);
+    if (!sceneRef.current || !isLoaded(mesh)) return;
+    sceneRef.current.setMesh(mesh.value);
+  }, [mesh]);
 
   useEffect(() => {
     updateProgram(vertexShaderSource, fragmentShaderSource);
@@ -92,7 +89,7 @@ export default function Scene({ style }: Props): ReactElement {
         onPointerLeave={() => setPointerDown(false)}
         onWheel={(e) => handleMouseWheel(e)}
       />
-      {meshState.error && <span className={styles.error}>Failed to load model :(</span>}
+      {loadingDidError(mesh) && <span className={styles.error}>Failed to load model :(</span>}
     </div>
   );
 }

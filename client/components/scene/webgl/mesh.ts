@@ -1,4 +1,5 @@
 import ObjFileParser from 'obj-file-parser';
+import type { Result } from '../../../../common/result';
 
 export default class Mesh {
   vertices: Float32Array;
@@ -9,11 +10,11 @@ export default class Mesh {
     this.indices = indices;
   }
 
-  static fromObj(objData: string): Mesh {
+  static fromObj(objData: string): Result<Mesh> {
     const objParser = new ObjFileParser(objData);
     const [model] = objParser.parse().models;
 
-    if (!model) throw new Error('failed to parse model');
+    if (!model) return new Error('Failed to parse model.');
 
     const vertexToIndex = new Map<number, number>();
     const serializedVertices = [];
