@@ -21,7 +21,7 @@ import useLoader from '../../hooks/use-loader';
 import { isLoaded, isLoading, loadingDidError } from '../../../common/loading';
 
 export default function Editor(): ReactElement {
-  const { user, userId } = useAuthContext();
+  const { user } = useAuthContext();
   const navigate = useNavigate();
   const params = useParams();
   const programId = params.id || 'new';
@@ -32,7 +32,7 @@ export default function Editor(): ReactElement {
     let program: ProgramData | undefined;
 
     if (programId === 'new') {
-      program = createNewProgram(programId, userId);
+      program = createNewProgram(programId);
     } else {
       // If we aren't creating a new program, go fetch it.
       const fetchedProgram = await ProgramsService.getById(programId);
