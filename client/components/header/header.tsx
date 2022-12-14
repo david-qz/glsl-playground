@@ -9,6 +9,7 @@ import type { AuthMethod } from '../auth-form/auth-form';
 import Button from '../form-controls/button';
 import Menu, { MenuItem, MenuDivider, MenuTitle } from '../menu/menu';
 import styles from './header.module.css';
+import { isError } from '../../../common/result';
 
 type Props = {
   style?: CSSProperties,
@@ -22,8 +23,11 @@ export default function Header({ style, children }: Props): ReactElement {
   const [_, setSearchParams] = useSearchParams();
 
   async function handleLogOut(): Promise<void> {
-    if (await logOut()) {
+    const result = await logOut();
+    if (!isError(result)) {
       setUser(null);
+    } else {
+      console.error(result);
     }
   }
 

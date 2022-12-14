@@ -18,6 +18,7 @@ import { createNewProgram } from '../../utils/new-program';
 import NotFound from '../not-found/not-found';
 import type { ProgramData } from '../../../common/api-types';
 import { Loader } from '../../hooks/use-loader';
+import { isError } from '../../../common/result';
 
 export default function Editor(): ReactElement {
   const { user } = useAuthContext();
@@ -34,9 +35,9 @@ export default function Editor(): ReactElement {
       program = createNewProgram(programId);
     } else {
       // If we aren't creating a new program, go fetch it.
-      const fetchedProgram = await ProgramsService.getById(programId);
-      if (!fetchedProgram) return new Error(`Failed to fetch program id=${programId}`);
-      program = fetchedProgram;
+      const result = await ProgramsService.getById(programId);
+      if (isError(result)) return result;
+      program = result;
     }
 
     dispatch({ action: 'load-program', program: program });
@@ -48,15 +49,17 @@ export default function Editor(): ReactElement {
 
   async function handleSave(): Promise<void> {
     if (isOwnProgram) {
-      const program = editorState.program.id === 'new'
+      const result = editorState.program.id === 'new'
         ? await ProgramsService.create(editorState.program)
         : await ProgramsService.update(editorState.program);
 
-      if (!program) {
+      if (isError(result)) {
         // FIXME: Somehow let the user know this happened so they don't think their changes are safe.
-        console.error('Program failed to save!');
+        console.error(result);
         return;
       }
+
+      const program: ProgramData = result;
 
       dispatch({ action: 'load-program', program });
 

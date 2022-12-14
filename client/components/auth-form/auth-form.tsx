@@ -9,6 +9,8 @@ import { logIn, signUp } from '../../services/auth-service';
 import type { UserToken } from '../../../common/api-types';
 import { classes } from '../../utils/style-utils';
 import { Loader } from '../../hooks/use-loader';
+import type { Result } from '../../../common/result';
+import { isError } from '../../../common/result';
 
 export type AuthMethod = 'log-in' | 'sign-up';
 
@@ -32,11 +34,11 @@ export default function AuthForm(): ReactElement {
     const email: string = formData.get('email') as string;
     const password: string = formData.get('password') as string;
 
-    const response = await authFunction(email, password);
-    if (typeof response === 'string') {
-      setErrorMessage(response);
+    const result = await authFunction(email, password);
+    if (isError(result)) {
+      setErrorMessage(result.message);
     } else {
-      setUser(response);
+      setUser(result);
     }
   }
 
@@ -71,7 +73,7 @@ export default function AuthForm(): ReactElement {
   );
 }
 
-type AuthFunction = (email: string, password: string) => Promise<UserToken | string>;
+type AuthFunction = (email: string, password: string) => Promise<Result<UserToken>>;
 const derivedValues: Record<AuthMethod, [string, string, AuthMethod, AuthFunction]> = {
   'log-in': [
     'Log In',

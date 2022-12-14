@@ -1,19 +1,17 @@
 import apiPrefix from './api-prefix';
 import { type UserToken, type ApiError } from '../../common/api-types';
+import type { Result } from '../../common/result';
 
-export async function getUser(): Promise<UserToken | null> {
+export async function getUser(): Promise<Result<UserToken | null>> {
   const response = await fetch(apiPrefix + '/users/me');
-
-  if (!response.ok) return null;
-
   const json: unknown = await response.json();
 
-  if (json === null) return null;
+  if (!response.ok) return new Error((json as ApiError).message);
 
-  return json as UserToken;
+  return json as UserToken | null;
 }
 
-export async function logIn(email: string, password: string): Promise<UserToken | string> {
+export async function logIn(email: string, password: string): Promise<Result<UserToken>> {
   const response = await fetch(apiPrefix + '/users/sessions', {
     method: 'POST',
     headers: {
@@ -23,19 +21,12 @@ export async function logIn(email: string, password: string): Promise<UserToken 
   });
   const json: unknown = await response.json();
 
-  if (!response.ok) return (json as ApiError).message;
+  if (!response.ok) return new Error((json as ApiError).message);
 
   return json as UserToken;
 }
 
-export async function logOut(): Promise<boolean> {
-  const response = await fetch(apiPrefix + '/users/sessions', {
-    method: 'DELETE',
-  });
-  return response.ok;
-}
-
-export async function signUp(email: string, password: string): Promise<UserToken | string> {
+export async function signUp(email: string, password: string): Promise<Result<UserToken>> {
   const response = await fetch(apiPrefix + '/users', {
     method: 'POST',
     headers: {
@@ -45,7 +36,14 @@ export async function signUp(email: string, password: string): Promise<UserToken
   });
   const json: unknown = await response.json();
 
-  if (!response.ok) return (json as ApiError).message;
+  if (!response.ok) return new Error((json as ApiError).message);
 
   return json as UserToken;
+}
+
+export async function logOut(): Promise<Result<true>> {
+  const response = await fetch(apiPrefix + '/users/sessions', {
+    method: 'DELETE',
+  });
+  return response.ok ? true : new Error('Failed to log out.');
 }
