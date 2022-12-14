@@ -28,7 +28,7 @@ export default function Editor(): ReactElement {
 
   const [editorState, dispatch, EditorContextProvider] = useEditorState();
 
-  const program = useLoader<ProgramData>(async () => {
+  const [program] = useLoader<ProgramData>(async () => {
     let program: ProgramData | undefined;
 
     if (programId === 'new') {
