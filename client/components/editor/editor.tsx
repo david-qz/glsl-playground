@@ -47,10 +47,8 @@ export default function Editor(): ReactElement {
     return program;
   }, [programId]);
 
-  useNavBlocker(
-    ({ confirm, cancel }) => {
-      unsavedChangesModal().then(confirm).catch(cancel);
-    },
+  const unblock = useNavBlocker(
+    ({ confirm, cancel }) => unsavedChangesModal().then(confirm).catch(cancel),
     editorState.programHasUnsavedChanges && !isLoading(program)
   );
 
@@ -66,6 +64,7 @@ export default function Editor(): ReactElement {
       }
 
       dispatch({ action: 'load-program', program: result });
+      unblock();
       navigate('/program/' + result.id, { replace: true });
     }
     else if (user.value && user.value.id === editorState.program.userId) {
@@ -80,6 +79,7 @@ export default function Editor(): ReactElement {
     }
     else if (!user.value && editorState.isNewProgram) {
       window.sessionStorage.setItem('programToSave', JSON.stringify(editorState.program));
+      unblock();
       navigate('/auth?redirect=/save-program');
     }
   }

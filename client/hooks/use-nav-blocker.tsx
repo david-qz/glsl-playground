@@ -12,7 +12,7 @@ export type NavBlockerControl = {
 
 export type NavBlocker = (control: NavBlockerControl) => void;
 
-export function useNavBlocker(onBlock: NavBlocker, when: Boolean = true): void {
+export function useNavBlocker(onBlock: NavBlocker, when: Boolean = true): () => void {
   const { block } = useContext(UNSAFE_NavigationContext).navigator as History;
 
   // Latest ref pattern
@@ -20,8 +20,15 @@ export function useNavBlocker(onBlock: NavBlocker, when: Boolean = true): void {
   const onBlockRef = useRef(onBlock);
   useLayoutEffect(() => { onBlockRef.current = onBlock; });
 
+  // A ref to the unblock function so we can pass it out of the hook
+  const unblockRef = useRef(() => {});
+  const invalidateRef = useRef(0);
+
   useEffect(() => {
-    if (!when) return;
+    if (!when) {
+      unblockRef.current = () => {};
+      return;
+    }
 
     let blockerIsActive = false;
 
@@ -41,6 +48,14 @@ export function useNavBlocker(onBlock: NavBlocker, when: Boolean = true): void {
       });
     });
 
+    unblockRef.current = () => {
+      unblock();
+      invalidateRef.current++;
+    };
+
     return unblock;
-  }, [block, when]);
+  }, [block, when, invalidateRef.current]);
+
+  // If we're not blocking just pass a no-op so the consumer doesn't have to type narrow
+  return unblockRef.current;
 }
