@@ -17,8 +17,11 @@ import IconButton from '../form-controls/icon-button';
 import { createNewProgram } from '../../utils/new-program';
 import NotFound from '../not-found/not-found';
 import type { ProgramData } from '../../../common/api-types';
-import { isLoaded, Loader } from '../../hooks/use-loader';
+import { isLoaded, isLoading, Loader } from '../../hooks/use-loader';
 import { isError } from '../../../common/result';
+import { unsavedChangesModal } from '../unsaved-changes-modal/unsaved-changes-modal';
+import { useNavBlocker } from '../../hooks/use-nav-blocker';
+import ModalContainer from 'react-modal-promise';
 
 export default function Editor(): ReactElement {
   const { user } = useAuthContext();
@@ -43,6 +46,13 @@ export default function Editor(): ReactElement {
     dispatch({ action: 'load-program', program: program });
     return program;
   }, [programId]);
+
+  useNavBlocker(
+    ({ confirm, cancel }) => {
+      unsavedChangesModal().then(confirm).catch(cancel);
+    },
+    editorState.programHasUnsavedChanges && !isLoading(program)
+  );
 
   async function handleSave(): Promise<void> {
     if (!isLoaded(user) || !isLoaded(program)) return;
@@ -139,6 +149,7 @@ export default function Editor(): ReactElement {
         </Header>
         {content}
       </div>
+      <ModalContainer />
     </EditorContextProvider>
   );
 }
