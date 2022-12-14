@@ -44,15 +44,14 @@ export default function Editor(): ReactElement {
     return program;
   }, [programId]);
 
-  const isOwnProgram = editorState.isNewProgram || (!!user && user.id === editorState.program.userId);
+  const isNewProgram = editorState.isNewProgram;
+  const isOwnProgram = !isNewProgram && isLoaded(user) && user.value?.id === editorState.program.userId;
 
   async function handleSave(): Promise<void> {
-    const localProgram = editorState.program;
-
-    if (user && localProgram.userId === user.id) {
-      const program = localProgram.id === 'new'
-        ? await ProgramsService.create(localProgram)
-        : await ProgramsService.update(localProgram);
+    if (isOwnProgram) {
+      const program = editorState.program.id === 'new'
+        ? await ProgramsService.create(editorState.program)
+        : await ProgramsService.update(editorState.program);
 
       if (!program) {
         // FIXME: Somehow let the user know this happened so they don't think their changes are safe.
@@ -62,10 +61,10 @@ export default function Editor(): ReactElement {
 
       dispatch({ action: 'load-program', program });
 
-      if (localProgram.id === 'new') {
+      if (editorState.program.id === 'new') {
         navigate('/program/' + program.id, { replace: true });
       }
-    } else {
+    } else if (isNewProgram) {
       window.sessionStorage.setItem('programToSave', JSON.stringify(editorState.program));
       navigate('/auth?redirect=/save-program');
     }
@@ -99,7 +98,7 @@ export default function Editor(): ReactElement {
               {editorState.programHasUnsavedChanges && <IconButton onClick={handleRevert}>
                 <RestoreIcon />
               </IconButton>}
-              {isOwnProgram && (
+              {(isOwnProgram || isNewProgram) && (
                 <IconButton onClick={handleSave} disabled={!editorState.programHasUnsavedChanges && !editorState.isNewProgram}>
                   <SaveIcon />
                 </IconButton>
@@ -125,7 +124,7 @@ export default function Editor(): ReactElement {
         <Header style={{ gridArea: 'header' }}>
           {isLoaded(program) && (
             <ProgramTitle
-              editable={isOwnProgram}
+              editable={isOwnProgram || isNewProgram}
               unsavedChanges={editorState.programHasUnsavedChanges}
               title={editorState.program.title}
               onChange={(title) => dispatch({ action: 'set-title', title })}

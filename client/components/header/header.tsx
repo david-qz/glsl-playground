@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { type ReactElement, type CSSProperties } from 'react';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { isLoaded } from '../../../common/loading';
 import { useAuthContext } from '../../hooks/use-auth-context';
 import navigationLinks from '../../navigation-links';
 import { logOut } from '../../services/auth-service';
@@ -15,7 +16,7 @@ type Props = {
 };
 
 export default function Header({ style, children }: Props): ReactElement {
-  const { user, setUser, userHasLoaded } = useAuthContext();
+  const { user, setUser } = useAuthContext();
   const navigate = useNavigate();
   const location = useLocation();
   const [_, setSearchParams] = useSearchParams();
@@ -42,11 +43,11 @@ export default function Header({ style, children }: Props): ReactElement {
   const navigationLinksToShow = navigationLinks.filter(nl => !nl.hidePattern.exec(location.pathname));
 
   let userSlot: ReactNode = <></>;
-  if (user) {
+  if (isLoaded(user) && user.value) {
     userSlot = (
       <Menu>
         <MenuTitle>
-          {`Signed in as ${user.email}`}
+          {`Signed in as ${user.value.email}`}
         </MenuTitle>
         <MenuDivider />
         {navigationLinksToShow.map(nl => (
@@ -59,7 +60,7 @@ export default function Header({ style, children }: Props): ReactElement {
         </MenuItem>
       </Menu>
     );
-  } else if (userHasLoaded && !user) {
+  } else if (isLoaded(user) && !user.value) {
     userSlot = (
       <>
         <Button className={styles.headerButton} onClick={() => handleAuthButtonClick('sign-up')}>Sign Up</Button>

@@ -8,18 +8,19 @@ import { Navigate, useSearchParams } from 'react-router-dom';
 import { logIn, signUp } from '../../services/auth-service';
 import type { UserToken } from '../../../common/api-types';
 import { classes } from '../../utils/style-utils';
+import { isLoaded } from '../../../common/loading';
 
 export type AuthMethod = 'log-in' | 'sign-up';
 
 export default function AuthForm(): ReactElement {
-  const { user, setUser, userHasLoaded }  = useAuthContext();
+  const { user, setUser }  = useAuthContext();
   const [errorMessage, setErrorMessage] = useState<string>();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const authMethod: AuthMethod = searchParams.get('method') === 'sign-up' ? 'sign-up' : 'log-in';
   const redirect: string = searchParams.get('redirect') || '/';
 
-  if (userHasLoaded && user) {
+  if (isLoaded(user) && !!user.value) {
     return <Navigate to={redirect} replace={true} />;
   }
 

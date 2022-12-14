@@ -10,14 +10,15 @@ import Button from '../form-controls/button';
 import Modal from '../modal/modal';
 import Confirmation from '../../confirmation/confirmation';
 import type { ProgramData } from '../../../common/api-types';
+import { isLoaded } from '../../../common/loading';
 
 export default function Dashboard(): ReactElement {
-  const { user, userHasLoaded } = useAuthContext();
+  const { user } = useAuthContext();
   const { programs, setPrograms } = usePrograms();
   const [programToDelete, setProgramToDelete] = useState<ProgramData | null>(null);
   const navigate = useNavigate();
 
-  if (userHasLoaded && !user) {
+  if (isLoaded(user) && !user.value) {
     return <Navigate to='/auth' replace={true} />;
   }
 
