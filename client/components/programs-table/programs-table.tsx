@@ -14,6 +14,8 @@ type Props = {
 export default function ProgramsTable({ programs, handleDelete, handleEdit }: Props): ReactElement {
   const shouldShowActionsColumn = !!handleDelete || !!handleEdit;
 
+  const sortedPrograms = sortProgramsByDateModified(programs);
+
   function tableRow(program: ProgramData): ReactElement {
     return <tr key={program.id}>
       <td>{program.title}</td>
@@ -43,8 +45,18 @@ export default function ProgramsTable({ programs, handleDelete, handleEdit }: Pr
         </tr>
       </thead>
       <tbody>
-        {programs.map(p => tableRow(p))}
+        {sortedPrograms.map(p => tableRow(p))}
       </tbody>
     </table>
   );
+}
+
+function sortProgramsByDateModified(programs: Array<ProgramData>): Array<ProgramData> {
+  const copy =  [...programs];
+  copy.sort((a, b) => {
+    const dateA = new Date(a.modifiedAt);
+    const dateB = new Date(b.modifiedAt);
+    return dateA < dateB ? 1 : dateA > dateB ? -1 : 0;
+  });
+  return copy;
 }

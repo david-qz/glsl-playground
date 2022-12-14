@@ -2,7 +2,6 @@ import type { ReactElement } from 'react';
 import { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../hooks/use-auth-context';
-import usePrograms from '../../hooks/use-programs';
 import styles from './dashboard.module.css';
 import * as ProgramsService from '../../services/programs-service';
 import ProgramsTable from '../programs-table/programs-table';
@@ -11,32 +10,36 @@ import Modal from '../modal/modal';
 import Confirmation from '../../confirmation/confirmation';
 import type { ProgramData } from '../../../common/api-types';
 import { isLoaded } from '../../../common/loading';
+import useLoader from '../../hooks/use-loader';
 
 export default function Dashboard(): ReactElement {
-  const { user } = useAuthContext();
-  const { programs, setPrograms } = usePrograms();
-  const [programToDelete, setProgramToDelete] = useState<ProgramData | null>(null);
   const navigate = useNavigate();
+  const { user } = useAuthContext();
+  const [programs, setPrograms] = useLoader<Array<ProgramData>>(async () => {
+    return await ProgramsService.getUsersPrograms() || [];
+  }, []);
+  const [programToDelete, setProgramToDelete] = useState<ProgramData | null>(null);
 
   if (isLoaded(user) && !user.value) {
     return <Navigate to='/auth' replace={true} />;
   }
 
   async function handleDelete(): Promise<void> {
-    if (!programToDelete) return;
+    if (!isLoaded(programs) || !programToDelete) return;
 
-    const programId = programToDelete.id;
-    const result = await ProgramsService.deleteProgram(programId);
-
+    const result = await ProgramsService.deleteProgram(programToDelete.id);
     if (!result) return;
 
-    setPrograms(programs.filter(p => p.id !== programId));
+    setPrograms(programs.value.filter(p => p.id !== programToDelete.id));
     setProgramToDelete(null);
   }
 
   function handleDeleteButtonPressed(programId: string): void {
-    const program = programs.find(p => p.id === programId);
+    if (!isLoaded(programs)) return;
+
+    const program = programs.value.find(p => p.id === programId);
     if (!program) return;
+
     setProgramToDelete(program);
   }
 
@@ -46,24 +49,26 @@ export default function Dashboard(): ReactElement {
 
   return (
     <div className={styles.layout}>
-      <section className={styles.section}>
-        <div>
-          <h2 className={styles.heading}>Your Programs</h2>
-        </div>
-        {programs.length !== 0
-          ? <ProgramsTable
-            programs={programs}
-            handleDelete={handleDeleteButtonPressed}
-            handleEdit={handleEdit}
-          />
-          : <p>You don't have any programs yet.</p>}
-        <Button
-          className={styles.newProgramButton}
-          onClick={() => navigate('/')}
-        >
+      {isLoaded(programs) && (
+        <section className={styles.section}>
+          <div>
+            <h2 className={styles.heading}>Your Programs</h2>
+          </div>
+          {programs.value.length !== 0
+            ? <ProgramsTable
+              programs={programs.value}
+              handleDelete={handleDeleteButtonPressed}
+              handleEdit={handleEdit}
+            />
+            : <p>You don't have any programs yet.</p>}
+          <Button
+            className={styles.newProgramButton}
+            onClick={() => navigate('/')}
+          >
           New Program
-        </Button>
-      </section>
+          </Button>
+        </section>
+      )}
       <Modal open={!!programToDelete}>
         <Confirmation
           message={`Are you sure you want to delete "${programToDelete?.title}"?`}
