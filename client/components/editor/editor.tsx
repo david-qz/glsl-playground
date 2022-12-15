@@ -77,8 +77,12 @@ export default function Editor(): ReactElement {
       dispatch({ action: "load-program", program: result });
     } else if (!user.value && editorState.isNewProgram) {
       window.sessionStorage.setItem("programToSave", JSON.stringify(editorState.program));
+
+      const searchParams = new URLSearchParams();
+      searchParams.set("redirect", "/save-program");
+
       unblock();
-      navigate("/auth?redirect=/save-program");
+      navigate("/auth?" + searchParams.toString());
     }
   }
 
