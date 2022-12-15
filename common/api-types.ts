@@ -1,11 +1,11 @@
 export type ApiError = {
-  status: number,
-  message: string
+  status: number;
+  message: string;
 };
 
 export type UserToken = {
-  id: string,
-  email: string
+  id: string;
+  email: string;
 };
 
 export interface ProgramData {

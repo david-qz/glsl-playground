@@ -5,13 +5,13 @@
  *
  * For api routes, see api.ts.
  ******************************************************************************/
-import environment from './environment.js';
-import express, { type Request, type Response } from 'express';
-import path from 'node:path';
-import api from './api.js';
-import expressStaticGzip from 'express-static-gzip';
-import errorHandler from './middleware/error.js';
-import cookieParser from 'cookie-parser';
+import environment from "./environment.js";
+import express, { type Request, type Response } from "express";
+import path from "node:path";
+import api from "./api.js";
+import expressStaticGzip from "express-static-gzip";
+import errorHandler from "./middleware/error.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
@@ -26,24 +26,26 @@ app.use(environment.API_PREFIX, api);
 // settings are covered according to the various guides. Using $PWD (what
 // process.cwd() returns) may not be safe in all occasions, but should be good
 // enough since we control the deployment context.
-const publicDir = path.join(process.cwd(), 'public');
-app.use(expressStaticGzip(publicDir, {
-  enableBrotli: true,
-  orderPreference: ['br'],
-  serveStatic: {
-    setHeaders: (response, path, stat) => {
-      if (path.match(/\.obj(\.br|\.gz)?$/)) {
-        response.setHeader('Content-Type', 'text/plain');
-      }
-      if (!path.match(/index\.html$/)) {
-        response.setHeader('Cache-Control', 'public, max-age=14400');
-      }
+const publicDir = path.join(process.cwd(), "public");
+app.use(
+  expressStaticGzip(publicDir, {
+    enableBrotli: true,
+    orderPreference: ["br"],
+    serveStatic: {
+      setHeaders: (response, path, stat) => {
+        if (path.match(/\.obj(\.br|\.gz)?$/)) {
+          response.setHeader("Content-Type", "text/plain");
+        }
+        if (!path.match(/index\.html$/)) {
+          response.setHeader("Cache-Control", "public, max-age=14400");
+        }
+      },
     },
-  },
-}));
+  }),
+);
 
-app.all('*', (req: Request, res: Response) => {
-  res.status(200).sendFile(path.join(publicDir, 'index.html'));
+app.all("*", (req: Request, res: Response) => {
+  res.status(200).sendFile(path.join(publicDir, "index.html"));
 });
 
 app.use(errorHandler);

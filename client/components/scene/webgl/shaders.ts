@@ -1,50 +1,50 @@
 export enum ShaderType {
-  Vertex = 'vertex-shader',
-  Fragment = 'fragment-shader',
+  Vertex = "vertex-shader",
+  Fragment = "fragment-shader",
 }
 
 type ProgramCompilationResult =
-  | { program: WebGLProgram, programInfo: ProgramInfo, errors?: undefined }
-  | { program?: undefined, programInfo?: undefined, errors: ProgramCompilationErrors };
+  | { program: WebGLProgram; programInfo: ProgramInfo; errors?: undefined }
+  | { program?: undefined; programInfo?: undefined; errors: ProgramCompilationErrors };
 
 export type ProgramCompilationErrors = {
-  vertexShaderErrors: Array<CompilationError>,
-  fragmentShaderErrors: Array<CompilationError>,
-  linkerErrors: Array<LinkerError>,
+  vertexShaderErrors: Array<CompilationError>;
+  fragmentShaderErrors: Array<CompilationError>;
+  linkerErrors: Array<LinkerError>;
 };
 
 interface AttributeInfo extends WebGLActiveInfo {
-  location: number
+  location: number;
 }
 interface UniformInfo extends WebGLActiveInfo {
-  location: WebGLUniformLocation
+  location: WebGLUniformLocation;
 }
-export type ProgramInfo = { attributes: Map<string, AttributeInfo>, uniforms: Map<string, UniformInfo> };
+export type ProgramInfo = { attributes: Map<string, AttributeInfo>; uniforms: Map<string, UniformInfo> };
 
 type ShaderCompilationResult =
-  | { shader: WebGLShader, compilerErrors?: undefined }
-  | { shader?: undefined, compilerErrors: Array<CompilationError> };
+  | { shader: WebGLShader; compilerErrors?: undefined }
+  | { shader?: undefined; compilerErrors: Array<CompilationError> };
 
 enum ErrorType {
-  Error = 'ERROR',
-  Warning = 'WARNING',
+  Error = "ERROR",
+  Warning = "WARNING",
 }
 
 export type CompilationError = {
-  errorType: ErrorType,
-  columnNumber: number,
-  lineNumber: number,
-  message: string,
+  errorType: ErrorType;
+  columnNumber: number;
+  lineNumber: number;
+  message: string;
 };
 
 export type LinkerError = {
-  message: string,
+  message: string;
 };
 
 export function compileProgram(
   gl: WebGL2RenderingContext,
   vertexShaderSource: string,
-  fragmentShaderSource: string
+  fragmentShaderSource: string,
 ): ProgramCompilationResult {
   const errors: ProgramCompilationErrors = {
     vertexShaderErrors: [],
@@ -66,7 +66,7 @@ export function compileProgram(
   const fragmentShader = fragmentShaderResult.shader;
 
   const program = gl.createProgram();
-  if (program === null) throw new Error('Failed to create shader program.');
+  if (program === null) throw new Error("Failed to create shader program.");
 
   gl.attachShader(program, vertexShader);
   gl.attachShader(program, fragmentShader);
@@ -123,7 +123,7 @@ function loadProgramInfo(gl: WebGL2RenderingContext, program: WebGLProgram): Pro
 
 function compileShader(gl: WebGL2RenderingContext, type: number, source: string): ShaderCompilationResult {
   const shader = gl.createShader(type);
-  if (shader === null) throw new Error('Failed to create shader.');
+  if (shader === null) throw new Error("Failed to create shader.");
 
   gl.shaderSource(shader, source);
   gl.compileShader(shader);
@@ -157,7 +157,7 @@ function parseCompilerErrors(error: string): Array<CompilationError> {
     const [, errorType, column, line, message] = match as [string, string, string, string, string];
 
     parsedErrors.push({
-      errorType: errorType === 'ERROR' ? ErrorType.Error : ErrorType.Warning,
+      errorType: errorType === "ERROR" ? ErrorType.Error : ErrorType.Warning,
       columnNumber: parseInt(column),
       lineNumber: parseInt(line),
       message,

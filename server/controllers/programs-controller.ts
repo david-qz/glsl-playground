@@ -1,17 +1,17 @@
-import { type NextFunction, type Request, type Response, Router } from 'express';
-import Program from '../models/program-model.js';
-import authenticate from '../middleware/authenticate.js';
-import HttpError from '../utils/http-error.js';
-import { type ProgramData } from '../../common/api-types.js';
+import { type NextFunction, type Request, type Response, Router } from "express";
+import Program from "../models/program-model.js";
+import authenticate from "../middleware/authenticate.js";
+import HttpError from "../utils/http-error.js";
+import { type ProgramData } from "../../common/api-types.js";
 
 const router = Router();
 
-router.get('/:id', async (request: Request, response: Response, next: NextFunction) => {
+router.get("/:id", async (request: Request, response: Response, next: NextFunction) => {
   try {
     const id = request.params.id!;
     const program = await Program.getById(id);
 
-    if (!program) throw new HttpError('not found', 404);
+    if (!program) throw new HttpError("not found", 404);
 
     response.json(program);
   } catch (error) {
@@ -19,7 +19,7 @@ router.get('/:id', async (request: Request, response: Response, next: NextFuncti
   }
 });
 
-router.get('/', [authenticate], async (request: Request, response: Response, next: NextFunction) => {
+router.get("/", [authenticate], async (request: Request, response: Response, next: NextFunction) => {
   try {
     const user = request.user!;
     const programs = await Program.getByUserId(user.id);
@@ -30,7 +30,7 @@ router.get('/', [authenticate], async (request: Request, response: Response, nex
   }
 });
 
-router.post('/', [authenticate], async (request: Request, response: Response, next: NextFunction) => {
+router.post("/", [authenticate], async (request: Request, response: Response, next: NextFunction) => {
   try {
     const user = request.user!;
 
@@ -43,15 +43,15 @@ router.post('/', [authenticate], async (request: Request, response: Response, ne
   }
 });
 
-router.patch('/:id', [authenticate], async (request: Request, response: Response, next: NextFunction) => {
+router.patch("/:id", [authenticate], async (request: Request, response: Response, next: NextFunction) => {
   try {
     const id = request.params.id!;
     const user = request.user!;
 
     const originalProgram = await Program.getById(id);
-    if (!originalProgram) throw new HttpError('not found', 404);
+    if (!originalProgram) throw new HttpError("not found", 404);
 
-    if (originalProgram.userId !== user.id) throw new HttpError('forbidden', 403);
+    if (originalProgram.userId !== user.id) throw new HttpError("forbidden", 403);
 
     const data: Partial<ProgramData> = request.body;
     const newProgram = await originalProgram.update(id, data);
@@ -62,15 +62,15 @@ router.patch('/:id', [authenticate], async (request: Request, response: Response
   }
 });
 
-router.delete('/:id', [authenticate], async (request: Request, response: Response, next: NextFunction) => {
+router.delete("/:id", [authenticate], async (request: Request, response: Response, next: NextFunction) => {
   try {
     const id = request.params.id!;
     const user = request.user!;
 
     const program = await Program.getById(id);
-    if (!program) throw new HttpError('not found', 404);
+    if (!program) throw new HttpError("not found", 404);
 
-    if (program.userId !== user.id) throw new HttpError('forbidden', 403);
+    if (program.userId !== user.id) throw new HttpError("forbidden", 403);
 
     await program.delete();
 

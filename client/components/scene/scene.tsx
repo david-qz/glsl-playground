@@ -1,15 +1,23 @@
-import { type CSSProperties, type PointerEvent, type ReactElement, type WheelEvent, useEffect, useRef, useState } from 'react';
-import { useEditorStateContext } from '../../hooks/use-editor-state';
-import SceneRenderer from './webgl/scene-renderer';
-import styles from './scene.module.css';
-import { vec2 } from 'gl-matrix';
-import useMeshFromModel from '../../hooks/use-mesh-from-model';
-import teapot from '../../assets/models/teapot.obj';
-import texture from '../../assets/textures/granite.png';
-import { Loader } from '../../hooks/use-loader';
+import {
+  type CSSProperties,
+  type PointerEvent,
+  type ReactElement,
+  type WheelEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { useEditorStateContext } from "../../hooks/use-editor-state";
+import SceneRenderer from "./webgl/scene-renderer";
+import styles from "./scene.module.css";
+import { vec2 } from "gl-matrix";
+import useMeshFromModel from "../../hooks/use-mesh-from-model";
+import teapot from "../../assets/models/teapot.obj";
+import texture from "../../assets/textures/granite.png";
+import { Loader } from "../../hooks/use-loader";
 
 type Props = {
-  style: CSSProperties
+  style: CSSProperties;
 };
 
 export default function Scene({ style }: Props): ReactElement {
@@ -24,17 +32,17 @@ export default function Scene({ style }: Props): ReactElement {
   function updateProgram(vertexSource: string, fragmentSource: string): void {
     const errors = sceneRef.current?.loadProgram(vertexSource, fragmentSource);
     dispatch({
-      action: 'set-errors',
+      action: "set-errors",
       errors: errors || { vertexShaderErrors: [], fragmentShaderErrors: [], linkerErrors: [] },
     });
   }
 
   useEffect(() => {
-    if (!canvasRef.current) throw new Error('Canvas ref is unexpectedly null!');
+    if (!canvasRef.current) throw new Error("Canvas ref is unexpectedly null!");
     if (sceneRef.current) return;
 
-    const gl = canvasRef.current.getContext('webgl2');
-    if (gl === null) throw new Error('Failed to create a webgl2 context.');
+    const gl = canvasRef.current.getContext("webgl2");
+    if (gl === null) throw new Error("Failed to create a webgl2 context.");
 
     const scene = new SceneRenderer(gl);
     updateProgram(vertexShaderSource, fragmentShaderSource);

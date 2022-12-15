@@ -1,6 +1,6 @@
-import type Mesh from './mesh';
-import { type ProgramCompilationErrors, type ProgramInfo, compileProgram } from './shaders';
-import { mat4, vec2 } from 'gl-matrix';
+import type Mesh from "./mesh";
+import { type ProgramCompilationErrors, type ProgramInfo, compileProgram } from "./shaders";
+import { mat4, vec2 } from "gl-matrix";
 
 export default class SceneRenderer {
   private gl: WebGL2RenderingContext;
@@ -21,15 +21,15 @@ export default class SceneRenderer {
     this.gl = gl;
 
     const vertexBuffer = gl.createBuffer();
-    if (!vertexBuffer) throw new Error('Failed to create gl buffer.');
+    if (!vertexBuffer) throw new Error("Failed to create gl buffer.");
     this.vertexBuffer = vertexBuffer;
 
     const indexBuffer = gl.createBuffer();
-    if (!indexBuffer) throw new Error('Failed to create gl buffer.');
+    if (!indexBuffer) throw new Error("Failed to create gl buffer.");
     this.indexBuffer = indexBuffer;
 
     const texture = gl.createTexture();
-    if (!texture) throw new Error('Failed to create gl texture.');
+    if (!texture) throw new Error("Failed to create gl texture.");
     this.texture = texture;
 
     this.initializeTexture();
@@ -52,7 +52,7 @@ export default class SceneRenderer {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     if (this.mesh && this.program && this.programInfo) {
-      const fieldOfView = 45 * Math.PI / 180;
+      const fieldOfView = (45 * Math.PI) / 180;
       const aspect = gl.canvas.width / gl.canvas.height;
       const zNear = 0.1;
       const zFar = 150.0;
@@ -92,19 +92,19 @@ export default class SceneRenderer {
     if (!this.programInfo) return;
     const gl = this.gl;
 
-    const positionAttributeInfo = this.programInfo.attributes.get('aVertexPosition');
+    const positionAttributeInfo = this.programInfo.attributes.get("aVertexPosition");
     if (positionAttributeInfo) {
       gl.enableVertexAttribArray(positionAttributeInfo.location);
       gl.vertexAttribPointer(positionAttributeInfo.location, 3, gl.FLOAT, false, 32, 0);
     }
 
-    const normalAttributeInfo = this.programInfo.attributes.get('aVertexNormal');
+    const normalAttributeInfo = this.programInfo.attributes.get("aVertexNormal");
     if (normalAttributeInfo) {
       gl.enableVertexAttribArray(normalAttributeInfo.location);
       gl.vertexAttribPointer(normalAttributeInfo.location, 3, gl.FLOAT, true, 32, 12);
     }
 
-    const uvAttributeInfo = this.programInfo.attributes.get('aTextureCoord');
+    const uvAttributeInfo = this.programInfo.attributes.get("aTextureCoord");
     if (uvAttributeInfo) {
       gl.enableVertexAttribArray(uvAttributeInfo.location);
       gl.vertexAttribPointer(uvAttributeInfo.location, 2, gl.FLOAT, false, 32, 24);
@@ -115,22 +115,22 @@ export default class SceneRenderer {
     if (!this.programInfo) return;
     const gl = this.gl;
 
-    const projectionMatrixUniformInfo = this.programInfo.uniforms.get('uProjectionMatrix');
+    const projectionMatrixUniformInfo = this.programInfo.uniforms.get("uProjectionMatrix");
     if (projectionMatrixUniformInfo) {
       gl.uniformMatrix4fv(projectionMatrixUniformInfo.location, false, projectionMatrix);
     }
 
-    const modelViewMatrixUniformInfo = this.programInfo.uniforms.get('uModelViewMatrix');
+    const modelViewMatrixUniformInfo = this.programInfo.uniforms.get("uModelViewMatrix");
     if (modelViewMatrixUniformInfo) {
       gl.uniformMatrix4fv(modelViewMatrixUniformInfo.location, false, modelViewMatrix);
     }
 
-    const normalMatrixUniformInfo = this.programInfo.uniforms.get('uNormalMatrix');
+    const normalMatrixUniformInfo = this.programInfo.uniforms.get("uNormalMatrix");
     if (normalMatrixUniformInfo) {
       gl.uniformMatrix4fv(normalMatrixUniformInfo.location, false, normalMatrix);
     }
 
-    const textureSampler = this.programInfo.uniforms.get('uTextureSampler');
+    const textureSampler = this.programInfo.uniforms.get("uTextureSampler");
     if (textureSampler) {
       gl.uniform1i(textureSampler.location, 0);
     }
@@ -152,7 +152,17 @@ export default class SceneRenderer {
       const response = await fetch(url);
       const blob = await response.blob();
       const imageBitmap = await createImageBitmap(blob);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, imageBitmap.width, imageBitmap.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, imageBitmap);
+      gl.texImage2D(
+        gl.TEXTURE_2D,
+        0,
+        gl.RGBA,
+        imageBitmap.width,
+        imageBitmap.height,
+        0,
+        gl.RGBA,
+        gl.UNSIGNED_BYTE,
+        imageBitmap,
+      );
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
     } catch (error) {
       console.error(error);

@@ -1,21 +1,21 @@
-import { type NextFunction, type Request, type Response, Router } from 'express';
-import jwt from 'jsonwebtoken';
-import { type UserToken } from '../../common/api-types.js';
-import environment from '../environment.js';
-import * as UsersService from '../services/users-service.js';
-import HttpError from '../utils/http-error.js';
+import { type NextFunction, type Request, type Response, Router } from "express";
+import jwt from "jsonwebtoken";
+import { type UserToken } from "../../common/api-types.js";
+import environment from "../environment.js";
+import * as UsersService from "../services/users-service.js";
+import HttpError from "../utils/http-error.js";
 
 const ONE_DAY_IN_MS: number = 3600 * 24 * 1000;
 
 const router = Router();
 
-router.post('/', async (request: Request, response: Response, next: NextFunction) => {
+router.post("/", async (request: Request, response: Response, next: NextFunction) => {
   try {
     const email: unknown = request.body?.email;
     const password: unknown = request.body?.password;
 
-    if (typeof email !== 'string') throw new HttpError('email must be a string', 400);
-    if (typeof password !== 'string') throw new HttpError('password must be a string', 400);
+    if (typeof email !== "string") throw new HttpError("email must be a string", 400);
+    if (typeof password !== "string") throw new HttpError("password must be a string", 400);
 
     const user = await UsersService.create(email, password);
     const [, token] = await UsersService.signIn(email, password);
@@ -27,9 +27,9 @@ router.post('/', async (request: Request, response: Response, next: NextFunction
   }
 });
 
-router.get('/me', async (request: Request, response: Response, next: NextFunction) => {
+router.get("/me", async (request: Request, response: Response, next: NextFunction) => {
   try {
-    const cookie: string = request.cookies[environment.SESSION_COOKIE] || '';
+    const cookie: string = request.cookies[environment.SESSION_COOKIE] || "";
 
     const jwtPayload: any = jwt.verify(cookie, environment.JWT_SECRET);
     const token: UserToken = { id: jwtPayload.id, email: jwtPayload.email };
@@ -40,13 +40,13 @@ router.get('/me', async (request: Request, response: Response, next: NextFunctio
   }
 });
 
-router.post('/sessions', async (request: Request, response: Response, next: NextFunction) => {
+router.post("/sessions", async (request: Request, response: Response, next: NextFunction) => {
   try {
     const email: unknown = request.body?.email;
     const password: unknown = request.body?.password;
 
-    if (typeof email !== 'string') throw new HttpError('email must be a string', 400);
-    if (typeof password !== 'string') throw new HttpError('password must be a string', 400);
+    if (typeof email !== "string") throw new HttpError("email must be a string", 400);
+    if (typeof password !== "string") throw new HttpError("password must be a string", 400);
 
     const [user, token] = await UsersService.signIn(email, password);
 
@@ -57,7 +57,7 @@ router.post('/sessions', async (request: Request, response: Response, next: Next
   }
 });
 
-router.delete('/sessions', async (request: Request, response: Response, next: NextFunction) => {
+router.delete("/sessions", async (request: Request, response: Response, next: NextFunction) => {
   try {
     response.clearCookie(environment.SESSION_COOKIE);
     response.send();

@@ -1,40 +1,37 @@
-import { type IAnnotation, type IMarker } from 'react-ace';
-import { type CSSProperties, type ReactElement } from 'react';
-import styles from './program-editor.module.css';
-import { type EditorState, useEditorStateContext } from '../../hooks/use-editor-state';
-import { ShaderType } from '../scene/webgl/shaders';
-import GLSLEditor from './glsl-editor';
+import { type IAnnotation, type IMarker } from "react-ace";
+import { type CSSProperties, type ReactElement } from "react";
+import styles from "./program-editor.module.css";
+import { type EditorState, useEditorStateContext } from "../../hooks/use-editor-state";
+import { ShaderType } from "../scene/webgl/shaders";
+import GLSLEditor from "./glsl-editor";
 
 type Props = {
-  style?: CSSProperties
+  style?: CSSProperties;
 };
 
 export default function ProgramEditor({ style }: Props): ReactElement {
   const [editorState, dispatch] = useEditorStateContext();
 
   const [markers, annotations] = collectAnnotationsAndMarkers(editorState);
-  const combinedLinkerErrorMessage = editorState.errors.linkerErrors.map(error => error.message).join('\n');
+  const combinedLinkerErrorMessage = editorState.errors.linkerErrors.map((error) => error.message).join("\n");
 
   return (
-    <div className={styles.editor} style={style} >
+    <div className={styles.editor} style={style}>
       <GLSLEditor
         source={editorState.program.vertexSource}
-        onChange={source => dispatch({ action: 'set-sources', vertexSource: source })}
+        onChange={(source) => dispatch({ action: "set-sources", vertexSource: source })}
         active={editorState.activeTab === ShaderType.Vertex}
         annotations={editorState.activeTab === ShaderType.Vertex ? annotations : []}
         markers={editorState.activeTab === ShaderType.Vertex ? markers : []}
       />
       <GLSLEditor
         source={editorState.program.fragmentSource}
-        onChange={source => dispatch({ action: 'set-sources', fragmentSource: source })}
+        onChange={(source) => dispatch({ action: "set-sources", fragmentSource: source })}
         active={editorState.activeTab === ShaderType.Fragment}
         annotations={editorState.activeTab === ShaderType.Fragment ? annotations : []}
         markers={editorState.activeTab === ShaderType.Fragment ? markers : []}
       />
-      {
-        editorState.linkerHasErrors
-        && <div className={styles.errorOverlay}>LINKER: {combinedLinkerErrorMessage}</div>
-      }
+      {editorState.linkerHasErrors && <div className={styles.errorOverlay}>LINKER: {combinedLinkerErrorMessage}</div>}
     </div>
   );
 }
@@ -42,12 +39,10 @@ export default function ProgramEditor({ style }: Props): ReactElement {
 function collectAnnotationsAndMarkers(editorState: EditorState): [Array<IMarker>, Array<IAnnotation>] {
   const activeTab = editorState.activeTab;
 
-  const source = activeTab === ShaderType.Vertex
-    ? editorState.program.vertexSource
-    : editorState.program.fragmentSource;
-  const compilationErrors = activeTab === ShaderType.Vertex
-    ? editorState.errors.vertexShaderErrors
-    : editorState.errors.fragmentShaderErrors;
+  const source =
+    activeTab === ShaderType.Vertex ? editorState.program.vertexSource : editorState.program.fragmentSource;
+  const compilationErrors =
+    activeTab === ShaderType.Vertex ? editorState.errors.vertexShaderErrors : editorState.errors.fragmentShaderErrors;
 
   const markers = new Map<number, IMarker>();
   const annotations = new Map<number, IAnnotation>();
@@ -65,17 +60,17 @@ function collectAnnotationsAndMarkers(editorState: EditorState): [Array<IMarker>
           endRow: rowNumber,
           endCol: span[1],
           className: styles.errorMarker,
-          type: 'text',
+          type: "text",
         });
       }
     }
 
     // Add an annotation for this line or fold this error into the existing annotation.
     if (!annotations.has(rowNumber)) {
-      annotations.set(rowNumber, { row: rowNumber, column: 0, type: 'error', text: error.message });
+      annotations.set(rowNumber, { row: rowNumber, column: 0, type: "error", text: error.message });
     } else {
       const annotation = annotations.get(rowNumber)!;
-      annotation.text += '\n' + error.message;
+      annotation.text += "\n" + error.message;
     }
   }
 
@@ -83,7 +78,7 @@ function collectAnnotationsAndMarkers(editorState: EditorState): [Array<IMarker>
 }
 
 function getFullLineSpan(source: string, rowNumber: number): [number, number] | undefined {
-  const line = source.split('\n')[rowNumber];
+  const line = source.split("\n")[rowNumber];
   if (!line) return;
 
   const match = /\s*(.*)\s*/d.exec(line);

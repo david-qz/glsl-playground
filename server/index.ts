@@ -7,9 +7,9 @@
  *
  * Any deployments will need to execute the transpiled version of this file.
  ******************************************************************************/
-import environment from './environment.js';
-import app from './app.js';
+import environment from "./environment.js";
+import app from "./app.js";
 
 const server = app.listen(environment.PORT, () => {
-  console.log('Started server on ', server.address());
+  console.log("Started server on ", server.address());
 });

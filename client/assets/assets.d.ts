@@ -1,15 +1,14 @@
-declare module '*.obj' {
+declare module "*.obj" {
   const url: string;
   export default url;
 }
 
-declare module '*.png' {
+declare module "*.png" {
   const url: string;
   export default url;
 }
 
-
-declare module '*?raw' {
+declare module "*?raw" {
   const data: string;
   export default data;
 }

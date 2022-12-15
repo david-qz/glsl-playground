@@ -1,10 +1,10 @@
-import { type ReactElement, type ReactNode, useEffect, useRef, useState } from 'react';
-import MenuIcon from '@mui/icons-material/Menu';
-import Button from '../form-controls/button';
-import styles from './menu.module.css';
+import { type ReactElement, type ReactNode, useEffect, useRef, useState } from "react";
+import MenuIcon from "@mui/icons-material/Menu";
+import Button from "../form-controls/button";
+import styles from "./menu.module.css";
 
 type MenuProps = {
-  children: ReactNode
+  children: ReactNode;
 };
 
 export default function Menu({ children }: MenuProps): ReactElement {
@@ -20,26 +20,24 @@ export default function Menu({ children }: MenuProps): ReactElement {
 
   useEffect(() => {
     if (open) {
-      document.addEventListener('click', handleDocumentClick);
-      return () => document.removeEventListener('click', handleDocumentClick);
+      document.addEventListener("click", handleDocumentClick);
+      return () => document.removeEventListener("click", handleDocumentClick);
     }
   }, [open]);
 
   return (
     <div ref={rootRef} className={styles.container}>
-      <Button className={styles.hamburgerButton} onClick={() => setOpen(p => !p)}>
+      <Button className={styles.hamburgerButton} onClick={() => setOpen((p) => !p)}>
         <MenuIcon fontSize='large' />
       </Button>
-      {open &&  <div className={styles.menu}>
-        {children}
-      </div>}
+      {open && <div className={styles.menu}>{children}</div>}
     </div>
   );
 }
 
 type MenuItemProps = {
-  children: ReactNode
-  onClick?: () => void
+  children: ReactNode;
+  onClick?: () => void;
 };
 
 export function MenuItem({ children, onClick }: MenuItemProps): ReactElement {
@@ -51,19 +49,13 @@ export function MenuItem({ children, onClick }: MenuItemProps): ReactElement {
 }
 
 export function MenuDivider(): ReactElement {
-  return (
-    <div className={styles.menuDivider} />
-  );
+  return <div className={styles.menuDivider} />;
 }
 
 type MenuTitleProps = {
-  children: ReactNode
+  children: ReactNode;
 };
 
 export function MenuTitle({ children }: MenuTitleProps): ReactElement {
-  return (
-    <div className={styles.menuTitle}>
-      {children}
-    </div>
-  );
+  return <div className={styles.menuTitle}>{children}</div>;
 }

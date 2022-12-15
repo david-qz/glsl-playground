@@ -1,24 +1,24 @@
-import Input from '../form-controls/input';
-import Button from '../form-controls/button';
-import css from './auth-form.module.css';
-import { useAuthContext } from '../../hooks/use-auth-context';
-import { type FormEvent, type ReactElement, useState } from 'react';
-import { Navigate, useSearchParams } from 'react-router-dom';
-import { logIn, signUp } from '../../services/auth-service';
-import { type UserToken } from '../../../common/api-types';
-import { classes } from '../../utils/style-utils';
-import { Loader } from '../../hooks/use-loader';
-import { type Result, isError } from '../../../common/result';
+import Input from "../form-controls/input";
+import Button from "../form-controls/button";
+import css from "./auth-form.module.css";
+import { useAuthContext } from "../../hooks/use-auth-context";
+import { type FormEvent, type ReactElement, useState } from "react";
+import { Navigate, useSearchParams } from "react-router-dom";
+import { logIn, signUp } from "../../services/auth-service";
+import { type UserToken } from "../../../common/api-types";
+import { classes } from "../../utils/style-utils";
+import { Loader } from "../../hooks/use-loader";
+import { type Result, isError } from "../../../common/result";
 
-export type AuthMethod = 'log-in' | 'sign-up';
+export type AuthMethod = "log-in" | "sign-up";
 
 export default function AuthForm(): ReactElement {
-  const { user, setUser }  = useAuthContext();
+  const { user, setUser } = useAuthContext();
   const [errorMessage, setErrorMessage] = useState<string>();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const authMethod: AuthMethod = searchParams.get('method') === 'sign-up' ? 'sign-up' : 'log-in';
-  const redirect: string = searchParams.get('redirect') || '/';
+  const authMethod: AuthMethod = searchParams.get("method") === "sign-up" ? "sign-up" : "log-in";
+  const redirect: string = searchParams.get("redirect") || "/";
 
   if (Loader.isLoaded(user) && !!user.value) {
     return <Navigate to={redirect} replace={true} />;
@@ -29,8 +29,8 @@ export default function AuthForm(): ReactElement {
   async function handleSubmit(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
-    const email: string = formData.get('email') as string;
-    const password: string = formData.get('password') as string;
+    const email: string = formData.get("email") as string;
+    const password: string = formData.get("password") as string;
 
     const result = await authFunction(email, password);
     if (isError(result)) {
@@ -42,7 +42,7 @@ export default function AuthForm(): ReactElement {
 
   function handleSwitchAuthMethod(): void {
     const newParams = new URLSearchParams(searchParams);
-    newParams.set('method', alternativeMethod);
+    newParams.set("method", alternativeMethod);
     setSearchParams(newParams);
   }
 
@@ -60,10 +60,12 @@ export default function AuthForm(): ReactElement {
           <span className={css.mediumText}>Password</span>
           <Input className={css.smallText} name='password' type="password" required minLength={6} />
         </label>
-        <span className={css.smallText + ' ' + css.error}>{errorMessage}</span>
+        <span className={css.smallText + " " + css.error}>{errorMessage}</span>
         <div className={css.grow}></div>
         <Button className={css.mediumText}>{actionPhrase}</Button>
-        <span className={classes(css.smallText, css.fakeLink)} onClick={handleSwitchAuthMethod}>{alternativePhrase}</span>
+        <span className={classes(css.smallText, css.fakeLink)} onClick={handleSwitchAuthMethod}>
+          {alternativePhrase}
+        </span>
       </form>
     </div>
   );
@@ -71,16 +73,6 @@ export default function AuthForm(): ReactElement {
 
 type AuthFunction = (email: string, password: string) => Promise<Result<UserToken>>;
 const derivedValues: Record<AuthMethod, [string, string, AuthMethod, AuthFunction]> = {
-  'log-in': [
-    'Log In',
-    'Need to create an account? Sign up.',
-    'sign-up',
-    logIn,
-  ],
-  'sign-up': [
-    'Sign Up',
-    'Already have an account? Log in.',
-    'log-in',
-    signUp,
-  ],
+  "log-in": ["Log In", "Need to create an account? Sign up.", "sign-up", logIn],
+  "sign-up": ["Sign Up", "Already have an account? Log in.", "log-in", signUp],
 };

@@ -1,10 +1,10 @@
-import { type ButtonHTMLAttributes, type DetailedHTMLProps, type ReactElement } from 'react';
-import { classes } from '../../utils/style-utils';
-import Button from './button';
-import styles from './form-controls.module.css';
+import { type ButtonHTMLAttributes, type DetailedHTMLProps, type ReactElement } from "react";
+import { classes } from "../../utils/style-utils";
+import Button from "./button";
+import styles from "./form-controls.module.css";
 
 type Props = {
-  children: ReactElement
+  children: ReactElement;
 } & DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>;
 
 export default function IconButton({ children, ...forwardProps }: Props): ReactElement {

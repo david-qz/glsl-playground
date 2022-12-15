@@ -1,5 +1,5 @@
 declare const classNames: {
-  readonly backdrop: 'backdrop';
+  readonly backdrop: "backdrop";
 };
 export = classNames;
-export type ClassNames = 'backdrop';
+export type ClassNames = "backdrop";

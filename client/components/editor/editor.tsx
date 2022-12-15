@@ -1,40 +1,40 @@
-import { useEditorState } from '../../hooks/use-editor-state';
-import ProgramEditor from '../program-editor/program-editor';
-import Header from '../header/header';
-import Scene from '../scene/scene';
-import styles from './editor.module.css';
-import ProgramTitle from '../program-title/program-title';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useAuthContext } from '../../hooks/use-auth-context';
-import Toolbar, { ToolbarLeftGroup, ToolbarRightGroup } from '../toolbar/toolbar';
-import TabBar, { Tab } from '../tabs/tabs';
-import { ShaderType } from '../scene/webgl/shaders';
-import SaveIcon from '@mui/icons-material/Save';
-import RestoreIcon from '@mui/icons-material/Restore';
-import * as ProgramsService from '../../services/programs-service';
-import { type ReactElement } from 'react';
-import IconButton from '../form-controls/icon-button';
-import { createNewProgram } from '../../utils/new-program';
-import NotFound from '../not-found/not-found';
-import { type ProgramData } from '../../../common/api-types';
-import { Loader, isLoaded, isLoading } from '../../hooks/use-loader';
-import { isError } from '../../../common/result';
-import { unsavedChangesModal } from '../unsaved-changes-modal/unsaved-changes-modal';
-import { useNavBlocker } from '../../hooks/use-nav-blocker';
-import ModalContainer from 'react-modal-promise';
+import { useEditorState } from "../../hooks/use-editor-state";
+import ProgramEditor from "../program-editor/program-editor";
+import Header from "../header/header";
+import Scene from "../scene/scene";
+import styles from "./editor.module.css";
+import ProgramTitle from "../program-title/program-title";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAuthContext } from "../../hooks/use-auth-context";
+import Toolbar, { ToolbarLeftGroup, ToolbarRightGroup } from "../toolbar/toolbar";
+import TabBar, { Tab } from "../tabs/tabs";
+import { ShaderType } from "../scene/webgl/shaders";
+import SaveIcon from "@mui/icons-material/Save";
+import RestoreIcon from "@mui/icons-material/Restore";
+import * as ProgramsService from "../../services/programs-service";
+import { type ReactElement } from "react";
+import IconButton from "../form-controls/icon-button";
+import { createNewProgram } from "../../utils/new-program";
+import NotFound from "../not-found/not-found";
+import { type ProgramData } from "../../../common/api-types";
+import { Loader, isLoaded, isLoading } from "../../hooks/use-loader";
+import { isError } from "../../../common/result";
+import { unsavedChangesModal } from "../unsaved-changes-modal/unsaved-changes-modal";
+import { useNavBlocker } from "../../hooks/use-nav-blocker";
+import ModalContainer from "react-modal-promise";
 
 export default function Editor(): ReactElement {
   const { user } = useAuthContext();
   const navigate = useNavigate();
   const params = useParams();
-  const programId = params.id || 'new';
+  const programId = params.id || "new";
 
   const [editorState, dispatch, EditorContextProvider] = useEditorState();
 
   const [program] = Loader.useLoader<ProgramData>(async () => {
     let program: ProgramData | undefined;
 
-    if (programId === 'new') {
+    if (programId === "new") {
       program = createNewProgram(programId);
     } else {
       // If we aren't creating a new program, go fetch it.
@@ -43,13 +43,13 @@ export default function Editor(): ReactElement {
       program = result;
     }
 
-    dispatch({ action: 'load-program', program: program });
+    dispatch({ action: "load-program", program: program });
     return program;
   }, [programId]);
 
   const unblock = useNavBlocker(
     ({ confirm, cancel }) => unsavedChangesModal().then(confirm).catch(cancel),
-    editorState.programHasUnsavedChanges && !isLoading(program)
+    editorState.programHasUnsavedChanges && !isLoading(program),
   );
 
   async function handleSave(): Promise<void> {
@@ -63,11 +63,10 @@ export default function Editor(): ReactElement {
         return;
       }
 
-      dispatch({ action: 'load-program', program: result });
+      dispatch({ action: "load-program", program: result });
       unblock();
-      navigate('/program/' + result.id, { replace: true });
-    }
-    else if (user.value && user.value.id === editorState.program.userId) {
+      navigate("/program/" + result.id, { replace: true });
+    } else if (user.value && user.value.id === editorState.program.userId) {
       const result = await ProgramsService.update(editorState.program);
 
       if (isError(result)) {
@@ -75,57 +74,61 @@ export default function Editor(): ReactElement {
         return;
       }
 
-      dispatch({ action: 'load-program', program: result });
-    }
-    else if (!user.value && editorState.isNewProgram) {
-      window.sessionStorage.setItem('programToSave', JSON.stringify(editorState.program));
+      dispatch({ action: "load-program", program: result });
+    } else if (!user.value && editorState.isNewProgram) {
+      window.sessionStorage.setItem("programToSave", JSON.stringify(editorState.program));
       unblock();
-      navigate('/auth?redirect=/save-program');
+      navigate("/auth?redirect=/save-program");
     }
   }
 
   function handleRevert(): void {
-    dispatch({ action: 'revert' });
+    dispatch({ action: "revert" });
   }
 
-  const isOwnProgram = editorState.isNewProgram || (Loader.isLoaded(user) &&  user.value?.id === editorState.program.userId);
+  const isOwnProgram =
+    editorState.isNewProgram || (Loader.isLoaded(user) && user.value?.id === editorState.program.userId);
 
   let content: ReactElement = <></>;
   if (Loader.isLoaded(program)) {
     content = (
       <>
-        <Toolbar style={{ gridArea: 'toolbar' }}>
+        <Toolbar style={{ gridArea: "toolbar" }}>
           <ToolbarLeftGroup className={styles.toolBarLeft}>
             <TabBar>
               <Tab
                 title='program.vert'
                 active={editorState.activeTab === ShaderType.Vertex}
                 error={editorState.vertexShaderHasErrors || editorState.linkerHasErrors}
-                onClick={() => dispatch({ action: 'set-tab', tab: ShaderType.Vertex })}
+                onClick={() => dispatch({ action: "set-tab", tab: ShaderType.Vertex })}
               />
               <Tab
                 title='program.frag'
                 active={editorState.activeTab === ShaderType.Fragment}
                 error={editorState.fragmentShaderHasErrors || editorState.linkerHasErrors}
-                onClick={() => dispatch({ action: 'set-tab', tab: ShaderType.Fragment })}
+                onClick={() => dispatch({ action: "set-tab", tab: ShaderType.Fragment })}
               />
             </TabBar>
             <div className={styles.buttonGroup}>
-              {<IconButton onClick={handleRevert} disabled={!editorState.programHasUnsavedChanges}>
-                <RestoreIcon />
-              </IconButton>}
+              {
+                <IconButton onClick={handleRevert} disabled={!editorState.programHasUnsavedChanges}>
+                  <RestoreIcon />
+                </IconButton>
+              }
               {isOwnProgram && (
-                <IconButton onClick={handleSave} disabled={!editorState.programHasUnsavedChanges && !editorState.isNewProgram}>
+                <IconButton
+                  onClick={handleSave}
+                  disabled={!editorState.programHasUnsavedChanges && !editorState.isNewProgram}
+                >
                   <SaveIcon />
                 </IconButton>
               )}
             </div>
           </ToolbarLeftGroup>
-          <ToolbarRightGroup>
-          </ToolbarRightGroup>
+          <ToolbarRightGroup></ToolbarRightGroup>
         </Toolbar>
-        <ProgramEditor style={{ gridArea: 'editor' }} />
-        <Scene style={{ gridArea: 'scene' }} />
+        <ProgramEditor style={{ gridArea: "editor" }} />
+        <Scene style={{ gridArea: "scene" }} />
       </>
     );
   } else if (Loader.isLoading(program)) {
@@ -137,13 +140,13 @@ export default function Editor(): ReactElement {
   return (
     <EditorContextProvider value={[editorState, dispatch]}>
       <div className={styles.layout}>
-        <Header style={{ gridArea: 'header' }}>
+        <Header style={{ gridArea: "header" }}>
           {Loader.isLoaded(program) && (
             <ProgramTitle
               editable={isOwnProgram}
               unsavedChanges={editorState.programHasUnsavedChanges}
               title={editorState.program.title}
-              onChange={(title) => dispatch({ action: 'set-title', title })}
+              onChange={(title) => dispatch({ action: "set-title", title })}
             />
           )}
         </Header>

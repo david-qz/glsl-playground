@@ -20,46 +20,16 @@
       "argsIgnorePattern": "^_",
       "destructuredArrayIgnorePattern": "^_"
     }],
-    "indent": [
-      "error",
-      2,
-      {
-        "SwitchCase": 1
-      }
-    ],
-    "quotes": ["error", "single"],
-    "semi": ["error", "always"],
-    "space-in-parens": "error",
-    "space-infix-ops": "error",
-    "object-curly-spacing": ["error", "always"],
-    "comma-spacing": "error",
-    "comma-dangle": ["error", "always-multiline"],
-    "eol-last": ["error", "always"],
-    "arrow-spacing": [
-      "error",
-      {
-        "before": true,
-        "after": true
-      }
-    ],
-    "keyword-spacing": [
-      "error",
-      {
-        "before": true,
-        "after": true
-      }
-    ],
-    "array-bracket-spacing": "error",
     "prefer-const": "error",
-    "no-var": "error",
-    "rest-spread-spacing": "error",
-    "prefer-arrow-callback": "error"
+    "no-var": "error"
   },
   "overrides": [
     {
       "files": ["*.ts", "*.tsx"],
       "parser": "@typescript-eslint/parser",
-      "parserOptions": { "project": ["./tsconfig.json"] },
+      "parserOptions": {
+        "project": ["./tsconfig.json"]
+      },
       "plugins": ["@typescript-eslint"],
       "rules": {
         "no-duplicate-imports": "off",
@@ -70,12 +40,6 @@
           "argsIgnorePattern": "^_",
           "destructuredArrayIgnorePattern": "^_"
         }],
-        "semi": "off",
-        "@typescript-eslint/semi": "error",
-        "comma-dangle": "off",
-        "@typescript-eslint/comma-dangle": ["error", "always-multiline"],
-        "object-curly-spacing": "off",
-        "@typescript-eslint/object-curly-spacing": ["error", "always"],
         "@typescript-eslint/consistent-type-exports": ["error", {
           "fixMixedExportsWithInlineTypeSpecifier": true
         }],

@@ -1,20 +1,20 @@
-import { type ReactElement, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
-import { useAuthContext } from '../../hooks/use-auth-context';
-import styles from './dashboard.module.css';
-import * as ProgramsService from '../../services/programs-service';
-import ProgramsTable from '../programs-table/programs-table';
-import Button from '../form-controls/button';
-import Modal from '../modal/modal';
-import Confirmation from '../../confirmation/confirmation';
-import { type ProgramData } from '../../../common/api-types';
-import { Loader } from '../../hooks/use-loader';
+import { type ReactElement, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../hooks/use-auth-context";
+import styles from "./dashboard.module.css";
+import * as ProgramsService from "../../services/programs-service";
+import ProgramsTable from "../programs-table/programs-table";
+import Button from "../form-controls/button";
+import Modal from "../modal/modal";
+import Confirmation from "../../confirmation/confirmation";
+import { type ProgramData } from "../../../common/api-types";
+import { Loader } from "../../hooks/use-loader";
 
 export default function Dashboard(): ReactElement {
   const navigate = useNavigate();
   const { user } = useAuthContext();
   const [programs, setPrograms] = Loader.useLoader<Array<ProgramData>>(async () => {
-    return await ProgramsService.getUsersPrograms() || [];
+    return (await ProgramsService.getUsersPrograms()) || [];
   }, []);
   const [programToDelete, setProgramToDelete] = useState<ProgramData | null>(null);
 
@@ -28,21 +28,21 @@ export default function Dashboard(): ReactElement {
     const result = await ProgramsService.deleteProgram(programToDelete.id);
     if (!result) return;
 
-    setPrograms(programs.value.filter(p => p.id !== programToDelete.id));
+    setPrograms(programs.value.filter((p) => p.id !== programToDelete.id));
     setProgramToDelete(null);
   }
 
   function handleDeleteButtonPressed(programId: string): void {
     if (!Loader.isLoaded(programs)) return;
 
-    const program = programs.value.find(p => p.id === programId);
+    const program = programs.value.find((p) => p.id === programId);
     if (!program) return;
 
     setProgramToDelete(program);
   }
 
   function handleEdit(programId: string): void {
-    navigate('/program/' + programId);
+    navigate("/program/" + programId);
   }
 
   return (
@@ -52,18 +52,13 @@ export default function Dashboard(): ReactElement {
           <div>
             <h2 className={styles.heading}>Your Programs</h2>
           </div>
-          {programs.value.length !== 0
-            ? <ProgramsTable
-              programs={programs.value}
-              handleDelete={handleDeleteButtonPressed}
-              handleEdit={handleEdit}
-            />
-            : <p>You don't have any programs yet.</p>}
-          <Button
-            className={styles.newProgramButton}
-            onClick={() => navigate('/')}
-          >
-          New Program
+          {programs.value.length !== 0 ? (
+            <ProgramsTable programs={programs.value} handleDelete={handleDeleteButtonPressed} handleEdit={handleEdit} />
+          ) : (
+            <p>You don't have any programs yet.</p>
+          )}
+          <Button className={styles.newProgramButton} onClick={() => navigate("/")}>
+            New Program
           </Button>
         </section>
       )}

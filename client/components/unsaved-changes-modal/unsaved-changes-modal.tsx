@@ -1,12 +1,12 @@
-import { type ReactElement } from 'react';
-import { create as createPromisifiedModal } from 'react-modal-promise';
-import Confirmation from '../../confirmation/confirmation';
-import Modal from '../modal/modal';
+import { type ReactElement } from "react";
+import { create as createPromisifiedModal } from "react-modal-promise";
+import Confirmation from "../../confirmation/confirmation";
+import Modal from "../modal/modal";
 
 type PromiseModalProps = {
-  isOpen: boolean,
-  onResolve: () => void,
-  onReject: () => void,
+  isOpen: boolean;
+  onResolve: () => void;
+  onReject: () => void;
 };
 
 function UnsavedChangedModal({ isOpen, onResolve, onReject }: PromiseModalProps): ReactElement {

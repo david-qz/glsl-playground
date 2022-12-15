@@ -1,45 +1,45 @@
-import { type Dispatch, createContext, useContext, useReducer } from 'react';
-import { type ProgramCompilationErrors, ShaderType } from '../components/scene/webgl/shaders';
-import { type ProgramData } from '../../common/api-types';
+import { type Dispatch, createContext, useContext, useReducer } from "react";
+import { type ProgramCompilationErrors, ShaderType } from "../components/scene/webgl/shaders";
+import { type ProgramData } from "../../common/api-types";
 
 interface CoreEditorState {
-  program: ProgramData,
-  lastSavedProgram: ProgramData,
-  activeTab: ShaderType,
-  errors: ProgramCompilationErrors,
+  program: ProgramData;
+  lastSavedProgram: ProgramData;
+  activeTab: ShaderType;
+  errors: ProgramCompilationErrors;
 }
 
 export interface EditorState extends CoreEditorState {
-  programHasUnsavedChanges: boolean,
-  isNewProgram: boolean,
-  vertexShaderHasErrors: boolean,
-  fragmentShaderHasErrors: boolean,
-  linkerHasErrors: boolean
+  programHasUnsavedChanges: boolean;
+  isNewProgram: boolean;
+  vertexShaderHasErrors: boolean;
+  fragmentShaderHasErrors: boolean;
+  linkerHasErrors: boolean;
 }
 
 type EditorActionLoadProgram = {
-  action: 'load-program',
-  program: ProgramData
+  action: "load-program";
+  program: ProgramData;
 };
 type EditorActionRevert = {
-  action: 'revert'
+  action: "revert";
 };
 type EditorStateSetTitle = {
-  action: 'set-title',
-  title: string
+  action: "set-title";
+  title: string;
 };
 type EditorStateSetActiveTab = {
-  action: 'set-tab',
-  tab: ShaderType
+  action: "set-tab";
+  tab: ShaderType;
 };
 type EditorActionSetSources = {
-  action: 'set-sources',
-  vertexSource?: string,
-  fragmentSource?: string
+  action: "set-sources";
+  vertexSource?: string;
+  fragmentSource?: string;
 };
 type EditorActionSetErrors = {
-  action: 'set-errors',
-  errors: ProgramCompilationErrors
+  action: "set-errors";
+  errors: ProgramCompilationErrors;
 };
 
 type EditorAction =
@@ -55,20 +55,20 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
   let nextCoreState: CoreEditorState | undefined;
 
   switch (action.action) {
-    case 'load-program':
+    case "load-program":
       nextCoreState = {
         ...state,
         program: action.program,
         lastSavedProgram: action.program,
       };
       break;
-    case 'revert':
+    case "revert":
       nextCoreState = {
         ...state,
         program: { ...state.lastSavedProgram },
       };
       break;
-    case 'set-title':
+    case "set-title":
       nextCoreState = {
         ...state,
         program: {
@@ -77,13 +77,13 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
         },
       };
       break;
-    case 'set-tab':
+    case "set-tab":
       nextCoreState = {
         ...state,
         activeTab: action.tab,
       };
       break;
-    case 'set-sources':
+    case "set-sources":
       nextCoreState = {
         ...state,
         program: {
@@ -93,7 +93,7 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
         },
       };
       break;
-    case 'set-errors': {
+    case "set-errors": {
       nextCoreState = {
         ...state,
         program: {
@@ -109,16 +109,15 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
   const nextState: EditorState = {
     ...nextCoreState,
     programHasUnsavedChanges: !areProgramsEqual(nextCoreState.program, nextCoreState.lastSavedProgram),
-    isNewProgram: nextCoreState.program.id === 'new',
+    isNewProgram: nextCoreState.program.id === "new",
     vertexShaderHasErrors: nextCoreState.errors.vertexShaderErrors.length !== 0,
     fragmentShaderHasErrors: nextCoreState.errors.fragmentShaderErrors.length !== 0,
     linkerHasErrors: nextCoreState.errors.linkerErrors.length !== 0,
   };
 
   // The type checker can't help out on this one. When adding more state, make sure to watch out for cases like this.
-  nextState.program.didCompile = !nextState.vertexShaderHasErrors
-    && !nextState.fragmentShaderHasErrors
-    && !nextState.linkerHasErrors;
+  nextState.program.didCompile =
+    !nextState.vertexShaderHasErrors && !nextState.fragmentShaderHasErrors && !nextState.linkerHasErrors;
 
   return nextState;
 }
@@ -138,14 +137,14 @@ export function useEditorStateContext(): EditorContextValue {
 
 function createInitialState(): EditorState {
   const blankProgram = {
-    id: '',
-    userId: '',
-    title: '',
-    vertexSource: '',
-    fragmentSource: '',
+    id: "",
+    userId: "",
+    title: "",
+    vertexSource: "",
+    fragmentSource: "",
     didCompile: false,
-    createdAt: '',
-    modifiedAt: '',
+    createdAt: "",
+    modifiedAt: "",
   };
   return {
     program: blankProgram,
@@ -165,7 +164,5 @@ function createInitialState(): EditorState {
 }
 
 function areProgramsEqual(a: ProgramData, b: ProgramData): boolean {
-  return a.vertexSource === b.vertexSource
-    && a.fragmentSource === b.fragmentSource
-    && a.title === b.title;
+  return a.vertexSource === b.vertexSource && a.fragmentSource === b.fragmentSource && a.title === b.title;
 }

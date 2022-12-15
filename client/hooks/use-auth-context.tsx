@@ -1,11 +1,11 @@
-import { type Dispatch,  type ReactElement, type ReactNode, createContext, useContext } from 'react';
-import { type UserToken } from '../../common/api-types';
-import { Loader, type Loading, type LoadingStateAction } from './use-loader';
-import { getUser } from '../services/auth-service';
+import { type Dispatch, type ReactElement, type ReactNode, createContext, useContext } from "react";
+import { type UserToken } from "../../common/api-types";
+import { Loader, type Loading, type LoadingStateAction } from "./use-loader";
+import { getUser } from "../services/auth-service";
 
 type AuthContextValue = {
-  user: Loading<UserToken | null>,
-  setUser: Dispatch<LoadingStateAction<UserToken | null>>
+  user: Loading<UserToken | null>;
+  setUser: Dispatch<LoadingStateAction<UserToken | null>>;
 };
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -15,17 +15,13 @@ type ProviderProps = {
 };
 
 export function AuthContextProvider({ children }: ProviderProps): ReactElement {
-  const [user, setUser] = Loader.useLoader<UserToken| null>(() => getUser(), []);
+  const [user, setUser] = Loader.useLoader<UserToken | null>(() => getUser(), []);
 
-  return (
-    <AuthContext.Provider value={{ user, setUser }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ user, setUser }}>{children}</AuthContext.Provider>;
 }
 
 export function useAuthContext(): AuthContextValue {
   const value = useContext(AuthContext);
-  if (value === undefined) throw new Error('Attempt to useAuthContext() outside of an AuthContext.Provider.');
+  if (value === undefined) throw new Error("Attempt to useAuthContext() outside of an AuthContext.Provider.");
   return value;
 }

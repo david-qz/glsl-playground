@@ -1,8 +1,8 @@
-import { type ReactElement, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { type ProgramData } from '../../../common/api-types';
-import { isError } from '../../../common/result';
-import * as ProgramsService from '../../services/programs-service';
+import { type ReactElement, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { type ProgramData } from "../../../common/api-types";
+import { isError } from "../../../common/result";
+import * as ProgramsService from "../../services/programs-service";
 
 export default function SaveProgram(): ReactElement {
   const navigate = useNavigate();
@@ -18,24 +18,23 @@ export default function SaveProgram(): ReactElement {
     if (effectHasRun.current) return;
     effectHasRun.current = true;
 
-    const localProgram = window.sessionStorage.getItem('programToSave');
-    window.sessionStorage.removeItem('programToSave');
+    const localProgram = window.sessionStorage.getItem("programToSave");
+    window.sessionStorage.removeItem("programToSave");
 
     if (!localProgram) {
-      navigate('/', { replace: true });
+      navigate("/", { replace: true });
       return;
     }
 
-    ProgramsService.create(JSON.parse(localProgram) as ProgramData)
-      .then(result => {
-        if (!isError(result)) {
-          const program: ProgramData = result;
-          navigate('/program/' + program.id, { replace: true });
-        } else {
-          console.error(result);
-          navigate('/', { replace: true });
-        }
-      });
+    ProgramsService.create(JSON.parse(localProgram) as ProgramData).then((result) => {
+      if (!isError(result)) {
+        const program: ProgramData = result;
+        navigate("/program/" + program.id, { replace: true });
+      } else {
+        console.error(result);
+        navigate("/", { replace: true });
+      }
+    });
   }, []);
 
   return <></>;

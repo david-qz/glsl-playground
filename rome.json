@@ -1,0 +1,14 @@
+{
+  "$schema": "./node_modules/rome/configuration_schema.json",
+  "linter": {
+    "enabled": false
+  },
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": true,
+    "ignore": ["dist", "public", "**/*.css.d.ts"],
+    "indentStyle": "space",
+    "indentSize": 2,
+    "lineWidth": 120
+  }
+}

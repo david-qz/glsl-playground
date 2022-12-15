@@ -1,13 +1,13 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 
-type EnvironmentEntry<T> = { key: string, value: T };
+type EnvironmentEntry<T> = { key: string; value: T };
 type RawEnvironmentEntry = EnvironmentEntry<string | undefined>;
 
 function load(key: string): RawEnvironmentEntry {
   let resolvedKey = key;
-  if (process.env.NODE_ENV === 'test' && process.env['TEST_' + key]) {
-    resolvedKey = 'TEST_' + key;
+  if (process.env.NODE_ENV === "test" && process.env["TEST_" + key]) {
+    resolvedKey = "TEST_" + key;
   }
   return { key, value: process.env[resolvedKey] };
 }
@@ -25,9 +25,9 @@ function parseBoolean({ key, value }: RawEnvironmentEntry): EnvironmentEntry<boo
   if (!value) return { key, value: undefined };
 
   let parsed: boolean | undefined = undefined;
-  if (value.toLowerCase() === 'true' || value === '1') {
+  if (value.toLowerCase() === "true" || value === "1") {
     parsed = true;
-  } else if (value.toLowerCase() === 'false' || value === '0') {
+  } else if (value.toLowerCase() === "false" || value === "0") {
     parsed = false;
   }
 
@@ -36,7 +36,10 @@ function parseBoolean({ key, value }: RawEnvironmentEntry): EnvironmentEntry<boo
   return { key, value: parsed };
 }
 
-function fallback<T>({ key, value }: EnvironmentEntry<T>, fallbackValue: NonNullable<T>): EnvironmentEntry<NonNullable<T>> {
+function fallback<T>(
+  { key, value }: EnvironmentEntry<T>,
+  fallbackValue: NonNullable<T>,
+): EnvironmentEntry<NonNullable<T>> {
   if (value === null || value === undefined) {
     console.debug(`Warning: environment variable '${key}' is missing or invalid, defaulting to '${fallbackValue}'`);
     return { key, value: fallbackValue };
@@ -53,11 +56,11 @@ function required<T>({ key, value }: EnvironmentEntry<T>): EnvironmentEntry<NonN
 }
 
 export default {
-  API_PREFIX: fallback(load('API_PREFIX'), '').value,
-  PORT: fallback(parseInteger(load('PORT')), 7890).value,
-  SESSION_COOKIE: fallback(load('SESSION_COOKIE'), 'session').value,
-  JWT_SECRET: required(load('JWT_SECRET')).value,
-  SALT_ROUNDS: fallback(parseInteger(load('SALT_ROUNDS')), 10).value,
-  DATABASE_URL: required(load('DATABASE_URL')).value,
-  PGSSLMODE: fallback(parseBoolean(load('PGSSLMODE')), false).value,
+  API_PREFIX: fallback(load("API_PREFIX"), "").value,
+  PORT: fallback(parseInteger(load("PORT")), 7890).value,
+  SESSION_COOKIE: fallback(load("SESSION_COOKIE"), "session").value,
+  JWT_SECRET: required(load("JWT_SECRET")).value,
+  SALT_ROUNDS: fallback(parseInteger(load("SALT_ROUNDS")), 10).value,
+  DATABASE_URL: required(load("DATABASE_URL")).value,
+  PGSSLMODE: fallback(parseBoolean(load("PGSSLMODE")), false).value,
 };

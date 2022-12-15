@@ -1,10 +1,10 @@
-import { type MouseEvent, type ReactElement } from 'react';
-import styles from './modal.module.css';
+import { type MouseEvent, type ReactElement } from "react";
+import styles from "./modal.module.css";
 
 type Props = {
-  children: ReactElement,
-  open: boolean,
-  onClickOut?: () => void
+  children: ReactElement;
+  open: boolean;
+  onClickOut?: () => void;
 };
 
 export default function Modal({ children, open, onClickOut }: Props): ReactElement {
@@ -14,13 +14,11 @@ export default function Modal({ children, open, onClickOut }: Props): ReactEleme
     }
   }
 
-  return open
-    ? (
-      <div className={styles.backdrop} onClick={handleClick}>
-        {children}
-      </div>
-    )
-    : (
-      <></>
-    );
+  return open ? (
+    <div className={styles.backdrop} onClick={handleClick}>
+      {children}
+    </div>
+  ) : (
+    <></>
+  );
 }

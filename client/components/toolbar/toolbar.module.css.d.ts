@@ -1,5 +1,5 @@
 declare const classNames: {
-  readonly toolbar: 'toolbar';
+  readonly toolbar: "toolbar";
 };
 export = classNames;
-export type ClassNames = 'toolbar';
+export type ClassNames = "toolbar";

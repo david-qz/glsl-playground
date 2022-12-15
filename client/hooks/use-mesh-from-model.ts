@@ -1,6 +1,6 @@
-import { type Dispatch } from 'react';
-import Mesh from '../components/scene/webgl/mesh';
-import { Loader, type Loading, type LoadingStateAction } from './use-loader';
+import { type Dispatch } from "react";
+import Mesh from "../components/scene/webgl/mesh";
+import { Loader, type Loading, type LoadingStateAction } from "./use-loader";
 
 export default function useMeshFromModel(url: string): [Loading<Mesh>, Dispatch<LoadingStateAction<Mesh>>] {
   return Loader.useLoader<Mesh>(async () => {

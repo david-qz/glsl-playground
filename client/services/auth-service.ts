@@ -1,9 +1,9 @@
-import apiPrefix from './api-prefix';
-import { type ApiError, type UserToken } from '../../common/api-types';
-import { type Result } from '../../common/result';
+import apiPrefix from "./api-prefix";
+import { type ApiError, type UserToken } from "../../common/api-types";
+import { type Result } from "../../common/result";
 
 export async function getUser(): Promise<Result<UserToken | null>> {
-  const response = await fetch(apiPrefix + '/users/me');
+  const response = await fetch(apiPrefix + "/users/me");
   const json: unknown = await response.json();
 
   if (!response.ok) return new Error((json as ApiError).message);
@@ -12,10 +12,10 @@ export async function getUser(): Promise<Result<UserToken | null>> {
 }
 
 export async function logIn(email: string, password: string): Promise<Result<UserToken>> {
-  const response = await fetch(apiPrefix + '/users/sessions', {
-    method: 'POST',
+  const response = await fetch(apiPrefix + "/users/sessions", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({ email, password }),
   });
@@ -27,10 +27,10 @@ export async function logIn(email: string, password: string): Promise<Result<Use
 }
 
 export async function signUp(email: string, password: string): Promise<Result<UserToken>> {
-  const response = await fetch(apiPrefix + '/users', {
-    method: 'POST',
+  const response = await fetch(apiPrefix + "/users", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({ email, password }),
   });
@@ -42,8 +42,8 @@ export async function signUp(email: string, password: string): Promise<Result<Us
 }
 
 export async function logOut(): Promise<Result<true>> {
-  const response = await fetch(apiPrefix + '/users/sessions', {
-    method: 'DELETE',
+  const response = await fetch(apiPrefix + "/users/sessions", {
+    method: "DELETE",
   });
-  return response.ok ? true : new Error('Failed to log out.');
+  return response.ok ? true : new Error("Failed to log out.");
 }

@@ -1,18 +1,18 @@
-import { type CSSProperties, type ReactElement, type ReactNode } from 'react';
-import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { Loader } from '../../hooks/use-loader';
-import { useAuthContext } from '../../hooks/use-auth-context';
-import navigationLinks from '../../navigation-links';
-import { logOut } from '../../services/auth-service';
-import { type AuthMethod } from '../auth-form/auth-form';
-import Button from '../form-controls/button';
-import Menu, { MenuDivider, MenuItem, MenuTitle } from '../menu/menu';
-import styles from './header.module.css';
-import { isError } from '../../../common/result';
+import { type CSSProperties, type ReactElement, type ReactNode } from "react";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { Loader } from "../../hooks/use-loader";
+import { useAuthContext } from "../../hooks/use-auth-context";
+import navigationLinks from "../../navigation-links";
+import { logOut } from "../../services/auth-service";
+import { type AuthMethod } from "../auth-form/auth-form";
+import Button from "../form-controls/button";
+import Menu, { MenuDivider, MenuItem, MenuTitle } from "../menu/menu";
+import styles from "./header.module.css";
+import { isError } from "../../../common/result";
 
 type Props = {
-  style?: CSSProperties,
-  children?: ReactNode
+  style?: CSSProperties;
+  children?: ReactNode;
 };
 
 export default function Header({ style, children }: Props): ReactElement {
@@ -32,26 +32,24 @@ export default function Header({ style, children }: Props): ReactElement {
 
   function handleAuthButtonClick(method: AuthMethod): void {
     // If we're already on the auth page, we should preserve the current search params when switching methods.
-    if (location.pathname !== '/auth') {
-      navigate('/auth?method=' + method, { replace: true });
+    if (location.pathname !== "/auth") {
+      navigate("/auth?method=" + method, { replace: true });
     } else {
       const newParams = new URLSearchParams(searchParams);
-      newParams.set('method', method);
+      newParams.set("method", method);
       setSearchParams(newParams);
     }
   }
 
-  const navigationLinksToShow = navigationLinks.filter(nl => !nl.hidePattern.exec(location.pathname));
+  const navigationLinksToShow = navigationLinks.filter((nl) => !nl.hidePattern.exec(location.pathname));
 
   let userSlot: ReactNode = <></>;
   if (Loader.isLoaded(user) && user.value) {
     userSlot = (
       <Menu>
-        <MenuTitle>
-          {`Signed in as ${user.value.email}`}
-        </MenuTitle>
+        <MenuTitle>{`Signed in as ${user.value.email}`}</MenuTitle>
         <MenuDivider />
-        {navigationLinksToShow.map(nl => (
+        {navigationLinksToShow.map((nl) => (
           <MenuItem key={nl.path} onClick={() => navigate(nl.path)}>
             {nl.text}
           </MenuItem>
@@ -64,8 +62,12 @@ export default function Header({ style, children }: Props): ReactElement {
   } else if (Loader.isLoaded(user) && !user.value) {
     userSlot = (
       <>
-        <Button className={styles.headerButton} onClick={() => handleAuthButtonClick('sign-up')}>Sign Up</Button>
-        <Button className={styles.headerButton} onClick={() => handleAuthButtonClick('log-in')}>Log In</Button>
+        <Button className={styles.headerButton} onClick={() => handleAuthButtonClick("sign-up")}>
+          Sign Up
+        </Button>
+        <Button className={styles.headerButton} onClick={() => handleAuthButtonClick("log-in")}>
+          Log In
+        </Button>
       </>
     );
   }
@@ -73,14 +75,12 @@ export default function Header({ style, children }: Props): ReactElement {
   return (
     <div className={styles.header} style={style}>
       <div className={styles.left}>
-        <Link className={styles.siteName} to='/'>GLSL Playground</Link>
+        <Link className={styles.siteName} to='/'>
+          GLSL Playground
+        </Link>
       </div>
-      <div>
-        {children}
-      </div>
-      <div className={styles.right}>
-        {userSlot}
-      </div>
+      <div>{children}</div>
+      <div className={styles.right}>{userSlot}</div>
     </div>
   );
 }

@@ -1,3 +1,3 @@
 export function classes(...classes: Array<string | unknown>): string {
-  return classes.filter(c => !!c).join(' ');
+  return classes.filter((c) => !!c).join(" ");
 }

@@ -3,13 +3,13 @@
  * this point, triggers like afterAll/afterEach and beforeAll/beforeEach are
  * available. This is a good place to put global setup and tear down.
  ******************************************************************************/
-import { afterAll } from '@jest/globals';
+import { afterAll } from "@jest/globals";
 // These don't seem to work, but there's documentation stating to do this.
 // Perhaps a bug fix will one day make this operable again. Doesn't seem to hurt
 // anything. Keep around if matchers get fixed. See:
 // https://github.com/testing-library/jest-dom/issues/442
-import '@testing-library/jest-dom';
-import '@testing-library/jest-dom/extend-expect';
+import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/extend-expect";
 
 // Suppress any logging below a warn level during testing.
 global.console = {
@@ -19,7 +19,7 @@ global.console = {
   info: jest.fn(),
 };
 
-import pool from './server/database.js';
+import pool from "./server/database.js";
 
 afterAll(() => pool.end());
 global.fetch = jest.fn();

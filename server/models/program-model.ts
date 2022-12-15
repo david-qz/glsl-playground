@@ -1,15 +1,15 @@
-import { type ProgramData } from '../../common/api-types.js';
-import pool from '../database.js';
+import { type ProgramData } from "../../common/api-types.js";
+import pool from "../database.js";
 
 type ProgramRow = {
-  id: string,
-  user_id: string,
-  title: string,
-  vertex_source: string,
-  fragment_source: string,
-  did_compile: boolean,
-  created_at: string,
-  modified_at: string
+  id: string;
+  user_id: string;
+  title: string;
+  vertex_source: string;
+  fragment_source: string;
+  did_compile: boolean;
+  created_at: string;
+  modified_at: string;
 };
 
 export default class Program implements ProgramData {
@@ -34,14 +34,14 @@ export default class Program implements ProgramData {
   }
 
   static async getById(id: string): Promise<Program | undefined> {
-    const { rows } = await pool.query<ProgramRow>('select * from programs where id = $1', [id]);
+    const { rows } = await pool.query<ProgramRow>("select * from programs where id = $1", [id]);
     if (!rows[0]) return undefined;
     return new Program(rows[0]);
   }
 
   static async getByUserId(userId: string): Promise<Array<Program>> {
-    const { rows } = await pool.query<ProgramRow>('select * from programs where user_id = $1', [userId]);
-    return rows.map(r => new Program(r));
+    const { rows } = await pool.query<ProgramRow>("select * from programs where user_id = $1", [userId]);
+    return rows.map((r) => new Program(r));
   }
 
   static async insert(userId: string, data: Partial<ProgramData>): Promise<Program> {
@@ -51,7 +51,7 @@ export default class Program implements ProgramData {
       values ($1, $2, $3, $4, $5)
       returning *;
       `,
-      [userId, data.title, data.vertexSource, data.fragmentSource, data.didCompile]
+      [userId, data.title, data.vertexSource, data.fragmentSource, data.didCompile],
     );
 
     // If there isn't a row, the above query would have thrown.
@@ -59,7 +59,7 @@ export default class Program implements ProgramData {
   }
 
   async update(id: string, partial: Partial<ProgramData>): Promise<Program | undefined> {
-    const updated = { ...this as ProgramData, ...partial };
+    const updated = { ...(this as ProgramData), ...partial };
 
     const { rows } = await pool.query<ProgramRow>(
       `
@@ -71,13 +71,7 @@ export default class Program implements ProgramData {
       where id = $1
       returning *;
       `,
-      [
-        id,
-        updated.title,
-        updated.vertexSource,
-        updated.fragmentSource,
-        updated.didCompile,
-      ]
+      [id, updated.title, updated.vertexSource, updated.fragmentSource, updated.didCompile],
     );
 
     if (!rows[0]) return undefined;
@@ -85,6 +79,6 @@ export default class Program implements ProgramData {
   }
 
   async delete(): Promise<void> {
-    await pool.query<ProgramRow>('delete from programs where id = $1', [this.id]);
+    await pool.query<ProgramRow>("delete from programs where id = $1", [this.id]);
   }
 }

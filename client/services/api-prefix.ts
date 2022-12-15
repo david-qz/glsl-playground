@@ -1,1 +1,1 @@
-export default '/api/v1';
+export default "/api/v1";

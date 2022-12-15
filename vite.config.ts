@@ -1,34 +1,34 @@
-import dotenv from 'dotenv';
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import compress from 'vite-plugin-compression';
-import sassDts from 'vite-plugin-sass-dts';
+import dotenv from "dotenv";
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import compress from "vite-plugin-compression";
+import sassDts from "vite-plugin-sass-dts";
 
 // For process.env.BROWSER
 dotenv.config();
 
 export default defineConfig({
-  root: './client',
+  root: "./client",
   server: {
     open: true,
     port: 7891,
     strictPort: true,
     proxy: {
-      '/api/v1': {
-        target: 'http://localhost:7890',
+      "/api/v1": {
+        target: "http://localhost:7890",
         changeOrigin: true,
-        rewrite: (path) =>  path.replace(/^\/api\/v1/, ''),
+        rewrite: (path) => path.replace(/^\/api\/v1/, ""),
       },
     },
   },
-  assetsInclude: ['**/*.obj'],
+  assetsInclude: ["**/*.obj"],
   css: {
     modules: {
-      localsConvention: 'camelCaseOnly',
+      localsConvention: "camelCaseOnly",
     },
   },
   build: {
-    outDir: '../public',
+    outDir: "../public",
     emptyOutDir: true,
   },
   plugins: [
@@ -36,11 +36,11 @@ export default defineConfig({
     sassDts(),
     compress({
       filter: /\.(js|css|html|obj)$/i,
-      algorithm: 'gzip',
+      algorithm: "gzip",
     }),
     compress({
       filter: /\.(js|css|html|obj)$/i,
-      algorithm: 'brotliCompress',
+      algorithm: "brotliCompress",
     }),
   ],
 });
