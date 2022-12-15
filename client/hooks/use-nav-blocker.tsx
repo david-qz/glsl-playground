@@ -12,7 +12,7 @@ export type NavBlockerControl = {
 
 export type NavBlocker = (control: NavBlockerControl) => void;
 
-export function useNavBlocker(onBlock: NavBlocker, when: Boolean = true): () => void {
+export function useNavBlocker(onBlock: NavBlocker, when: boolean = true): () => void {
   const { block } = useContext(UNSAFE_NavigationContext).navigator as History;
 
   // Latest ref pattern
