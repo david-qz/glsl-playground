@@ -213,6 +213,6 @@ export default class SceneRenderer {
   }
 
   setCameraDistance(distance: number): void {
-    this.cameraDistance = Math.max(0, Math.min(distance, 100));
+    this.cameraDistance = Math.max(0.1, Math.min(distance, 50));
   }
 }

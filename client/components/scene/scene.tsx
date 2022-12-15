@@ -1,12 +1,4 @@
-import {
-  type CSSProperties,
-  type PointerEvent,
-  type ReactElement,
-  type WheelEvent,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { type CSSProperties, type PointerEvent, type ReactElement, useEffect, useRef, useState } from "react";
 import { useEditorStateContext } from "../../hooks/use-editor-state";
 import SceneRenderer from "./webgl/scene-renderer";
 import styles from "./scene.module.css";
@@ -66,13 +58,21 @@ export default function Scene({ style }: Props): ReactElement {
     scene.setEulerAngles(rotation);
   }
 
-  function handleMouseWheel(e: WheelEvent<HTMLCanvasElement>): void {
-    if (!sceneRef.current) return;
-    const scene = sceneRef.current;
+  useEffect(() => {
+    function handleMouseWheel(e: WheelEvent): void {
+      if (!sceneRef.current) return;
+      e.preventDefault();
 
-    const distance = scene.getCameraDistance();
-    scene.setCameraDistance(distance + (distance / e.deltaY) * 20);
-  }
+      const distance = sceneRef.current.getCameraDistance();
+      const delta = Math.sign(e.deltaY) * Math.sqrt(Math.abs(e.deltaY));
+      sceneRef.current.setCameraDistance(distance + (distance / 50) * delta);
+    }
+
+    canvasRef.current?.addEventListener("wheel", handleMouseWheel, { passive: false });
+    return () => {
+      canvasRef.current?.removeEventListener("wheel", handleMouseWheel);
+    };
+  }, []);
 
   return (
     <div className={styles.canvasContainer} style={style}>
@@ -83,7 +83,6 @@ export default function Scene({ style }: Props): ReactElement {
         onPointerUp={() => setPointerDown(false)}
         onPointerMove={(e) => handleDrag(e)}
         onPointerLeave={() => setPointerDown(false)}
-        onWheel={(e) => handleMouseWheel(e)}
       />
       {Loader.loadingDidError(mesh) && <span className={styles.error}>Failed to load model :(</span>}
     </div>
