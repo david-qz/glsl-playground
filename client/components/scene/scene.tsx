@@ -5,7 +5,7 @@ import styles from "./scene.module.css";
 import { vec2 } from "gl-matrix";
 import useMeshFromModel from "../../hooks/use-mesh-from-model";
 import teapot from "../../assets/models/teapot.obj";
-import texture from "../../assets/textures/granite.png";
+import texture from "../../assets/textures/iron.png";
 import { Loader } from "../../hooks/use-loader";
 
 type Props = {
