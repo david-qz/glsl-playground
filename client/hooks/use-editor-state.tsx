@@ -39,7 +39,7 @@ type EditorActionSetSources = {
 };
 type EditorActionSetErrors = {
   action: "set-errors";
-  errors: ProgramCompilationErrors;
+  errors?: ProgramCompilationErrors;
 };
 
 type EditorAction =
@@ -99,7 +99,7 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
         program: {
           ...state.program,
         },
-        errors: action.errors,
+        errors: action.errors || { vertexShaderErrors: [], fragmentShaderErrors: [], linkerErrors: [] },
       };
       break;
     }
