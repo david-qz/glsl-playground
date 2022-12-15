@@ -27,39 +27,28 @@ export default function Scene({ style }: Props): ReactElement {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sceneRef = useRef<SceneRenderer>();
 
-  const { vertexSource: vertexShaderSource, fragmentSource: fragmentShaderSource } = editorState.program;
-
-  function updateProgram(vertexSource: string, fragmentSource: string): void {
-    const errors = sceneRef.current?.loadProgram(vertexSource, fragmentSource);
-    dispatch({
-      action: "set-errors",
-      errors: errors || { vertexShaderErrors: [], fragmentShaderErrors: [], linkerErrors: [] },
-    });
-  }
+  const { vertexSource, fragmentSource } = editorState.program;
 
   useEffect(() => {
     if (!canvasRef.current) throw new Error("Canvas ref is unexpectedly null!");
-    if (sceneRef.current) return;
 
-    const gl = canvasRef.current.getContext("webgl2");
-    if (gl === null) throw new Error("Failed to create a webgl2 context.");
+    if (!sceneRef.current) {
+      const gl = canvasRef.current.getContext("webgl2");
+      if (gl === null) throw new Error("Failed to create a webgl2 context.");
 
-    const scene = new SceneRenderer(gl);
-    updateProgram(vertexShaderSource, fragmentShaderSource);
-    scene.loadTextureAsync(texture);
-    scene.setRunning(true);
+      sceneRef.current = new SceneRenderer(gl);
+      sceneRef.current.loadTextureAsync(texture);
+      sceneRef.current.setRunning(true);
+    }
 
-    sceneRef.current = scene;
-  }, []);
+    const errors = sceneRef.current.loadProgram(vertexSource, fragmentSource);
+    dispatch({ action: "set-errors", errors: errors });
+  }, [vertexSource, fragmentSource]);
 
   useEffect(() => {
     if (!sceneRef.current || !Loader.isLoaded(mesh)) return;
     sceneRef.current.setMesh(mesh.value);
   }, [mesh]);
-
-  useEffect(() => {
-    updateProgram(vertexShaderSource, fragmentShaderSource);
-  }, [vertexShaderSource, fragmentShaderSource]);
 
   function handleDrag(e: PointerEvent<HTMLCanvasElement>): void {
     if (!pointerDown) return;
