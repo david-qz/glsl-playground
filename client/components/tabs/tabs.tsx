@@ -1,4 +1,4 @@
-import type { ReactElement, ReactNode } from 'react';
+import { type ReactElement, type ReactNode } from 'react';
 import { classes } from '../../utils/style-utils';
 import styles from './tabs.module.css';
 

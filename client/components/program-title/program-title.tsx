@@ -1,5 +1,4 @@
-import type { FormEvent, ReactElement } from 'react';
-import { useRef, useState } from 'react';
+import { type FormEvent, type ReactElement, useRef, useState } from 'react';
 import Input from '../form-controls/input';
 import EditIcon from '@mui/icons-material/Edit';
 import styles from './program-title.module.css';

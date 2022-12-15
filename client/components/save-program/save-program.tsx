@@ -1,8 +1,6 @@
-import type { ReactElement } from 'react';
-import { useRef } from 'react';
-import { useEffect } from 'react';
+import { type ReactElement, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { ProgramData } from '../../../common/api-types';
+import { type ProgramData } from '../../../common/api-types';
 import { isError } from '../../../common/result';
 import * as ProgramsService from '../../services/programs-service';
 

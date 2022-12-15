@@ -1,5 +1,5 @@
 import environment from '../environment.js';
-import { type Request, type Response, type NextFunction } from 'express';
+import { type NextFunction, type Request, type Response } from 'express';
 import jwt from 'jsonwebtoken';
 import HttpError from '../utils/http-error.js';
 import { type UserToken } from '../../common/api-types';

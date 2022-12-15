@@ -1,4 +1,4 @@
-import type { ReactElement } from 'react';
+import { type ReactElement } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AuthForm from './components/auth-form/auth-form';
 import Dashboard from './components/dashboard/dashboard';

@@ -1,9 +1,7 @@
 import { type IAnnotation, type IMarker } from 'react-ace';
-import type { ReactElement } from 'react';
-import { type CSSProperties } from 'react';
+import { type CSSProperties, type ReactElement } from 'react';
 import styles from './program-editor.module.css';
-import type { EditorState } from '../../hooks/use-editor-state';
-import { useEditorStateContext } from '../../hooks/use-editor-state';
+import { type EditorState, useEditorStateContext } from '../../hooks/use-editor-state';
 import { ShaderType } from '../scene/webgl/shaders';
 import GLSLEditor from './glsl-editor';
 

@@ -14,6 +14,7 @@
     "jest": true
   },
   "rules": {
+    "no-duplicate-imports": "error",
     "no-unused-vars": ["error", {
       "args": "none",
       "argsIgnorePattern": "^_",
@@ -61,6 +62,8 @@
       "parserOptions": { "project": ["./tsconfig.json"] },
       "plugins": ["@typescript-eslint"],
       "rules": {
+        "no-duplicate-imports": "off",
+        "@typescript-eslint/no-duplicate-imports": "error",
         "no-unused-vars": "off",
         "@typescript-eslint/no-unused-vars": ["error", {
           "args": "none",
@@ -73,8 +76,12 @@
         "@typescript-eslint/comma-dangle": ["error", "always-multiline"],
         "object-curly-spacing": "off",
         "@typescript-eslint/object-curly-spacing": ["error", "always"],
-        "@typescript-eslint/consistent-type-exports": "error",
-        "@typescript-eslint/consistent-type-imports": "error",
+        "@typescript-eslint/consistent-type-exports": ["error", {
+          "fixMixedExportsWithInlineTypeSpecifier": true
+        }],
+        "@typescript-eslint/consistent-type-imports": ["error", {
+          "fixStyle": "inline-type-imports"
+        }],
         "@typescript-eslint/explicit-function-return-type": ["error", {
           "allowExpressions": true
         }]

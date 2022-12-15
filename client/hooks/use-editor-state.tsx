@@ -1,7 +1,6 @@
-import type { Dispatch } from 'react';
-import { createContext, useContext, useReducer } from 'react';
-import { ShaderType, type ProgramCompilationErrors } from '../components/scene/webgl/shaders';
-import type { ProgramData } from '../../common/api-types';
+import { type Dispatch, createContext, useContext, useReducer } from 'react';
+import { type ProgramCompilationErrors, ShaderType } from '../components/scene/webgl/shaders';
+import { type ProgramData } from '../../common/api-types';
 
 interface CoreEditorState {
   program: ProgramData,

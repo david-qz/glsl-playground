@@ -1,8 +1,8 @@
-import { type Request, type Response, type NextFunction, Router } from 'express';
+import { type NextFunction, type Request, type Response, Router } from 'express';
 import Program from '../models/program-model.js';
 import authenticate from '../middleware/authenticate.js';
 import HttpError from '../utils/http-error.js';
-import type { ProgramData } from '../../common/api-types.js';
+import { type ProgramData } from '../../common/api-types.js';
 
 const router = Router();
 

@@ -6,10 +6,10 @@
 import { describe, expect, it } from '@jest/globals';
 import request from 'supertest';
 import app from '../app';
-import { setupDatabase, seedDatabase } from '../database.js';
+import { seedDatabase, setupDatabase } from '../database.js';
 import { CookieAccessInfo } from 'cookiejar';
 import environment from '../environment';
-import { testUsers, type UserCredentials } from './utils';
+import { type UserCredentials, testUsers } from './utils';
 
 describe('API /users routes', () => {
   beforeEach(async () => {

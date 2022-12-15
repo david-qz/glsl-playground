@@ -1,4 +1,4 @@
-import type { ReactElement } from 'react';
+import { type ReactElement } from 'react';
 import { Outlet } from 'react-router-dom';
 import Header from '../header/header';
 import styles from './header-layout.module.css';

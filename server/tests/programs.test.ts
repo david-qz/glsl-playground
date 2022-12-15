@@ -2,9 +2,8 @@
 import { describe, expect, it } from '@jest/globals';
 import request from 'supertest';
 import app from '../app';
-import { setupDatabase, seedDatabase } from '../database.js';
-import type { UserCredentials } from './utils';
-import { testUsers } from './utils';
+import { seedDatabase, setupDatabase } from '../database.js';
+import { type UserCredentials, testUsers } from './utils';
 
 describe('API /programs routes', () => {
   beforeEach(async () => {

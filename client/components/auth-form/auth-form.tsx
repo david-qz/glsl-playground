@@ -2,15 +2,13 @@ import Input from '../form-controls/input';
 import Button from '../form-controls/button';
 import css from './auth-form.module.css';
 import { useAuthContext } from '../../hooks/use-auth-context';
-import type { FormEvent, ReactElement } from 'react';
-import { useState } from 'react';
+import { type FormEvent, type ReactElement, useState } from 'react';
 import { Navigate, useSearchParams } from 'react-router-dom';
 import { logIn, signUp } from '../../services/auth-service';
-import type { UserToken } from '../../../common/api-types';
+import { type UserToken } from '../../../common/api-types';
 import { classes } from '../../utils/style-utils';
 import { Loader } from '../../hooks/use-loader';
-import type { Result } from '../../../common/result';
-import { isError } from '../../../common/result';
+import { type Result, isError } from '../../../common/result';
 
 export type AuthMethod = 'log-in' | 'sign-up';
 

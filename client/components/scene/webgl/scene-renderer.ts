@@ -1,6 +1,5 @@
 import type Mesh from './mesh';
-import type { ProgramCompilationErrors } from './shaders';
-import { compileProgram, type ProgramInfo } from './shaders';
+import { type ProgramCompilationErrors, type ProgramInfo, compileProgram } from './shaders';
 import { mat4, vec2 } from 'gl-matrix';
 
 export default class SceneRenderer {

@@ -1,4 +1,4 @@
-import type { ProgramData } from '../../common/api-types.js';
+import { type ProgramData } from '../../common/api-types.js';
 import pool from '../database.js';
 
 type ProgramRow = {

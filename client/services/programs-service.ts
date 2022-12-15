@@ -1,5 +1,5 @@
-import type { ApiError, ProgramData } from '../../common/api-types';
-import type { Result } from '../../common/result';
+import { type ApiError, type ProgramData } from '../../common/api-types';
+import { type Result } from '../../common/result';
 import apiPrefix from './api-prefix';
 
 export async function getById(id: string): Promise<Result<ProgramData>> {

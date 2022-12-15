@@ -1,7 +1,7 @@
 /**
  * Adapted from https://dev.to/tadasgo/block-user-navigation-with-react-router-v6-417f
  */
-import type { History } from 'history';
+import { type History } from 'history';
 import { useContext, useEffect, useLayoutEffect, useRef } from 'react';
 import { UNSAFE_NavigationContext } from 'react-router-dom';
 

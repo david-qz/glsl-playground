@@ -1,5 +1,4 @@
-import type { ReactElement } from 'react';
-import { type ButtonHTMLAttributes, type DetailedHTMLProps } from 'react';
+import { type ButtonHTMLAttributes, type DetailedHTMLProps, type ReactElement } from 'react';
 import { classes } from '../../utils/style-utils';
 import styles from './form-controls.module.css';
 

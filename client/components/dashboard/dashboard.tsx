@@ -1,5 +1,4 @@
-import type { ReactElement } from 'react';
-import { useState } from 'react';
+import { type ReactElement, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../hooks/use-auth-context';
 import styles from './dashboard.module.css';
@@ -8,7 +7,7 @@ import ProgramsTable from '../programs-table/programs-table';
 import Button from '../form-controls/button';
 import Modal from '../modal/modal';
 import Confirmation from '../../confirmation/confirmation';
-import type { ProgramData } from '../../../common/api-types';
+import { type ProgramData } from '../../../common/api-types';
 import { Loader } from '../../hooks/use-loader';
 
 export default function Dashboard(): ReactElement {

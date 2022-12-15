@@ -1,10 +1,7 @@
-import type { ReactElement, ReactNode } from 'react';
-import type { Dispatch } from 'react';
-import { createContext, useContext } from 'react';
-import type { UserToken } from '../../common/api-types';
-import type { Loading, LoadingStateAction } from './use-loader';
+import { type Dispatch,  type ReactElement, type ReactNode, createContext, useContext } from 'react';
+import { type UserToken } from '../../common/api-types';
+import { Loader, type Loading, type LoadingStateAction } from './use-loader';
 import { getUser } from '../services/auth-service';
-import { Loader } from './use-loader';
 
 type AuthContextValue = {
   user: Loading<UserToken | null>,

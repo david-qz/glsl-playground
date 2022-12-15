@@ -1,5 +1,4 @@
-import type { CSSProperties, PointerEvent, WheelEvent, ReactElement } from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { type CSSProperties, type PointerEvent, type ReactElement, type WheelEvent, useEffect, useRef, useState } from 'react';
 import { useEditorStateContext } from '../../hooks/use-editor-state';
 import SceneRenderer from './webgl/scene-renderer';
 import styles from './scene.module.css';

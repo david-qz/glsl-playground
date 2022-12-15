@@ -1,4 +1,4 @@
-import type { ReactElement } from 'react';
+import { type ReactElement } from 'react';
 import { create as createPromisifiedModal } from 'react-modal-promise';
 import Confirmation from '../../confirmation/confirmation';
 import Modal from '../modal/modal';

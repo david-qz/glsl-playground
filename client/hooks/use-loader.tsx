@@ -1,8 +1,5 @@
-import type { DependencyList, Dispatch } from 'react';
-import { useCallback } from 'react';
-import { useEffect, useState } from 'react';
-import { isError } from '../../common/result';
-import type { Result } from '../../common/result';
+import { type DependencyList, type Dispatch, useCallback, useEffect, useState } from 'react';
+import { type Result, isError } from '../../common/result';
 
 export enum LoadingState {
   LOADING,
