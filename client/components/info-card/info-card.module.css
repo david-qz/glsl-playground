@@ -1,0 +1,44 @@
+.card {
+  padding: 30px;
+  background-color: var(--background-color-medium);
+  font-size: 1.4rem;
+  min-width: min-content;
+  width: 900px;
+}
+
+.card h2 {
+  font-size: 2.2rem;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.card h3 {
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin: 15px 0;
+}
+
+.card section {
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.card p {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.code {
+  font-family: var(--monospace-font-family);
+  background-color: var(--background-color-dark);
+  padding: 0 5px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.button {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  float: right;
+}

@@ -11,8 +11,9 @@ import TabBar, { Tab } from "../tabs/tabs";
 import { ShaderType } from "../scene/webgl/shaders";
 import SaveIcon from "@mui/icons-material/Save";
 import RestoreIcon from "@mui/icons-material/Restore";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import * as ProgramsService from "../../services/programs-service";
-import { type ReactElement } from "react";
+import { useState, type ReactElement } from "react";
 import IconButton from "../form-controls/icon-button";
 import { createNewProgram } from "../../utils/new-program";
 import NotFound from "../not-found/not-found";
@@ -22,12 +23,16 @@ import { isError } from "../../../common/result";
 import { unsavedChangesModal } from "../unsaved-changes-modal/unsaved-changes-modal";
 import { useNavBlocker } from "../../hooks/use-nav-blocker";
 import ModalContainer from "react-modal-promise";
+import Modal from "../modal/modal";
+import InfoCard from "../info-card/info-card";
 
 export default function Editor(): ReactElement {
   const { user } = useAuthContext();
   const navigate = useNavigate();
   const params = useParams();
   const programId = params.id || "new";
+
+  const [infoModalOpen, setInfoModalOpen] = useState(false);
 
   const [editorState, dispatch, EditorContextProvider] = useEditorState();
 
@@ -114,11 +119,12 @@ export default function Editor(): ReactElement {
               />
             </TabBar>
             <div className={styles.buttonGroup}>
-              {
-                <IconButton onClick={handleRevert} disabled={!editorState.programHasUnsavedChanges}>
-                  <RestoreIcon />
-                </IconButton>
-              }
+              <IconButton onClick={() => setInfoModalOpen(true)}>
+                <InfoOutlinedIcon />
+              </IconButton>
+              <IconButton onClick={handleRevert} disabled={!editorState.programHasUnsavedChanges}>
+                <RestoreIcon />
+              </IconButton>
               {isOwnProgram && (
                 <IconButton
                   onClick={handleSave}
@@ -156,6 +162,9 @@ export default function Editor(): ReactElement {
         </Header>
         {content}
       </div>
+      <Modal open={infoModalOpen} onClickOut={() => setInfoModalOpen(false)}>
+        <InfoCard onDismiss={() => setInfoModalOpen(false)} />
+      </Modal>
       <ModalContainer />
     </EditorContextProvider>
   );
