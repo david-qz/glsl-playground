@@ -5,13 +5,22 @@ precision highp float;
 in vec3 normal;
 out vec4 fragment_color;
 
+// Base material color.
+const vec3 materialColor = vec3(1.0, 1.0, 1.0);
+
+// Ambient lighting factors.
+const vec3 ambientColor = vec3(1.0, 1.0, 1.0);
+const float ambientIntensity = 0.2;
+
+// Diffuse lighting factors.
+const vec3 diffuseColor = vec3(1.0, 1.0, 1.0);
+const vec3 lightDirection = normalize(vec3(1.0, 1.0, 1.0));
+
 void main() {
-  const vec3 materialColor = vec3(1.0, 1.0, 1.0);
-  const vec3 lightDirection = normalize(vec3(1.0, 1.0, 1.0));
-  const float ambientLightIntensity = 0.1;
+  vec3 ambient = ambientColor * ambientIntensity;
 
-  vec3 normal = normalize(normal);
-  float lightIntensity = max(dot(normal, lightDirection), ambientLightIntensity);
+  float diffuseIntensity = max(dot(normal, lightDirection), 0.0);
+  vec3 diffuse = diffuseColor * diffuseIntensity;
 
-  fragment_color = vec4(materialColor * lightIntensity, 1.0);
+  fragment_color = vec4((ambient + diffuse) * materialColor, 1.0);
 }
