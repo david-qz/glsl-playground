@@ -137,10 +137,6 @@ function compileShader(gl: WebGL2RenderingContext, type: number, source: string)
   return { shader };
 }
 
-/*
- * FIXME: the contents of these error strings might be implementation defined. Investigate whether that's true and try
- * generalize the parsing if so.
- */
 function parseCompilerErrors(error: string): Array<CompilationError> {
   const lines = error.split(/\n/).slice(0, -1); // The last line ends with a \n\u0000 that we don't want to parse;
 
