@@ -25,6 +25,7 @@ import { useNavBlocker } from "../../hooks/use-nav-blocker";
 import ModalContainer from "react-modal-promise";
 import Modal from "../modal/modal";
 import InfoCard from "../info-card/info-card";
+import GitHubIcon from "@mui/icons-material/GitHub";
 
 export default function Editor(): ReactElement {
   const { user } = useAuthContext();
@@ -135,7 +136,11 @@ export default function Editor(): ReactElement {
               )}
             </div>
           </ToolbarLeftGroup>
-          <ToolbarRightGroup></ToolbarRightGroup>
+          <ToolbarRightGroup className={styles.toolBarRight}>
+            <a href="https://github.com/david-qz/glsl-playground">
+              <GitHubIcon />
+            </a>
+          </ToolbarRightGroup>
         </Toolbar>
         <ProgramEditor style={{ gridArea: "editor" }} />
         <Scene style={{ gridArea: "scene" }} />
