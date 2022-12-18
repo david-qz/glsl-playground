@@ -8,7 +8,7 @@ export default async function authenticate(request: Request, response: Response,
   try {
     const cookie: string = request.cookies[environment.SESSION_COOKIE] || "";
 
-    const jwtPayload: any = jwt.verify(cookie, environment.JWT_SECRET);
+    const jwtPayload = jwt.verify(cookie, environment.JWT_SECRET) as UserToken;
     const token: UserToken = { id: jwtPayload.id, email: jwtPayload.email };
 
     request.user = token;

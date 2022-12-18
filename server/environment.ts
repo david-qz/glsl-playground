@@ -6,8 +6,8 @@ type RawEnvironmentEntry = EnvironmentEntry<string | undefined>;
 
 function load(key: string): RawEnvironmentEntry {
   let resolvedKey = key;
-  if (process.env.NODE_ENV === "test" && process.env["TEST_" + key]) {
-    resolvedKey = "TEST_" + key;
+  if (process.env.NODE_ENV === "test" && process.env[`TEST_${key}`]) {
+    resolvedKey = `TEST_${key}`;
   }
   return { key, value: process.env[resolvedKey] };
 }

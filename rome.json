@@ -1,12 +1,23 @@
 {
   "$schema": "./node_modules/rome/configuration_schema.json",
+  "files": {
+    "ignore": ["dist", "public", "**/*.css.d.ts"]
+  },
   "linter": {
-    "enabled": false
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "complexity": {
+        "useSimplifiedLogicExpression": "off"
+      },
+      "a11y": {
+        "useKeyWithClickEvents": "off"
+      }
+    }
   },
   "formatter": {
     "enabled": true,
     "formatWithErrors": true,
-    "ignore": ["dist", "public", "**/*.css.d.ts"],
     "indentStyle": "space",
     "indentSize": 2,
     "lineWidth": 120

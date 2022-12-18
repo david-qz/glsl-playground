@@ -60,8 +60,8 @@ export default function AuthForm(): ReactElement {
           <span className={css.mediumText}>Password</span>
           <Input className={css.smallText} name='password' type="password" required minLength={6} />
         </label>
-        <span className={css.smallText + " " + css.error}>{errorMessage}</span>
-        <div className={css.grow}></div>
+        <span className={`${css.smallText} ${css.error}`}>{errorMessage}</span>
+        <div className={css.grow} />
         <Button className={css.mediumText}>{actionPhrase}</Button>
         <span className={classes(css.smallText, css.fakeLink)} onClick={handleSwitchAuthMethod}>
           {alternativePhrase}

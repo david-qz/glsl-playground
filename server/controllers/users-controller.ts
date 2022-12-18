@@ -31,7 +31,7 @@ router.get("/me", async (request: Request, response: Response, next: NextFunctio
   try {
     const cookie: string = request.cookies[environment.SESSION_COOKIE] || "";
 
-    const jwtPayload: any = jwt.verify(cookie, environment.JWT_SECRET);
+    const jwtPayload = jwt.verify(cookie, environment.JWT_SECRET) as UserToken;
     const token: UserToken = { id: jwtPayload.id, email: jwtPayload.email };
 
     response.json(token);

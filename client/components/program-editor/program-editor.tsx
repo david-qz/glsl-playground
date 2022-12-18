@@ -77,6 +77,10 @@ function collectAnnotationsAndMarkers(editorState: EditorState): [Array<IMarker>
   return [[...markers.values()], [...annotations.values()]];
 }
 
+interface RegExpExecArrayWithIndices extends RegExpExecArray {
+  indices: Array<[number, number]>;
+}
+
 function getFullLineSpan(source: string, rowNumber: number): [number, number] | undefined {
   const line = source.split("\n")[rowNumber];
   if (!line) return;
@@ -85,5 +89,5 @@ function getFullLineSpan(source: string, rowNumber: number): [number, number] | 
   if (!match) return;
 
   // I don't know why typescript doesn't know about the indices property...
-  return (match as any).indices[1];
+  return (match as RegExpExecArrayWithIndices).indices[1];
 }

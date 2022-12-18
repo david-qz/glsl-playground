@@ -29,7 +29,7 @@ export default function SaveProgram(): ReactElement {
     ProgramsService.create(JSON.parse(localProgram) as ProgramData).then((result) => {
       if (!isError(result)) {
         const program: ProgramData = result;
-        navigate("/program/" + program.id, { replace: true });
+        navigate(`/program/${program.id}`, { replace: true });
       } else {
         console.error(result);
         navigate("/", { replace: true });

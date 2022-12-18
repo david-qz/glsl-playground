@@ -71,7 +71,7 @@ export default function Editor(): ReactElement {
 
       dispatch({ action: "load-program", program: result });
       unblock();
-      navigate("/program/" + result.id, { replace: true });
+      navigate(`/program/${result.id}`, { replace: true });
     } else if (user.value && user.value.id === editorState.program.userId) {
       const result = await ProgramsService.update(editorState.program);
 
@@ -88,7 +88,7 @@ export default function Editor(): ReactElement {
       searchParams.set("redirect", "/save-program");
 
       unblock();
-      navigate("/auth?" + searchParams.toString());
+      navigate(`/auth?${searchParams.toString()}`);
     }
   }
 

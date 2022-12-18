@@ -33,7 +33,7 @@ export default function Header({ style, children }: Props): ReactElement {
   function handleAuthButtonClick(method: AuthMethod): void {
     // If we're already on the auth page, we should preserve the current search params when switching methods.
     if (location.pathname !== "/auth") {
-      navigate("/auth?method=" + method);
+      navigate(`/auth?method=${method}`);
     } else {
       const newParams = new URLSearchParams(searchParams);
       newParams.set("method", method);

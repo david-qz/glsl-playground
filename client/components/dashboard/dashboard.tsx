@@ -42,7 +42,7 @@ export default function Dashboard(): ReactElement {
   }
 
   function handleEdit(programId: string): void {
-    navigate("/program/" + programId);
+    navigate(`/program/${programId}`);
   }
 
   return (
