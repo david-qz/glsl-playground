@@ -4,4 +4,3 @@ declare const classNames: {
   readonly error: "error";
 };
 export = classNames;
-export type ClassNames = "canvasContainer" | "canvas" | "error";

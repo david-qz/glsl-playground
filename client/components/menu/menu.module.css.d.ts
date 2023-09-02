@@ -7,10 +7,3 @@ declare const classNames: {
   readonly menuTitle: "menuTitle";
 };
 export = classNames;
-export type ClassNames =
-  | "container"
-  | "hamburgerButton"
-  | "menu"
-  | "menuItem"
-  | "menuDivider"
-  | "menuTitle";

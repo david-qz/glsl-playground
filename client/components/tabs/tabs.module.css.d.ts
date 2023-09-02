@@ -5,4 +5,3 @@ declare const classNames: {
   readonly error: "error";
 };
 export = classNames;
-export type ClassNames = "tabBar" | "tab" | "active" | "error";

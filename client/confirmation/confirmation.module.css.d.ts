@@ -3,4 +3,3 @@ declare const classNames: {
   readonly destructive: "destructive";
 };
 export = classNames;
-export type ClassNames = "root" | "destructive";

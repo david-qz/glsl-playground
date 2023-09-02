@@ -4,4 +4,3 @@ declare const classNames: {
   readonly deleteButton: "deleteButton";
 };
 export = classNames;
-export type ClassNames = "programsTable" | "buttons" | "deleteButton";

@@ -4,4 +4,3 @@ declare const classNames: {
   readonly errorOverlay: "errorOverlay";
 };
 export = classNames;
-export type ClassNames = "editor" | "errorMarker" | "errorOverlay";

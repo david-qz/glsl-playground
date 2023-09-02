@@ -9,12 +9,3 @@ declare const classNames: {
   readonly grow: "grow";
 };
 export = classNames;
-export type ClassNames =
-  | "layout"
-  | "form"
-  | "bigText"
-  | "mediumText"
-  | "smallText"
-  | "fakeLink"
-  | "error"
-  | "grow";

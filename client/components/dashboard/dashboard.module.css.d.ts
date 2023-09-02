@@ -5,4 +5,3 @@ declare const classNames: {
   readonly heading: "heading";
 };
 export = classNames;
-export type ClassNames = "layout" | "section" | "newProgramButton" | "heading";

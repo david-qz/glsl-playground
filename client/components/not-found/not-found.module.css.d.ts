@@ -6,4 +6,3 @@ declare const classNames: {
   readonly link: "link";
 };
 export = classNames;
-export type ClassNames = "container" | "card" | "title" | "message" | "link";

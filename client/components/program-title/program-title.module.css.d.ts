@@ -4,4 +4,3 @@ declare const classNames: {
   readonly titleInput: "titleInput";
 };
 export = classNames;
-export type ClassNames = "title" | "editButton" | "titleInput";

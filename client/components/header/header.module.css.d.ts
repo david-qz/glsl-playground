@@ -7,10 +7,3 @@ declare const classNames: {
   readonly redText: "redText";
 };
 export = classNames;
-export type ClassNames =
-  | "header"
-  | "left"
-  | "right"
-  | "siteName"
-  | "headerButton"
-  | "redText";

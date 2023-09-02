@@ -5,4 +5,3 @@ declare const classNames: {
   readonly iconButton: "iconButton";
 };
 export = classNames;
-export type ClassNames = "control" | "input" | "button" | "iconButton";

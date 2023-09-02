@@ -6,9 +6,3 @@ declare const classNames: {
   readonly toolBarRight: "toolBarRight";
 };
 export = classNames;
-export type ClassNames =
-  | "layout"
-  | "buttonGroup"
-  | "contentArea"
-  | "toolBarLeft"
-  | "toolBarRight";
