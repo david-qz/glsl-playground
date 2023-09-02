@@ -1,5 +1,5 @@
 {
-  "$schema": "./node_modules/rome/configuration_schema.json",
+  "$schema": "https://biomejs.dev/schemas/1.0.0/schema.json",
   "files": {
     "ignore": ["dist", "public", "**/*.css.d.ts"]
   },
@@ -8,7 +8,8 @@
     "rules": {
       "recommended": true,
       "complexity": {
-        "useSimplifiedLogicExpression": "off"
+        "useSimplifiedLogicExpression": "off",
+        "noUselessFragments": "off"
       },
       "a11y": {
         "useKeyWithClickEvents": "off"
@@ -29,5 +30,8 @@
     "indentStyle": "space",
     "indentSize": 2,
     "lineWidth": 120
+  },
+  "organizeImports": {
+    "enabled": false
   }
 }
