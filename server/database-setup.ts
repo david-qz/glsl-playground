@@ -1,4 +1,4 @@
-import pool, { setupDatabase } from "./server/database.js";
+import pool, { setupDatabase } from "./database.js";
 
 setupDatabase()
   .then(() => pool.end())

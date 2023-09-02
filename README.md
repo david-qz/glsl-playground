@@ -38,7 +38,7 @@ npm i
  3) To set up the development database run:
 
 ```sh
-npm run setup-db
+npm run db:setup
 ```
 
  3) Run the development server:

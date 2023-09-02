@@ -24,7 +24,7 @@ jobs:
       - run: npm run build
       - name: test
         run: |
-          npm run setup-db
+          npm run db:setup
           npm run test
         env:
           CI: true
