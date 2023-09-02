@@ -49,11 +49,11 @@ export default function ProgramTitle({ editable, title, onChange, unsavedChanges
       <Input
         className={styles.titleInput}
         defaultValue={title}
-        name='new-title'
+        name="new-title"
         required
-        pattern='[\w\s]*\S+[\w\s]*'
-        title='A valid title must not be empty or only whitespace.'
-        autoComplete='off'
+        pattern="[ws]*S+[ws]*"
+        title="A valid title must not be empty or only whitespace."
+        autoComplete="off"
         autoFocus={true}
         maxLength={50}
         size={50}

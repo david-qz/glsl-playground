@@ -18,8 +18,8 @@ export default function App(): ReactElement {
           <Route element={<HeaderLayout />}>
             <Route path="/auth" element={<AuthForm />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path='/save-program' element={<SaveProgram />} />
-            <Route path='*' element={<NotFound />} />
+            <Route path="/save-program" element={<SaveProgram />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
       </BrowserRouter>

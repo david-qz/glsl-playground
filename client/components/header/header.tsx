@@ -75,7 +75,7 @@ export default function Header({ style, children }: Props): ReactElement {
   return (
     <div className={styles.header} style={style}>
       <div className={styles.left}>
-        <Link className={styles.siteName} to='/'>
+        <Link className={styles.siteName} to="/">
           GLSL Playground
         </Link>
       </div>

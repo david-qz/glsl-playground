@@ -7,5 +7,5 @@ type Props = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButt
 export default function Button(props: Props): ReactElement {
   const extendedClassName = classes(styles.control, styles.button, props.className);
 
-  return <button {...props} className={extendedClassName} />;
+  return <button type="button" {...props} className={extendedClassName} />;
 }

@@ -19,8 +19,8 @@ export default function GLSLEditor({ source, onChange, active, annotations, mark
       value={source}
       onChange={onChange}
       focus={active}
-      width='100%'
-      height='100%'
+      width="100%"
+      height="100%"
       mode="glsl"
       theme="tomorrow_night_eighties"
       tabSize={2}

@@ -28,7 +28,7 @@ export default function Menu({ children }: MenuProps): ReactElement {
   return (
     <div ref={rootRef} className={styles.container}>
       <Button className={styles.hamburgerButton} onClick={() => setOpen((p) => !p)}>
-        <MenuIcon fontSize='large' />
+        <MenuIcon fontSize="large" />
       </Button>
       {open && <div className={styles.menu}>{children}</div>}
     </div>

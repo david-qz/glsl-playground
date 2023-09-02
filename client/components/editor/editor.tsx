@@ -107,13 +107,13 @@ export default function Editor(): ReactElement {
           <ToolbarLeftGroup className={styles.toolBarLeft}>
             <TabBar>
               <Tab
-                title='program.vert'
+                title="program.vert"
                 active={editorState.activeTab === ShaderType.Vertex}
                 error={editorState.vertexShaderHasErrors || editorState.linkerHasErrors}
                 onClick={() => dispatch({ action: "set-tab", tab: ShaderType.Vertex })}
               />
               <Tab
-                title='program.frag'
+                title="program.frag"
                 active={editorState.activeTab === ShaderType.Fragment}
                 error={editorState.fragmentShaderHasErrors || editorState.linkerHasErrors}
                 onClick={() => dispatch({ action: "set-tab", tab: ShaderType.Fragment })}

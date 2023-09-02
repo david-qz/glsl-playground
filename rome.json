@@ -12,6 +12,14 @@
       },
       "a11y": {
         "useKeyWithClickEvents": "off"
+      },
+      "style": {
+        "noInferrableTypes": "off",
+        "noNonNullAssertion": "off",
+        "useEnumInitializers": "off"
+      },
+      "suspicious": {
+        "noRedeclare": "off"
       }
     }
   },

@@ -71,7 +71,7 @@
     "jest-fetch-mock": "3.0.3",
     "nodemon": "^3.0.1",
     "npm-run-all": "4.1.5",
-    "rome": "^11.0.0",
+    "rome": "12.1.0",
     "supertest": "6.3.1",
     "ts-jest": "29.0.3",
     "ts-node": "10.9.1",

@@ -13,7 +13,7 @@ function UnsavedChangedModal({ isOpen, onResolve, onReject }: PromiseModalProps)
   return (
     <Modal open={isOpen} onClickOut={onReject}>
       <Confirmation
-        message='This program has unsaved changes. Are you sure you want to leave?'
+        message="This program has unsaved changes. Are you sure you want to leave?"
         onConfirm={onResolve}
         onCancel={onReject}
         destructive={true}

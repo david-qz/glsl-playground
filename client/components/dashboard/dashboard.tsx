@@ -19,7 +19,7 @@ export default function Dashboard(): ReactElement {
   const [programToDelete, setProgramToDelete] = useState<ProgramData | null>(null);
 
   if (Loader.isLoaded(user) && !user.value) {
-    return <Navigate to='/auth' replace={true} />;
+    return <Navigate to="/auth" replace={true} />;
   }
 
   async function handleDelete(): Promise<void> {
