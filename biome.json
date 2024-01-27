@@ -1,7 +1,7 @@
 {
   "$schema": "https://biomejs.dev/schemas/1.5.3/schema.json",
   "files": {
-    "ignore": ["dist", "public", "**/*.css.d.ts"]
+    "ignore": ["dist", "public", "**/*.css.d.ts", ".zed"]
   },
   "linter": {
     "enabled": true,
