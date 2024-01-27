@@ -1,8 +1,7 @@
 {
-  "name": "fullstack-base",
+  "name": "glsl-playgroun",
   "version": "0.0.1",
-  "description": "A fullstack base repo using Express.js, React.js, Vite, and TypeScript.",
-  "main": "dist/index.js",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "test": "mocha --require tsx --exit  'server/**/*.test.ts' 'client/**/*.test.ts'",
@@ -19,9 +18,6 @@
     "build:web": "vite build",
     "build:server": "tsc -p server"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
