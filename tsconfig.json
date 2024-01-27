@@ -1,23 +1,15 @@
 {
   "compilerOptions": {
+    "target": "es2022",
+    "module": "es2022",
+    "moduleResolution": "node",
+    "strict": true,
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "jsx": "react-jsx",
-    "module": "es2022",
-    "moduleResolution": "node",
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "noUncheckedIndexedAccess": true,
-    "outDir": "./dist/",
-    "plugins": [],
     "resolveJsonModule": true,
-    "strictBindCallApply": true,
-    "strictFunctionTypes": true,
-    "strictNullChecks": true,
-    "strictPropertyInitialization": true,
-    "target": "es2022",
-    "useUnknownInCatchVariables": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "outDir": "./dist/"
   }
 }
