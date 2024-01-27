@@ -17,19 +17,7 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "target": "es2022",
-    "types": [
-      "@testing-library/jest-dom",
-      "@types/testing-library__jest-dom",
-      "jest",
-      "react",
-      "react-dom/experimental",
-      "react-dom/next",
-      "ts-jest"
-    ],
     "useUnknownInCatchVariables": true,
     "skipLibCheck": true
-  },
-  "ts-node": {
-    "files": true
   }
 }
