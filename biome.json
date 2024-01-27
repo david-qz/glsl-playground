@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.0.0/schema.json",
+  "$schema": "https://biomejs.dev/schemas/1.5.3/schema.json",
   "files": {
     "ignore": ["dist", "public", "**/*.css.d.ts"]
   },
@@ -17,10 +17,14 @@
       "style": {
         "noInferrableTypes": "off",
         "noNonNullAssertion": "off",
-        "useEnumInitializers": "off"
+        "useEnumInitializers": "off",
+        "useTemplate": "off"
       },
       "suspicious": {
         "noRedeclare": "off"
+      },
+      "correctness": {
+        "useExhaustiveDependencies": "off"
       }
     }
   },
@@ -28,7 +32,7 @@
     "enabled": true,
     "formatWithErrors": true,
     "indentStyle": "space",
-    "indentSize": 2,
+    "indentWidth": 2,
     "lineWidth": 120
   },
   "organizeImports": {
