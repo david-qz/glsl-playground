@@ -152,7 +152,17 @@ export default class SceneRenderer {
       const response = await fetch(url);
       const blob = await response.blob();
       const imageBitmap = await createImageBitmap(blob);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, imageBitmap.width, imageBitmap.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, imageBitmap);
+      gl.texImage2D(
+        gl.TEXTURE_2D,
+        0,
+        gl.RGBA,
+        imageBitmap.width,
+        imageBitmap.height,
+        0,
+        gl.RGBA,
+        gl.UNSIGNED_BYTE,
+        imageBitmap,
+      );
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
     } catch (error) {
       console.error(error);

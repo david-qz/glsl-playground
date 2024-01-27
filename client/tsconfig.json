@@ -13,7 +13,6 @@
           "rendererOptions": {}
         }
       }
-    ],
-    "outDir": "../public/"
+    ]
   }
 }
