@@ -27,7 +27,7 @@
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.10.16",
     "@mui/material": "^5.10.16",
-    "bcrypt": "^5.1.0",
+    "bcrypt": "5.1.1",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.2",
     "email-validator": "^2.0.4",
@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.5.3",
-    "@types/bcrypt": "^5.0.0",
+    "@types/bcrypt": "5.0.2",
     "@types/cookie-parser": "^1.4.3",
     "@types/jsonwebtoken": "^8.5.9",
     "@types/obj-file-parser": "^0.5.0",
