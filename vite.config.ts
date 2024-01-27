@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import compress from "vite-plugin-compression";
+import { compression } from "vite-plugin-compression2";
 import sassDts from "vite-plugin-sass-dts";
 
 // For process.env.BROWSER
@@ -34,12 +34,12 @@ export default defineConfig({
   plugins: [
     react(),
     sassDts(),
-    compress({
-      filter: /\.(js|css|html|obj)$/i,
+    compression({
+      include: /\.(js|css|html|obj)$/i,
       algorithm: "gzip",
     }),
-    compress({
-      filter: /\.(js|css|html|obj)$/i,
+    compression({
+      include: /\.(js|css|html|obj)$/i,
       algorithm: "brotliCompress",
     }),
   ],
