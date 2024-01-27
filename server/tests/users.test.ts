@@ -18,7 +18,7 @@ describe("API /users routes", () => {
 
     // POST to route to create new user
     const agent = request.agent(app);
-    const response = await agent.post("/users").send(newUser);
+    const response = await agent.post("/api/v1/users").send(newUser);
     expect(response.status).equals(200);
 
     // Should return user
@@ -36,7 +36,7 @@ describe("API /users routes", () => {
     const userCredentials: UserCredentials = { ...testUsers.existing, password: "blahblahblah" };
 
     // Expect sign-up request to fail
-    const response = await request(app).post("/users").send(userCredentials);
+    const response = await request(app).post("/api/v1/users").send(userCredentials);
     expect(response.status).equals(409);
   });
 
@@ -45,10 +45,10 @@ describe("API /users routes", () => {
 
     // First Log in
     const agent = request.agent(app);
-    await agent.post("/users/sessions").send(userCredentials);
+    await agent.post("/api/v1/users/sessions").send(userCredentials);
 
     // Now get the current user
-    const response = await agent.get("/users/me");
+    const response = await agent.get("/api/v1/users/me");
     expect(response.status).equals(200);
 
     const user = response.body;
@@ -58,7 +58,7 @@ describe("API /users routes", () => {
 
   it("GET /users/me should return 401 status if not logged in", async () => {
     // Get the current user without logging in
-    const response = await request(app).get("/users/me");
+    const response = await request(app).get("/api/v1/users/me");
     expect(response.status).equals(200);
     expect(response.body).equals(null);
   });
@@ -68,7 +68,7 @@ describe("API /users routes", () => {
 
     // Request should be successful
     const agent = request.agent(app);
-    const response = await agent.post("/users/sessions").send(userCredentials);
+    const response = await agent.post("/api/v1/users/sessions").send(userCredentials);
     expect(response.status).equals(200);
 
     // Should create a session cookie
@@ -81,14 +81,14 @@ describe("API /users routes", () => {
 
     // First log in
     const agent = request.agent(app);
-    await agent.post("/users/sessions").send(userCredentials);
+    await agent.post("/api/v1/users/sessions").send(userCredentials);
 
     // Make sure we have a session
     let session = agent.jar.getCookie(environment.SESSION_COOKIE, CookieAccessInfo.All);
     expect(session).not.to.be.undefined;
 
     // Now log out
-    const response = await agent.delete("/users/sessions");
+    const response = await agent.delete("/api/v1/users/sessions");
     expect(response.status).equals(200);
 
     // Session cookie should be cleared

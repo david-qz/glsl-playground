@@ -56,7 +56,6 @@ function required<T>({ key, value }: EnvironmentEntry<T>): EnvironmentEntry<NonN
 }
 
 export default {
-  API_PREFIX: fallback(load("API_PREFIX"), "").value,
   PORT: fallback(parseInteger(load("PORT")), 7890).value,
   SESSION_COOKIE: fallback(load("SESSION_COOKIE"), "session").value,
   JWT_SECRET: required(load("JWT_SECRET")).value,

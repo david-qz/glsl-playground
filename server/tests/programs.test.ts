@@ -13,13 +13,13 @@ describe("API /programs routes", () => {
   });
 
   it("GET /programs/:id should return a program", async () => {
-    const response = await request(app).get("/programs/1");
+    const response = await request(app).get("/api/v1/programs/1");
     expect(response.status).equals(200);
     expectProgram(response.body);
   });
 
   it("GET /programs/:id should return 404 for invalid id", async () => {
-    const response = await request(app).get("/programs/999999");
+    const response = await request(app).get("/api/v1/programs/999999");
     expect(response.status).equals(404);
   });
 
@@ -28,10 +28,10 @@ describe("API /programs routes", () => {
 
     // Log in
     const agent = request.agent(app);
-    await agent.post("/users/sessions").send(credentials);
+    await agent.post("/api/v1/users/sessions").send(credentials);
 
     // Get programs
-    const response = await agent.get("/programs");
+    const response = await agent.get("/api/v1/programs");
     expect(response.status).equals(200);
     expect(response.body).is.an("array");
     expectProgram(response.body[0]);
@@ -42,7 +42,7 @@ describe("API /programs routes", () => {
 
     // Log in
     const agent = request.agent(app);
-    await agent.post("/users/sessions").send(credentials);
+    await agent.post("/api/v1/users/sessions").send(credentials);
 
     const newProgramData = {
       title: "a new program",
@@ -51,7 +51,7 @@ describe("API /programs routes", () => {
       didCompile: false,
     };
 
-    const response = await agent.post("/programs").send(newProgramData);
+    const response = await agent.post("/api/v1/programs").send(newProgramData);
     expect(response.status).equals(200);
 
     const program = response.body;
@@ -70,7 +70,7 @@ describe("API /programs routes", () => {
       didCompile: false,
     };
 
-    const response = await request(app).post("/programs").send(newProgramData);
+    const response = await request(app).post("/api/v1/programs").send(newProgramData);
     expect(response.status).equals(401);
   });
 
@@ -79,7 +79,7 @@ describe("API /programs routes", () => {
 
     // Log in
     const agent = request.agent(app);
-    await agent.post("/users/sessions").send(credentials);
+    await agent.post("/api/v1/users/sessions").send(credentials);
 
     // Get some updated data
     const updateData = {
@@ -88,7 +88,7 @@ describe("API /programs routes", () => {
     };
 
     // Do the update
-    const response = await agent.patch("/programs/1").send(updateData);
+    const response = await agent.patch("/api/v1/programs/1").send(updateData);
     expect(response.status).equals(200);
 
     const program = response.body;
@@ -102,10 +102,10 @@ describe("API /programs routes", () => {
 
     // Log in as the troublesome user
     const agent = request.agent(app);
-    await agent.post("/users/sessions").send(credentials);
+    await agent.post("/api/v1/users/sessions").send(credentials);
 
     // Try to modify another user's program
-    const response = await agent.patch("/programs/1").send({ title: "user 1 smells" });
+    const response = await agent.patch("/api/v1/programs/1").send({ title: "user 1 smells" });
     expect(response.status).equals(403);
   });
 
@@ -114,13 +114,13 @@ describe("API /programs routes", () => {
 
     // Log in
     const agent = request.agent(app);
-    await agent.post("/users/sessions").send(credentials);
+    await agent.post("/api/v1/users/sessions").send(credentials);
 
     // Delete the program
-    const deleteResponse = await agent.delete("/programs/1");
+    const deleteResponse = await agent.delete("/api/v1/programs/1");
     expect(deleteResponse.status).equals(200);
 
-    const getResponse = await agent.get("/programs/1");
+    const getResponse = await agent.get("/api/v1/programs/1");
     expect(getResponse.status).equals(404);
   });
 
@@ -129,10 +129,10 @@ describe("API /programs routes", () => {
 
     // Log in as the troublesome user
     const agent = request.agent(app);
-    await agent.post("/users/sessions").send(credentials);
+    await agent.post("/api/v1/users/sessions").send(credentials);
 
     // Try to delete the program
-    const deleteResponse = await agent.delete("/programs/1");
+    const deleteResponse = await agent.delete("/api/v1/programs/1");
     expect(deleteResponse.status).equals(403);
   });
 });
