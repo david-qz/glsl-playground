@@ -3,9 +3,8 @@
   "type": "module",
   "scripts": {
     "format": "biome format --write .",
-    "check": "npm run check:lint && npm run check:format && npm run check:types",
-    "check:lint": "biome check .",
-    "check:format": "biome ci .",
+    "check": "npm run check:lint && npm run check:types",
+    "check:lint": "biome ci .",
     "check:types": "tsc",
     "start": "vite",
     "build": "vite build"

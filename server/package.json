@@ -1,10 +1,9 @@
 {
   "name": "glsl-playground-server",
   "scripts": {
-    "format": "biome format . --write",
-    "check": "npm run check:lint && npm run check:format && npm run check:types",
-    "check:lint": "biome check .",
-    "check:format": "biome ci .",
+    "format": "biome format --write .",
+    "check": "npm run check:lint && npm run check:types",
+    "check:lint": "biome ci .",
     "check:types": "tsc",
     "test": "NODE_ENV=test mocha --require tsx --exit  '**/*.test.ts'",
     "db:setup": "tsx database-setup.ts",
