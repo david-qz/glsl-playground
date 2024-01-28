@@ -9,7 +9,9 @@
       "recommended": true,
       "complexity": {
         "useSimplifiedLogicExpression": "off",
-        "noUselessFragments": "off"
+        "noUselessFragments": "off",
+        "noThisInStatic": "off",
+        "noStaticOnlyClass": "off"
       },
       "a11y": {
         "useKeyWithClickEvents": "off"
@@ -21,7 +23,9 @@
         "useTemplate": "off"
       },
       "suspicious": {
-        "noRedeclare": "off"
+        "noRedeclare": "off",
+        "noExplicitAny": "off",
+        "noImplicitAnyLet": "off"
       },
       "correctness": {
         "useExhaustiveDependencies": "off"

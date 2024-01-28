@@ -6,11 +6,12 @@
     "check:lint": "biome ci .",
     "check:types": "tsc",
     "test": "NODE_ENV=test mocha --require tsx --exit  '**/*.test.ts'",
-    "db:setup": "tsx database-setup.ts",
+    "db:migrate": "tsx database/migration-cli.ts latest",
+    "db:migrate:up": "tsx database/migration-cli.ts up",
+    "db:migrate:down": "tsx database/migration-cli.ts down",
+    "db:codegen": "kysely-codegen --dialect postgres --env-file .env --out-file database/generated.ts",
     "start": "tsx --watch index.ts",
-    "build": "npm run build:code && npm run build:assets",
-    "build:code": "esbuild --bundle --minify --sourcemap --platform=node --external:pg --external:bcrypt --outfile=../dist/server.cjs index.ts",
-    "build:assets": "cp -r sql ../dist"
+    "build": "tsx build.ts"
   },
   "dependencies": {
     "bcrypt": "5.1.1",
@@ -21,8 +22,9 @@
     "express-static-gzip": "^2.1.7",
     "gl-matrix": "^3.4.3",
     "jsonwebtoken": "^9.0.2",
+    "kysely": "^0.27.2",
     "obj-file-parser": "^0.5.3",
-    "pg": "8.8.0"
+    "pg": "^8.8.0"
   },
   "devDependencies": {
     "@types/bcrypt": "5.0.2",
@@ -36,6 +38,7 @@
     "chai": "^5.0.3",
     "esbuild": "^0.20.0",
     "identity-obj-proxy": "3.0.0",
+    "kysely-codegen": "^0.11.0",
     "mocha": "^10.2.0",
     "supertest": "6.3.1",
     "tsx": "^4.7.0",

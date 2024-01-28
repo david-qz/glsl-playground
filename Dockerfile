@@ -28,4 +28,4 @@ COPY --from=build /build/package.json package.json
 COPY --from=build /build/dist dist
 COPY --from=build /build/public public
 
-CMD [ "node", "dist/server.cjs" ]
+CMD [ "node", "dist/server.js" ]

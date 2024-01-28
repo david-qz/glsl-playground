@@ -1,34 +1,29 @@
-/* @jest-environment node */
 import { describe, it } from "mocha";
 import { expect } from "chai";
 import request from "supertest";
 import app from "../app";
-import { seedDatabase, setupDatabase } from "../database.js";
-import { type UserCredentials, testUsers } from "./utils";
+import { testUserCredentials, setupDbForTest, testPrograms } from "./utils";
 
 describe("API /programs routes", () => {
   beforeEach(async () => {
-    await setupDatabase();
-    await seedDatabase();
+    await setupDbForTest();
   });
 
   it("GET /programs/:id should return a program", async () => {
-    const response = await request(app).get("/api/v1/programs/1");
+    const response = await request(app).get(`/api/v1/programs/${testPrograms.existing.id}`);
     expect(response.status).equals(200);
     expectProgram(response.body);
   });
 
   it("GET /programs/:id should return 404 for invalid id", async () => {
-    const response = await request(app).get("/api/v1/programs/999999");
+    const response = await request(app).get("/api/v1/programs/64f05b2a-50f5-43fd-9331-50f0c03e4495");
     expect(response.status).equals(404);
   });
 
   it("GET /programs should return all the user's programs", async () => {
-    const credentials: UserCredentials = testUsers.existing;
-
     // Log in
     const agent = request.agent(app);
-    await agent.post("/api/v1/users/sessions").send(credentials);
+    await agent.post("/api/v1/users/sessions").send(testUserCredentials.existing);
 
     // Get programs
     const response = await agent.get("/api/v1/programs");
@@ -38,11 +33,9 @@ describe("API /programs routes", () => {
   });
 
   it("POST /programs should create and return a new program", async () => {
-    const credentials: UserCredentials = testUsers.existing;
-
     // Log in
     const agent = request.agent(app);
-    await agent.post("/api/v1/users/sessions").send(credentials);
+    await agent.post("/api/v1/users/sessions").send(testUserCredentials.existing);
 
     const newProgramData = {
       title: "a new program",
@@ -75,11 +68,9 @@ describe("API /programs routes", () => {
   });
 
   it("PATCH /programs/:id should update a program", async () => {
-    const credentials: UserCredentials = testUsers.existing;
-
     // Log in
     const agent = request.agent(app);
-    await agent.post("/api/v1/users/sessions").send(credentials);
+    await agent.post("/api/v1/users/sessions").send(testUserCredentials.existing);
 
     // Get some updated data
     const updateData = {
@@ -88,7 +79,7 @@ describe("API /programs routes", () => {
     };
 
     // Do the update
-    const response = await agent.patch("/api/v1/programs/1").send(updateData);
+    const response = await agent.patch(`/api/v1/programs/${testPrograms.existing.id}`).send(updateData);
     expect(response.status).equals(200);
 
     const program = response.body;
@@ -98,46 +89,39 @@ describe("API /programs routes", () => {
   });
 
   it("PATCH /programs/:id shouldn't allow updating programs not owned by the current user", async () => {
-    const credentials: UserCredentials = testUsers.troublesome;
-
     // Log in as the troublesome user
     const agent = request.agent(app);
-    await agent.post("/api/v1/users/sessions").send(credentials);
+    await agent.post("/api/v1/users/sessions").send(testUserCredentials.troublesome);
 
     // Try to modify another user's program
-    const response = await agent.patch("/api/v1/programs/1").send({ title: "user 1 smells" });
+    const response = await agent.patch(`/api/v1/programs/${testPrograms.existing.id}`).send({ title: "user 1 smells" });
     expect(response.status).equals(403);
   });
 
   it("DELETE /programs/:id should delete a program", async () => {
-    const credentials: UserCredentials = testUsers.existing;
-
     // Log in
     const agent = request.agent(app);
-    await agent.post("/api/v1/users/sessions").send(credentials);
+    await agent.post("/api/v1/users/sessions").send(testUserCredentials.existing);
 
     // Delete the program
-    const deleteResponse = await agent.delete("/api/v1/programs/1");
+    const deleteResponse = await agent.delete(`/api/v1/programs/${testPrograms.existing.id}`);
     expect(deleteResponse.status).equals(200);
 
-    const getResponse = await agent.get("/api/v1/programs/1");
+    const getResponse = await agent.get(`/api/v1/programs/${testPrograms.existing.id}`);
     expect(getResponse.status).equals(404);
   });
 
   it("DELETE /programs/:id shouldn't allow users to delete programs they don't own", async () => {
-    const credentials: UserCredentials = testUsers.troublesome;
-
     // Log in as the troublesome user
     const agent = request.agent(app);
-    await agent.post("/api/v1/users/sessions").send(credentials);
+    await agent.post("/api/v1/users/sessions").send(testUserCredentials.troublesome);
 
     // Try to delete the program
-    const deleteResponse = await agent.delete("/api/v1/programs/1");
+    const deleteResponse = await agent.delete(`/api/v1/programs/${testPrograms.existing.id}`);
     expect(deleteResponse.status).equals(403);
   });
 });
 
-// biome-ignore lint/suspicious/noExplicitAny:
 function expectProgram(program: any) {
   expect(program).to.have.keys(
     "id",

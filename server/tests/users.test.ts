@@ -2,19 +2,17 @@ import { describe, it } from "mocha";
 import { expect } from "chai";
 import request from "supertest";
 import app from "../app";
-import { seedDatabase, setupDatabase } from "../database.js";
 import { CookieAccessInfo } from "cookiejar";
 import environment from "../environment";
-import { type UserCredentials, testUsers } from "./utils";
+import { testUserCredentials, setupDbForTest } from "./utils";
 
 describe("API /users routes", () => {
   beforeEach(async () => {
-    await setupDatabase();
-    await seedDatabase();
+    await setupDbForTest();
   });
 
   it("POST /users should create a new user and log them in", async () => {
-    const newUser = testUsers.new;
+    const newUser = testUserCredentials.new;
 
     // POST to route to create new user
     const agent = request.agent(app);
@@ -33,7 +31,7 @@ describe("API /users routes", () => {
 
   it("POST /users should error if email already exists", async () => {
     // Some credentials with the same email as an existing user
-    const userCredentials: UserCredentials = { ...testUsers.existing, password: "blahblahblah" };
+    const userCredentials = { ...testUserCredentials.existing, password: "blahblahblah" };
 
     // Expect sign-up request to fail
     const response = await request(app).post("/api/v1/users").send(userCredentials);
@@ -41,7 +39,7 @@ describe("API /users routes", () => {
   });
 
   it("GET /users/me should return the current user", async () => {
-    const userCredentials = testUsers.existing;
+    const userCredentials = testUserCredentials.existing;
 
     // First Log in
     const agent = request.agent(app);
@@ -64,7 +62,7 @@ describe("API /users routes", () => {
   });
 
   it("POST /users/sessions should log a user in", async () => {
-    const userCredentials = testUsers.existing;
+    const userCredentials = testUserCredentials.existing;
 
     // Request should be successful
     const agent = request.agent(app);
@@ -77,7 +75,7 @@ describe("API /users routes", () => {
   });
 
   it("DELETE /users/sessions should log a user out", async () => {
-    const userCredentials = testUsers.existing;
+    const userCredentials = testUserCredentials.existing;
 
     // First log in
     const agent = request.agent(app);

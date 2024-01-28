@@ -2,7 +2,7 @@ import { type NextFunction, type Request, type Response, Router } from "express"
 import jwt from "jsonwebtoken";
 import { type UserToken } from "../../common/api-types.js";
 import environment from "../environment.js";
-import * as UsersService from "../services/users-service.js";
+import { UsersService } from "../services/users-service.js";
 import HttpError from "../utils/http-error.js";
 
 const ONE_DAY_IN_MS: number = 3600 * 24 * 1000;
@@ -21,7 +21,10 @@ router.post("/", async (request: Request, response: Response, next: NextFunction
     const [, token] = await UsersService.signIn(email, password);
 
     response.cookie(environment.SESSION_COOKIE, token, { httpOnly: true, maxAge: ONE_DAY_IN_MS });
-    response.json(user);
+    response.json({
+      id: user.id,
+      email: user.email,
+    });
   } catch (error) {
     next(error);
   }
@@ -51,7 +54,10 @@ router.post("/sessions", async (request: Request, response: Response, next: Next
     const [user, token] = await UsersService.signIn(email, password);
 
     response.cookie(environment.SESSION_COOKIE, token, { httpOnly: true, maxAge: ONE_DAY_IN_MS });
-    response.send(user);
+    response.json({
+      id: user.id,
+      email: user.email,
+    });
   } catch (error) {
     next(error);
   }

@@ -1,19 +1,33 @@
 import environment from "./environment.js";
 import app from "./app.js";
-import pool from "./database.js";
+import { db, migrator } from "./database/db.js";
 
-const server = app.listen(environment.PORT, () => {
-  console.log("Started server on ", server.address());
-});
+async function start() {
+  const migrationResultSet = await migrator.migrateToLatest();
 
-process.on("SIGINT", shutdown);
-process.on("SIGTERM", shutdown);
+  for (const result of migrationResultSet.results || []) {
+    console.log(`${result.status}: ${result.direction} ${result.migrationName}`);
+  }
 
-function shutdown() {
-  console.log("Shutting down server.");
-  server.close(() => {
-    pool.end(() => {
-      process.exit(0);
-    });
+  if (migrationResultSet.error) {
+    const error = migrationResultSet.error as any;
+    console.log(`${error.message || error}`);
+    process.exit(1);
+  }
+
+  const server = app.listen(environment.PORT, () => {
+    console.log("Started server on ", server.address());
   });
+
+  process.on("SIGINT", shutdown);
+  process.on("SIGTERM", shutdown);
+
+  async function shutdown() {
+    console.log("Shutting down server...");
+    await new Promise((r) => server.close(r));
+    await db.destroy();
+    process.exit(0);
+  }
 }
+
+start();
