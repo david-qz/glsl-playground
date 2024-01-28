@@ -1,7 +1,18 @@
 services:
+  app:
+    build: .
+    env_file: ./server/.env
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/glsl_playground
+      PORT: 3000
+    ports:
+      - 3000:3000
+
   db:
     image: postgres:16.1-alpine
     environment:
       POSTGRES_PASSWORD: postgres
+    expose:
+      - 5432
     ports:
       - 5432:5432

@@ -9,8 +9,8 @@ const pool = new pg.Pool({
 });
 export default pool;
 
-const setupQueryPromise: Promise<string> = fs.readFile(path.resolve("./sql/setup.sql"), { encoding: "utf-8" });
-const seedQueryPromise: Promise<string> = fs.readFile(path.resolve("./sql/seed.sql"), { encoding: "utf-8" });
+const setupQueryPromise: Promise<string> = fs.readFile(path.join(__dirname, "sql/setup.sql"), { encoding: "utf-8" });
+const seedQueryPromise: Promise<string> = fs.readFile(path.resolve(__dirname, "sql/seed.sql"), { encoding: "utf-8" });
 
 export async function setupDatabase(): Promise<pg.QueryResult> {
   const setupQuery = await setupQueryPromise;

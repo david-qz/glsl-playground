@@ -8,7 +8,6 @@ import sassDts from "vite-plugin-sass-dts";
 dotenv.config();
 
 export default defineConfig({
-  root: "./client",
   server: {
     open: true,
     port: 7891,

@@ -1,6 +1,15 @@
 {
-  "extends": "../tsconfig",
   "compilerOptions": {
+    "target": "es2022",
+    "module": "es2022",
+    "moduleResolution": "node",
+    "strict": true,
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "noEmit": true,
     "plugins": [
       {
         "name": "typescript-plugin-css-modules",
