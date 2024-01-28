@@ -20,4 +20,4 @@ COPY --from=build /build/dist dist
 COPY --from=build /build/public public
 COPY --from=build /build/sql sql
 
-CMD [ "node", "dist/server/index.js" ]
+CMD [ "node", "dist/server.cjs" ]

@@ -13,10 +13,10 @@
     "db:setup": "tsx server/database-setup.ts",
     "start:web": "vite",
     "start:server": "tsx --watch server/index.ts",
-    "start:production": "node dist/server/index.js",
+    "start:production": "npm run build && node dist/index.cjs",
     "build": "npm run build:web && npm run build:server",
     "build:web": "vite build",
-    "build:server": "tsc -p server"
+    "build:server": "esbuild --bundle --minify --sourcemap --platform=node --external:pg --external:bcrypt --outfile=dist/server.cjs  server/index.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
@@ -52,6 +52,7 @@
     "@types/supertest": "^6.0.2",
     "@vitejs/plugin-react": "4.2.1",
     "chai": "^5.0.3",
+    "esbuild": "^0.20.0",
     "identity-obj-proxy": "3.0.0",
     "mocha": "^10.2.0",
     "supertest": "6.3.1",
