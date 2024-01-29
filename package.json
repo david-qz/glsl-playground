@@ -15,5 +15,8 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.5.3"
+  },
+  "volta": {
+    "node": "20.11.0"
   }
 }

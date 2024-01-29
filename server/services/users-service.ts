@@ -5,6 +5,7 @@ import HttpError from "../utils/http-error.js";
 import * as EmailValidator from "email-validator";
 import { db } from "../database/db.js";
 import { User } from "../database/types.js";
+import crypto from "node:crypto";
 
 export class UsersService {
   static async create(email: string, password: string): Promise<User> {

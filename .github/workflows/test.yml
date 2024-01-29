@@ -10,23 +10,24 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_USER: alchemy
-          POSTGRES_PASSWORD: alchemy
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 2
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '20.x'
+          cache: 'npm'
       - run: npm ci
       - run: npm run check
       - run: npm run build
       - name: test
         run: |
-          npm run db:setup
-          npm run test
+          npm run -w server db:migrate
+          npm run -w server test
         env:
           CI: true
-          DATABASE_URL: postgres://alchemy:alchemy@postgres:5432/alchemy
+          DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgres
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
