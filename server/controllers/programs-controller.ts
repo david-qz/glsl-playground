@@ -2,7 +2,7 @@ import { type NextFunction, type Request, type Response, Router } from "express"
 import authenticate from "../middleware/authenticate.js";
 import HttpError from "../utils/http-error.js";
 import { ProgramsService } from "../services/programs-service.js";
-import { type ProgramInsert, type ProgramUpdate } from "../database/types.js";
+import type { ProgramInsert, ProgramUpdate } from "../database/types.js";
 import crypto from "node:crypto";
 
 const router = Router();

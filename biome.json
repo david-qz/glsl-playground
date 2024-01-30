@@ -29,6 +29,10 @@
       },
       "correctness": {
         "useExhaustiveDependencies": "off"
+      },
+      "nursery": {
+        "useImportType": "error",
+        "useExportType": "error"
       }
     }
   },

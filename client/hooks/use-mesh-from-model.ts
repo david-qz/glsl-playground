@@ -1,4 +1,4 @@
-import { type Dispatch } from "react";
+import type { Dispatch } from "react";
 import Mesh from "../components/scene/webgl/mesh";
 import { Loader, type Loading, type LoadingStateAction } from "./use-loader";
 

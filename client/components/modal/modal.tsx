@@ -1,4 +1,4 @@
-import { type MouseEvent, type ReactElement } from "react";
+import type { MouseEvent, ReactElement } from "react";
 import styles from "./modal.module.css";
 
 type Props = {

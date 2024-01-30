@@ -1,4 +1,4 @@
-import { type NextFunction, type Request, type Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import HttpError from "../utils/http-error.js";
 
 export default function errorHandler(error: unknown, request: Request, response: Response, next: NextFunction): void {

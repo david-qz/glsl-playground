@@ -1,5 +1,5 @@
 import ObjFileParser from "obj-file-parser";
-import { type Result } from "../../../../common/result";
+import type { Result } from "../../../../common/result";
 
 export default class Mesh {
   vertices: Float32Array;

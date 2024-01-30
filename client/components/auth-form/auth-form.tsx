@@ -5,7 +5,7 @@ import { useAuthContext } from "../../hooks/use-auth-context";
 import { type FormEvent, type ReactElement, useState } from "react";
 import { Navigate, useSearchParams } from "react-router-dom";
 import { logIn, signUp } from "../../services/auth-service";
-import { type UserToken } from "../../../common/api-types";
+import type { UserToken } from "../../../common/api-types";
 import { classes } from "../../utils/style-utils";
 import { Loader } from "../../hooks/use-loader";
 import { type Result, isError } from "../../../common/result";

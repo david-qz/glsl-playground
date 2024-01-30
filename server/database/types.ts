@@ -1,5 +1,5 @@
-import { Insertable, Selectable, Updateable } from "kysely";
-import { Programs, Users } from "./generated";
+import type { Insertable, Selectable, Updateable } from "kysely";
+import type { Programs, Users } from "./generated";
 
 export type User = Selectable<Users>;
 export type UserInsert = Insertable<Users>;

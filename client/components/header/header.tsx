@@ -1,10 +1,10 @@
-import { type CSSProperties, type ReactElement, type ReactNode } from "react";
+import type { CSSProperties, ReactElement, ReactNode } from "react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { Loader } from "../../hooks/use-loader";
 import { useAuthContext } from "../../hooks/use-auth-context";
 import navigationLinks from "../../navigation-links";
 import { logOut } from "../../services/auth-service";
-import { type AuthMethod } from "../auth-form/auth-form";
+import type { AuthMethod } from "../auth-form/auth-form";
 import Button from "../form-controls/button";
 import Menu, { MenuDivider, MenuItem, MenuTitle } from "../menu/menu";
 import styles from "./header.module.css";

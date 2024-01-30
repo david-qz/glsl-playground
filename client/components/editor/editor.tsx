@@ -17,7 +17,7 @@ import { useState, type ReactElement } from "react";
 import IconButton from "../form-controls/icon-button";
 import { createNewProgram } from "../../utils/new-program";
 import NotFound from "../not-found/not-found";
-import { type ProgramData } from "../../../common/api-types";
+import type { ProgramData } from "../../../common/api-types";
 import { Loader, isLoaded, isLoading } from "../../hooks/use-loader";
 import { isError } from "../../../common/result";
 import { unsavedChangesModal } from "../unsaved-changes-modal/unsaved-changes-modal";

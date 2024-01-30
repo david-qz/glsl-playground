@@ -1,6 +1,6 @@
 import { type NextFunction, type Request, type Response, Router } from "express";
 import jwt from "jsonwebtoken";
-import { type UserToken } from "../../common/api-types.js";
+import type { UserToken } from "../../common/api-types.js";
 import environment from "../environment.js";
 import { UsersService } from "../services/users-service.js";
 import HttpError from "../utils/http-error.js";

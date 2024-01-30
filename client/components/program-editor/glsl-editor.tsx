@@ -1,4 +1,4 @@
-import { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import AceEditor, { type IAnnotation, type IMarker } from "react-ace";
 import "ace-builds/src-min-noconflict/mode-glsl";
 import "ace-builds/src-min-noconflict/theme-tomorrow_night_eighties";

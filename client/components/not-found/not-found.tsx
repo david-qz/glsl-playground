@@ -1,4 +1,4 @@
-import { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import { Link } from "react-router-dom";
 import { classes } from "../../utils/style-utils";
 import styles from "./not-found.module.css";

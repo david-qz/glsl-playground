@@ -1,4 +1,4 @@
-import { type CSSProperties, type ReactElement, type ReactNode } from "react";
+import type { CSSProperties, ReactElement, ReactNode } from "react";
 import styles from "./toolbar.module.css";
 
 type ToolbarProps = {

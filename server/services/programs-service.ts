@@ -1,5 +1,5 @@
 import { db } from "../database/db.js";
-import { Program, ProgramInsert, ProgramUpdate } from "../database/types.js";
+import type { Program, ProgramInsert, ProgramUpdate } from "../database/types.js";
 
 export class ProgramsService {
   static async getById(id: string): Promise<Program | undefined> {

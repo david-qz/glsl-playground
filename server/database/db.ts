@@ -1,7 +1,7 @@
 import environment from "../environment.js";
 import { Pool } from "pg";
 import { FileMigrationProvider, Insertable, Kysely, Migrator, PostgresDialect, Selectable, Updateable } from "kysely";
-import { DB, Programs, Users } from "./generated.js";
+import { type DB, Programs, Users } from "./generated.js";
 import fs from "node:fs/promises";
 import path from "node:path";
 

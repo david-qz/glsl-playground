@@ -1,4 +1,4 @@
-import { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import Button from "../form-controls/button";
 import styles from "./info-card.module.css";
 
