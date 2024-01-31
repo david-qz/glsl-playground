@@ -1,5 +1,4 @@
-import { describe, it } from "mocha";
-import { expect } from "chai";
+import { expect, describe, it, beforeEach } from "bun:test";
 import request from "supertest";
 import app from "../app";
 import { CookieAccessInfo } from "cookiejar";
@@ -17,16 +16,18 @@ describe("API /users routes", () => {
     // POST to route to create new user
     const agent = request.agent(app);
     const response = await agent.post("/api/v1/users").send(newUser);
-    expect(response.status).equals(200);
+    expect(response.status).toEqual(200);
 
     // Should return user
     const user = response.body;
-    expect(user).to.have.keys("id", "email");
-    expect(user.email).equals(newUser.email);
+    expect(user).toMatchObject({
+      id: expect.any(String),
+      email: newUser.email,
+    });
 
     // Should create a session cookie
     const session = agent.jar.getCookie(environment.SESSION_COOKIE, CookieAccessInfo.All);
-    expect(session).not.to.be.undefined;
+    expect(session).toBeDefined();
   });
 
   it("POST /users should error if email already exists", async () => {
@@ -35,7 +36,7 @@ describe("API /users routes", () => {
 
     // Expect sign-up request to fail
     const response = await request(app).post("/api/v1/users").send(userCredentials);
-    expect(response.status).equals(409);
+    expect(response.status).toEqual(409);
   });
 
   it("GET /users/me should return the current user", async () => {
@@ -47,18 +48,20 @@ describe("API /users routes", () => {
 
     // Now get the current user
     const response = await agent.get("/api/v1/users/me");
-    expect(response.status).equals(200);
+    expect(response.status).toEqual(200);
 
     const user = response.body;
-    expect(user).to.have.keys("id", "email");
-    expect(user.email).equals(userCredentials.email);
+    expect(user).toMatchObject({
+      id: expect.any(String),
+      email: userCredentials.email,
+    });
   });
 
   it("GET /users/me should return 401 status if not logged in", async () => {
     // Get the current user without logging in
     const response = await request(app).get("/api/v1/users/me");
-    expect(response.status).equals(200);
-    expect(response.body).equals(null);
+    expect(response.status).toEqual(200);
+    expect(response.body).toEqual(null);
   });
 
   it("POST /users/sessions should log a user in", async () => {
@@ -67,11 +70,11 @@ describe("API /users routes", () => {
     // Request should be successful
     const agent = request.agent(app);
     const response = await agent.post("/api/v1/users/sessions").send(userCredentials);
-    expect(response.status).equals(200);
+    expect(response.status).toEqual(200);
 
     // Should create a session cookie
     const session = agent.jar.getCookie(environment.SESSION_COOKIE, CookieAccessInfo.All);
-    expect(session).not.to.be.undefined;
+    expect(session).toBeDefined();
   });
 
   it("DELETE /users/sessions should log a user out", async () => {
@@ -83,14 +86,14 @@ describe("API /users routes", () => {
 
     // Make sure we have a session
     let session = agent.jar.getCookie(environment.SESSION_COOKIE, CookieAccessInfo.All);
-    expect(session).not.to.be.undefined;
+    expect(session).toBeDefined();
 
     // Now log out
     const response = await agent.delete("/api/v1/users/sessions");
-    expect(response.status).equals(200);
+    expect(response.status).toEqual(200);
 
     // Session cookie should be cleared
     session = agent.jar.getCookie(environment.SESSION_COOKIE, CookieAccessInfo.All);
-    expect(session).to.be.undefined;
+    expect(session).toBeUndefined();
   });
 });
