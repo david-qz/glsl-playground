@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "license": "MIT",
   "workspaces": ["server", "client"],
+  "type": "module",
   "scripts": {
     "format": "npm run -w client format && npm run -w server format",
     "check": "npm run -w client check && npm run -w server check",

@@ -10,8 +10,8 @@
     "db:migrate:up": "tsx database/migration-cli.ts up",
     "db:migrate:down": "tsx database/migration-cli.ts down",
     "db:codegen": "kysely-codegen --dialect postgres --env-file .env --out-file database/generated.ts",
-    "start": "bun --watch --hot index.ts",
-    "build": "bun build.ts"
+    "start": "tsx --watch index.ts",
+    "build": "tsx build.ts"
   },
   "dependencies": {
     "bcrypt": "5.1.1",

@@ -1,12 +1,13 @@
 import environment from "../environment.js";
-import { Pool } from "pg";
+import pg from "pg";
 import { FileMigrationProvider, Insertable, Kysely, Migrator, PostgresDialect, Selectable, Updateable } from "kysely";
 import { type DB, Programs, Users } from "./generated.js";
 import fs from "node:fs/promises";
 import path from "node:path";
+import url from "node:url";
 
 const dialect = new PostgresDialect({
-  pool: new Pool({
+  pool: new pg.Pool({
     connectionString: environment.DATABASE_URL,
     ssl: environment.PGSSLMODE && { rejectUnauthorized: false },
     max: 10,
@@ -15,11 +16,12 @@ const dialect = new PostgresDialect({
 
 export const db = new Kysely<DB>({ dialect });
 
+const dirname = path.dirname(url.fileURLToPath(import.meta.url));
 export const migrator = new Migrator({
   db,
   provider: new FileMigrationProvider({
     fs,
     path,
-    migrationFolder: path.join(__dirname, "migrations"),
+    migrationFolder: path.join(dirname, "migrations"),
   }),
 });

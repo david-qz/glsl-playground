@@ -6,15 +6,18 @@ fs.rmSync("../dist", { recursive: true, force: true });
 esbuild.buildSync({
   entryPoints: ["index.ts"],
   bundle: true,
-  // minify: true,
+  format: "esm",
   sourcemap: true,
   platform: "node",
-  external: ["pg", "bcrypt"],
+  target: "node20",
+  packages: "external",
   outfile: "../dist/server.js",
 });
 
 esbuild.buildSync({
   entryPoints: ["database/migrations/*.ts"],
   outdir: "../dist/migrations",
-  format: "cjs",
+  format: "esm",
+  platform: "node",
+  target: "node20",
 });

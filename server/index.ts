@@ -11,7 +11,7 @@ async function start() {
 
   if (migrationResultSet.error) {
     const error = migrationResultSet.error as any;
-    console.log(`${error.message || error}`);
+    console.log(`${error.stack || error}`);
     process.exit(1);
   }
 
